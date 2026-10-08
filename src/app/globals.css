@@ -1,0 +1,439 @@
+@import "tailwindcss";
+
+/*
+ * Oar design tokens.
+ *
+ * Layer 1 (@theme): the approved brand palette plus radii, shadows, fonts
+ *   and layout width. The default Tailwind palette is removed, so components
+ *   can only use brand tokens.
+ * Layer 2 (@theme inline + [data-surface]): semantic, surface-aware tokens
+ *   (background, foreground, muted, border, card, link, focus). Components use
+ *   these, so the same markup works on light and dark sections.
+ *
+ * Spacing uses Tailwind's 4px scale, which already contains the 8px-based
+ * steps (2 = 8px ... 40 = 160px).
+ */
+@theme {
+  --color-*: initial;
+
+  /* Brand palette */
+  --color-midnight: #071521;
+  --color-deep-navy: #0b2233;
+  --color-marine-blue: #0b607d;
+  --color-ocean: #0a7ea4;
+  --color-signal-cyan: #27b8d6;
+  --color-off-white: #f5f7f8;
+  --color-white: #ffffff;
+  --color-slate: #647481;
+  --color-dark-text: #10212b;
+  --color-line: #d9e1e5;
+  --color-error: #ba1a1a;
+
+  /* Static semantic roles */
+  --color-surface: var(--color-white);
+  --color-surface-muted: var(--color-off-white);
+  --color-surface-dark: var(--color-midnight);
+  --color-surface-dark-elevated: var(--color-deep-navy);
+  --color-primary: var(--color-marine-blue);
+  --color-primary-hover: var(--color-ocean);
+  --color-accent: var(--color-signal-cyan);
+  /* Form control edges: Border (#D9E1E5) is 1.3:1 on white, so controls use a derived 3:1 step. */
+  --color-control: color-mix(in srgb, var(--color-slate) 70%, var(--color-line));
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  /* Maximum page width including horizontal padding (1320px). */
+  --container-content: 82.5rem;
+
+  /* Restrained geometry: 4px micro, 6px controls, 8px containers, 12px hero media. */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  /* Soft shadows tinted with Midnight. Prefer borders; use these sparingly. */
+  --shadow-panel: 0 8px 30px rgb(7 21 33 / 0.08);
+  --shadow-overlay: 0 4px 12px rgb(7 21 33 / 0.06), 0 16px 40px rgb(7 21 33 / 0.12);
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Surface-aware semantic colors resolve to the CSS variables below. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-link: var(--link);
+  --color-focus: var(--focus);
+}
+
+:root {
+  --checkbox-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5'/%3E%3C/svg%3E");
+}
+
+/*
+ * Surfaces. Set data-surface on any section; descendants inherit the
+ * variables, so children never need per-element text colors.
+ */
+:root,
+[data-surface="light"] {
+  --background: var(--color-white);
+  --foreground: var(--color-dark-text);
+  --muted: var(--color-slate);
+  --border: var(--color-line);
+  --card: var(--color-white);
+  --link: var(--color-marine-blue);
+  --focus: var(--color-ocean);
+}
+
+[data-surface="muted"] {
+  --background: var(--color-off-white);
+  --foreground: var(--color-dark-text);
+  /* Slate on Off White is 4.4:1; this derived step keeps small text above 4.5:1. */
+  --muted: color-mix(in srgb, var(--color-slate) 80%, var(--color-dark-text));
+  --border: var(--color-line);
+  --card: var(--color-white);
+  --link: var(--color-marine-blue);
+  --focus: var(--color-ocean);
+}
+
+[data-surface="dark"] {
+  --background: var(--color-midnight);
+  --foreground: var(--color-white);
+  --muted: color-mix(in srgb, var(--color-white) 72%, transparent);
+  --border: color-mix(in srgb, var(--color-white) 14%, transparent);
+  --card: var(--color-deep-navy);
+  --link: var(--color-signal-cyan);
+  --focus: var(--color-signal-cyan);
+}
+
+[data-surface="dark-elevated"] {
+  --background: var(--color-deep-navy);
+  --foreground: var(--color-white);
+  --muted: color-mix(in srgb, var(--color-white) 72%, transparent);
+  --border: color-mix(in srgb, var(--color-white) 14%, transparent);
+  --card: color-mix(in srgb, var(--color-white) 6%, var(--color-deep-navy));
+  --link: var(--color-signal-cyan);
+  --focus: var(--color-signal-cyan);
+}
+
+/* Semantic typography. Headings are Manrope, everything else Inter. */
+@utility type-display {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  @media (min-width: 48rem) {
+    font-size: 3rem;
+    line-height: 3.5rem;
+    letter-spacing: -0.02em;
+  }
+}
+
+@utility type-h1 {
+  font-family: var(--font-heading);
+  font-size: 1.625rem;
+  line-height: 2.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  @media (min-width: 48rem) {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+}
+
+@utility type-h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+@utility type-h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+@utility type-h4 {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  line-height: 1.625rem;
+  font-weight: 600;
+}
+
+@utility type-body-lg {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+
+@utility type-body {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+@utility type-body-sm {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+@utility type-label {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+@utility type-eyebrow {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/*
+ * Global header. Solid by default. When a page renders an element with
+ * data-header="overlay" (a full-bleed dark hero), the header floats over it
+ * and stays transparent until the page scrolls (html[data-scrolled="true"],
+ * set by HeaderScrollState) or the mobile menu is open.
+ */
+@layer components {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background-color: var(--background);
+    color: var(--foreground);
+    border-bottom: 1px solid var(--border);
+    transition:
+      background-color 200ms var(--ease-standard),
+      border-color 200ms var(--ease-standard);
+  }
+
+  body:has([data-header="overlay"]) .site-header {
+    position: fixed;
+    inset-inline: 0;
+  }
+
+  html:not([data-scrolled="true"]) body:has([data-header="overlay"]) .site-header:not(:has([aria-expanded="true"])) {
+    --foreground: var(--color-white);
+    --muted: color-mix(in srgb, var(--color-white) 78%, transparent);
+    --link: var(--color-signal-cyan);
+    --focus: var(--color-signal-cyan);
+    background-color: transparent;
+    border-bottom-color: transparent;
+  }
+}
+
+/* Faint technical grid for decorative backgrounds. Apply to an aria-hidden absolute layer. */
+@utility bg-technical-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+    /* Page scrollbar hidden; scrolling by wheel, touch, keyboard and links still works. */
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-marine-blue);
+    color: var(--color-white);
+  }
+
+  /* Keyboard focus follows the surface: Ocean on light, Signal Cyan on dark. */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /*
+   * Reduced motion. Animation must use Tailwind's motion-safe: variant;
+   * this rule is the safety net for everything else.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/*
+ * Moving-parts panel entrance (PlayOnView). Rest state is fully visible; the
+ * wrapper sets data-mp="armed" only for content below the fold (hidden until
+ * it scrolls in) and data-mp="play" to run the sequence once. Uses opacity,
+ * transform and clip-path only. `backwards` fill keeps hover transforms working
+ * after each animation ends.
+ */
+@keyframes mp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes mp-reveal {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes mp-settle {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--link) 35%, transparent);
+  }
+  25% {
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.03);
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    transform: none;
+  }
+}
+
+[data-mp="armed"] .mp-item,
+[data-mp="armed"] .mp-curves,
+[data-mp="armed"] .mp-label {
+  opacity: 0;
+}
+
+[data-mp="play"] .mp-item {
+  animation: mp-rise 0.55s var(--ease-standard) backwards;
+  animation-delay: calc(var(--i) * 70ms);
+}
+
+[data-mp="play"] .mp-curves {
+  animation: mp-reveal 1s cubic-bezier(0.4, 0, 0.2, 1) 0.7s backwards;
+}
+
+[data-mp="play"] .mp-label {
+  animation: mp-settle 0.7s ease-out 1.7s backwards;
+}
+
+/*
+ * Industry cards slide in from the sides (PlayOnView). Odd cards come from the
+ * left and even cards from the right; on the three-column layout the middle
+ * card rises instead. Same rest-state rules as above.
+ */
+@keyframes ind-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-56px);
+  }
+}
+
+@keyframes ind-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(56px);
+  }
+}
+
+[data-mp="armed"] .ind-item {
+  opacity: 0;
+}
+
+[data-mp="play"] .ind-item {
+  animation: ind-from-left 0.7s var(--ease-standard) backwards;
+  animation-delay: calc(var(--i) * 90ms);
+}
+
+[data-mp="play"] .ind-item:nth-child(even) {
+  animation-name: ind-from-right;
+}
+
+@media (min-width: 64rem) {
+  [data-mp="play"] .ind-item:nth-child(3n + 1) {
+    animation-name: ind-from-left;
+  }
+
+  [data-mp="play"] .ind-item:nth-child(3n + 2) {
+    animation-name: mp-rise;
+  }
+
+  [data-mp="play"] .ind-item:nth-child(3n) {
+    animation-name: ind-from-right;
+  }
+}
+
+/* Service cards push up into place (PlayOnView), staggered by --i. */
+@keyframes svc-push-up {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+}
+
+[data-mp="armed"] .svc-item {
+  opacity: 0;
+}
+
+[data-mp="play"] .svc-item {
+  animation: svc-push-up 0.7s var(--ease-standard) backwards;
+  animation-delay: calc(var(--i) * 90ms);
+}

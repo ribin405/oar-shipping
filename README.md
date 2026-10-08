@@ -110,3 +110,8 @@ Content is kept in the repository as typed data under `src/content/`, separate f
 - Host normalisation (http to https, `www` to the apex or the reverse) must be configured at the hosting/DNS layer to match `NEXT_PUBLIC_SITE_URL`. Next.js already redirects trailing-slash URLs to the slash-less form.
 - Redirects: the app defines none. No legacy URLs are known, so there are no redirect candidates; add them once the old site's URL inventory is verified.
 # oar-shipping
+
+
+git remote add origin https://github.com/ribin405/oar-shipping.git
+git branch -M main
+git push -u origin main
