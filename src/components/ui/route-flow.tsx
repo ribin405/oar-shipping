@@ -64,7 +64,7 @@ export function RouteFlow({ steps, layout = "lg", className }: RouteFlowProps) {
     <ol className={cn("flex flex-col gap-12", styles.list, className)}>
       {steps.map((step, index) => (
         <li key={step.title} className={cn("relative flex", step.highlighted ? styles.growHighlighted : styles.grow)}>
-          <Card as="div" padding="md" className={cn("w-full gap-4", step.highlighted && "border-link bg-primary/25 lg:py-8")}>
+          <Card as="div" padding="md" className={cn("route-flow-step-card w-full gap-4", step.highlighted && "border-link bg-primary/25 lg:py-8")}>
             <div className="flex items-center justify-between gap-4">
               <span className="type-eyebrow text-link">{step.label}</span>
               {step.icon ? <span className="text-link [&_svg]:size-5">{step.icon}</span> : null}

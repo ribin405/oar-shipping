@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { JsonLd } from "@/components/seo/json-ld";
+import { HomePreloader } from "@/components/layout/home-preloader";
 import { CapabilityStrip } from "@/components/sections/capability-strip";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 import { HeroSection } from "@/components/sections/hero-section";
@@ -8,7 +9,6 @@ import { IndustriesSection } from "@/components/sections/industries-section";
 import { InsightsSection } from "@/components/sections/insights-section";
 import { PortsSection } from "@/components/sections/ports-section";
 import { ProblemSection } from "@/components/sections/problem-section";
-import { ProcessSection } from "@/components/sections/process-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { SupplierVesselFlow } from "@/components/sections/supplier-vessel-flow";
 import { TrustSection } from "@/components/sections/trust-section";
@@ -27,6 +27,7 @@ export const metadata: Metadata = buildPageMetadata({
 export default function HomePage() {
   return (
     <>
+      <HomePreloader />
       <JsonLd data={buildSiteGraph()} />
       <HeroSection>
         <CapabilityStrip />
@@ -34,10 +35,9 @@ export default function HomePage() {
       <ProblemSection />
       <SupplierVesselFlow />
       <ServicesSection />
-      <IndustriesSection />
       <PortsSection />
+      <IndustriesSection />
       <WhyOarSection />
-      <ProcessSection />
       <TrustSection />
       <InsightsSection />
       <FinalCtaSection />

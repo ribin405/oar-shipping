@@ -17,7 +17,7 @@ export function Eyebrow({ children, items, framed = false, className }: EyebrowP
     <p
       className={cn(
         "type-eyebrow text-link",
-        framed && "inline-flex rounded-sm border border-border bg-foreground/5 px-3 py-1.5",
+        framed && "inline-flex rounded-lg border border-white/10 bg-black/30 px-3 py-1.5 backdrop-blur-md",
         className,
       )}
     >

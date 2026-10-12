@@ -6,16 +6,16 @@ import { movingParts, problemContent } from "@/content/home/problem";
 /** Disconnected activities converging on one coordinated flow. Decorative lines; the list carries the meaning. */
 export function MovingPartsPanel() {
   return (
-    <PlayOnView surface="muted" className="relative overflow-hidden rounded-lg border border-border bg-primary/50 p-6 md:p-8">
+    <PlayOnView surface="dark" className="relative overflow-hidden rounded-lg border border-white/15 bg-midnight p-6 md:p-8">
       <div aria-hidden="true" className="bg-technical-grid absolute inset-0" />
       <ul className="relative grid grid-cols-1 gap-3 sm:grid-cols-2">
         {movingParts.map(({ label, icon: Icon }, index) => (
           <li
             key={label}
             style={{ "--i": index } as CSSProperties}
-            className="mp-item group type-label flex items-center gap-3 rounded-md border border-dashed border-muted bg-card px-4 py-3 text-foreground transition-[transform,border-color] duration-200 ease-standard hover:-translate-y-0.5 hover:border-solid hover:bg-deep-navy/40"
+            className="mp-item group type-label flex items-center gap-3 rounded-md border border-white/15 bg-deep-navy px-4 py-3 text-white transition-[transform,background-color,border-color,box-shadow] duration-200 ease-standard hover:-translate-y-0.5 hover:border-signal-cyan hover:border-solid hover:bg-marine-blue hover:shadow-panel"
           >
-            <Icon aria-hidden="true" className="size-5 shrink-0 text-link transition-colors duration-200 group-hover:text-focus" />
+            <Icon aria-hidden="true" className="size-5 shrink-0 text-signal-cyan transition-colors group-hover:text-white" />
             {label}
           </li>
         ))}

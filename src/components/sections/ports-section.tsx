@@ -29,7 +29,6 @@ export function PortsSection() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-midnight/90 via-midnight/70 to-midnight/20" />
           <div className="absolute inset-0 bg-gradient-to-t from-midnight/60 via-transparent to-midnight/40" />
-          <p className="absolute right-6 bottom-4 text-xs text-white/70">Image courtesy NASA/JSC</p>
         </div>
       ) : null}
 

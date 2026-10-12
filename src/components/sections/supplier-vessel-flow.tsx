@@ -18,7 +18,7 @@ export function SupplierVesselFlow() {
   const { eyebrow, title, description, caption } = flowContent;
 
   return (
-    <Section surface="dark" labelledBy={TITLE_ID} className="relative overflow-hidden">
+    <Section surface="dark" labelledBy={TITLE_ID} className="supplier-vessel-flow relative overflow-hidden">
       <div aria-hidden="true" className="bg-technical-grid absolute inset-0 opacity-50" />
       <div className="relative">
         <SectionHeader align="center" eyebrow={eyebrow} title={title} description={description} titleId={TITLE_ID} />

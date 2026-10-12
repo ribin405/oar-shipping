@@ -221,7 +221,8 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    background-color: var(--background);
+    background-color: color-mix(in srgb, var(--background) 80%, transparent);
+    backdrop-filter: blur(12px);
     color: var(--foreground);
     border-bottom: 1px solid var(--border);
     transition:
@@ -236,11 +237,18 @@
 
   html:not([data-scrolled="true"]) body:has([data-header="overlay"]) .site-header:not(:has([aria-expanded="true"])) {
     --foreground: var(--color-white);
-    --muted: color-mix(in srgb, var(--color-white) 78%, transparent);
+    --muted: color-mix(in srgb, var(--color-white) 100%, transparent);
     --link: var(--color-signal-cyan);
     --focus: var(--color-signal-cyan);
     background-color: transparent;
     border-bottom-color: transparent;
+  }
+
+  html[data-scrolled="true"] .site-header {
+    --foreground: var(--color-midnight);
+    --muted: var(--color-midnight);
+    --link: var(--color-marine-blue);
+    --focus: var(--color-ocean);
   }
 }
 
@@ -436,4 +444,452 @@
 [data-mp="play"] .svc-item {
   animation: svc-push-up 0.7s var(--ease-standard) backwards;
   animation-delay: calc(var(--i) * 90ms);
+}
+
+/* Full-card image treatment for service grids, with a dedicated gradient on Port Logistics. */
+.service-card--featured-image {
+  isolation: isolate;
+  background-color: var(--color-midnight);
+  padding-block: 1.25rem;
+}
+
+/* Port Logistics returns to its reference card at rest, then reveals the existing image treatment on hover. */
+.service-card--reference-layout {
+  background-color: var(--card);
+  color: var(--foreground);
+}
+
+.service-card--reference-layout::before {
+  opacity: 0;
+}
+
+.service-card--reference-layout .service-card__hover-backdrop {
+  opacity: 0;
+  transition: opacity 180ms var(--ease-standard);
+}
+
+.service-card--reference-layout .service-card__media {
+  transition: opacity 100ms var(--ease-standard);
+}
+
+.service-card--reference-layout .service-card__copy--featured {
+  top: 0;
+  transition: transform 450ms var(--ease-standard);
+}
+
+.service-card--reference-layout .service-card__top > span:first-child {
+  color: var(--border);
+}
+
+.service-card--reference-layout .service-card__top > span:last-child,
+.service-card--reference-layout .service-card__action a {
+  color: var(--link);
+}
+
+.service-card--reference-layout .service-card__title {
+  color: var(--foreground);
+}
+
+.service-card--reference-layout .service-card__description {
+  color: var(--muted);
+}
+
+.service-card--featured-image::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(7 21 33 / 32%) 0%, rgb(7 21 33 / 52%) 48%, rgb(7 21 33 / 91%) 100%);
+  opacity: 0.82;
+  content: "";
+  pointer-events: none;
+  transition: opacity 450ms var(--ease-standard), filter 450ms var(--ease-standard);
+}
+
+.service-card--reference-layout::before {
+  opacity: 0;
+}
+
+.service-card--port-logistics::before {
+  background-image:
+    linear-gradient(135deg, rgb(11 34 51 / 56%) 0%, rgb(11 96 125 / 30%) 48%, rgb(7 21 33 / 70%) 100%),
+    linear-gradient(180deg, rgb(7 21 33 / 32%) 0%, rgb(7 21 33 / 52%) 48%, rgb(7 21 33 / 91%) 100%);
+}
+
+.service-card--port-logistics:hover::before,
+.service-card--port-logistics:focus-within::before {
+  filter: brightness(0.28) saturate(0.55);
+}
+
+.service-card__backdrop {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.service-card__backdrop > div {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+}
+
+.service-card__backdrop img {
+  filter: brightness(0.82) saturate(0.9);
+  opacity: 0.72;
+  transform: scale(1.001);
+  transition: transform 800ms cubic-bezier(0.2, 0, 0, 1), filter 800ms cubic-bezier(0.2, 0, 0, 1), opacity 450ms var(--ease-standard);
+}
+
+.service-card--featured-image > :not(.service-card__backdrop) {
+  position: relative;
+  z-index: 2;
+}
+
+.service-card--featured-image .service-card__top > span:first-child {
+  color: color-mix(in srgb, var(--color-white) 68%, transparent);
+}
+
+.service-card--featured-image .service-card__top > span:last-child,
+.service-card--featured-image .service-card__action a {
+  color: var(--color-signal-cyan);
+}
+
+.service-card__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.service-card__copy--featured {
+  top: 2.5rem;
+  text-align: left;
+}
+
+.service-card--featured-image .service-card__title {
+  color: var(--color-white);
+  opacity: 1;
+  text-align: left;
+  transition: color 350ms var(--ease-standard), transform 450ms var(--ease-standard);
+}
+
+.service-card--featured-image .service-card__description {
+  color: var(--color-white);
+  opacity: 1;
+  text-align: left;
+}
+
+.service-card--reference-layout .service-card__top > span:first-child {
+  color: var(--border);
+}
+
+.service-card--reference-layout .service-card__top > span:last-child,
+.service-card--reference-layout .service-card__action a {
+  color: var(--link);
+}
+
+.service-card--reference-layout .service-card__title {
+  color: var(--foreground);
+}
+
+.service-card--reference-layout .service-card__description {
+  color: var(--muted);
+}
+
+.service-card__image-space {
+  aspect-ratio: 2.5 / 1;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+}
+
+@media (max-width: 47.999rem) {
+  .service-card--featured-image {
+    gap: 0.75rem;
+    padding-block: 0.75rem;
+  }
+
+  .service-card__image-space {
+    aspect-ratio: 5 / 1;
+  }
+
+  .service-card--reference-layout .service-card__media > div {
+    aspect-ratio: 3.5 / 1;
+  }
+
+  .service-card__copy {
+    gap: 0.75rem;
+  }
+
+  .supplier-vessel-flow .route-flow-step-card {
+    gap: 0.625rem;
+    padding: 1rem;
+  }
+
+  .supplier-vessel-flow .route-flow-step-card > ul {
+    gap: 0.375rem;
+    padding-top: 0.75rem;
+  }
+}
+
+.service-card--featured-image:hover::before,
+.service-card--featured-image:focus-within::before {
+  opacity: 1;
+}
+
+.service-card--featured-image:hover .service-card__backdrop img,
+.service-card--featured-image:focus-within .service-card__backdrop img {
+  filter: brightness(0.68) saturate(1.08);
+  opacity: 0.62;
+  transform: scale(1.075);
+}
+
+.service-card--featured-image:hover .service-card__title,
+.service-card--featured-image:focus-within .service-card__title {
+  color: var(--color-signal-cyan);
+  transform: translateY(-2px);
+}
+
+.service-card--reference-layout:hover .service-card__hover-backdrop,
+.service-card--reference-layout:focus-within .service-card__hover-backdrop {
+  opacity: 1;
+}
+
+.service-card--reference-layout:hover .service-card__media,
+.service-card--reference-layout:focus-within .service-card__media {
+  opacity: 0;
+}
+
+.service-card--reference-layout:hover .service-card__copy--featured,
+.service-card--reference-layout:focus-within .service-card__copy--featured {
+  top: calc(50% - 3.5rem);
+  transform: translateY(-50%);
+}
+
+.service-card--reference-layout:hover .service-card__top > span:last-child,
+.service-card--reference-layout:focus-within .service-card__top > span:last-child,
+.service-card--reference-layout:hover .service-card__action a,
+.service-card--reference-layout:focus-within .service-card__action a {
+  color: var(--color-signal-cyan);
+}
+
+.service-card--reference-layout:hover .service-card__description,
+.service-card--reference-layout:focus-within .service-card__description {
+  color: var(--color-white);
+}
+
+/* Homepage Why Oar section: soft route-grid texture, staggered reveal and tactile card hover. */
+.why-oar-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.why-oar-section::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse at 92% 12%, color-mix(in srgb, var(--link) 9%, transparent), transparent 38%),
+    linear-gradient(to right, color-mix(in srgb, var(--border) 34%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--border) 34%, transparent) 1px, transparent 1px);
+  background-size: auto, 48px 48px, 48px 48px;
+  content: "";
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+  pointer-events: none;
+}
+
+@keyframes why-oar-intro-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes why-oar-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) rotateX(-5deg);
+  }
+}
+
+[data-mp="armed"] .why-oar-intro,
+[data-mp="armed"] .why-oar-card {
+  opacity: 0;
+}
+
+[data-mp="play"] .why-oar-intro {
+  animation: why-oar-intro-in 650ms var(--ease-standard) both;
+}
+
+[data-mp="play"] .why-oar-card {
+  animation: why-oar-card-in 720ms var(--ease-standard) backwards;
+  animation-delay: calc(var(--why-index) * 110ms + 120ms);
+  perspective: 800px;
+}
+
+.why-oar-node {
+  transition: transform 260ms var(--ease-standard), box-shadow 260ms var(--ease-standard);
+}
+
+.why-oar-card-surface {
+  transform: translateY(0);
+  transition:
+    transform 320ms var(--ease-standard),
+    border-color 320ms var(--ease-standard),
+    box-shadow 320ms var(--ease-standard);
+}
+
+.why-oar-icon {
+  transition:
+    transform 320ms var(--ease-standard),
+    background-color 320ms var(--ease-standard),
+    color 320ms var(--ease-standard);
+}
+
+.why-oar-card:hover .why-oar-card-surface,
+.why-oar-card:focus-within .why-oar-card-surface {
+  transform: translateY(-7px);
+  border-color: color-mix(in srgb, var(--link) 45%, var(--border));
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--link) 13%, transparent);
+}
+
+.why-oar-card:hover .why-oar-icon,
+.why-oar-card:focus-within .why-oar-icon {
+  transform: translateY(-2px) rotate(-5deg);
+  background-color: color-mix(in srgb, var(--link) 10%, var(--card));
+  color: var(--link);
+}
+
+.why-oar-card:hover .why-oar-node,
+.why-oar-card:focus-within .why-oar-node {
+  transform: scale(1.35);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--link) 12%, transparent);
+}
+
+/* CSS-only branded homepage preloader: no client bundle or network dependency. */
+.oar-preloader {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  color: var(--color-white);
+  background:
+    radial-gradient(ellipse at 50% 43%, rgb(39 184 214 / 8%), transparent 38%),
+    linear-gradient(145deg, #000000, #05080a 60%, #000000);
+  animation: oar-preloader-exit 520ms cubic-bezier(0.76, 0, 0.24, 1) 820ms forwards;
+}
+
+.oar-preloader__glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 4%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 4%) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse at center, black 8%, transparent 72%);
+}
+
+.oar-preloader__content {
+  position: relative;
+  display: flex;
+  width: min(88vw, 360px);
+  flex-direction: column;
+  align-items: center;
+  animation: oar-preloader-arrive 720ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+.oar-preloader__logo {
+  display: block;
+  width: min(48vw, 206px);
+  aspect-ratio: 640 / 248;
+  background-color: var(--color-white);
+  mask-image: url("/images/brand/oar-logo.png");
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  filter: drop-shadow(0 0 22px rgb(39 184 214 / 18%));
+}
+
+.oar-preloader__tagline {
+  margin-top: 22px;
+  color: color-mix(in srgb, var(--color-white) 78%, transparent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.oar-preloader__tagline span {
+  padding-inline: 0.35em;
+  color: var(--color-signal-cyan);
+}
+
+.oar-preloader__wave {
+  width: 176px;
+  height: 24px;
+  margin-top: 36px;
+  overflow: visible;
+}
+
+.oar-preloader__wave-track,
+.oar-preloader__wave-line {
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+.oar-preloader__wave-track {
+  stroke: rgb(255 255 255 / 16%);
+}
+
+.oar-preloader__wave-line {
+  stroke: var(--color-signal-cyan);
+  stroke-dasharray: 54 174;
+  animation: oar-wave-sail 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  filter: drop-shadow(0 0 5px rgb(39 184 214 / 55%));
+}
+
+.oar-preloader__loading {
+  margin-top: 12px;
+  color: color-mix(in srgb, var(--color-white) 56%, transparent);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@keyframes oar-preloader-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes oar-wave-sail {
+  to {
+    stroke-dashoffset: -228;
+  }
+}
+
+@keyframes oar-preloader-exit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oar-preloader {
+    animation-delay: 0ms;
+    animation-duration: 1ms;
+  }
+
+  .oar-preloader__content,
+  .oar-preloader__wave-line {
+    animation-duration: 1ms;
+  }
 }

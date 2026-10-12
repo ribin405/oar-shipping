@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import "./globals.css";
 import { PageShell } from "@/components/layout/page-shell";
+import { WhatsAppFab } from "@/components/layout/whatsapp-fab";
 import { fontBody, fontHeading } from "@/lib/fonts";
 import { rootMetadata } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/site-config";
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <body>
         <PageShell>{children}</PageShell>
+        <WhatsAppFab />
       </body>
     </html>
   );

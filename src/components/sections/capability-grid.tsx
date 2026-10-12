@@ -50,6 +50,9 @@ export function CapabilityGrid({
                   linkTo === "detail" ? routes.service(slug) : routes.services
                 }
                 linkLabel={linkLabel}
+                featuredImage={Boolean(image)}
+                navyGradient={slug === "port-logistics"}
+                referenceLayout={Boolean(image)}
                 media={
                   image ? (
                     <MediaFrame

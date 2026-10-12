@@ -29,5 +29,5 @@ export const heroContent: HeroContent = {
   description: "Marine logistics and port execution that connects suppliers, cargo and vessels across UAE ports.",
   primaryCta: { label: "Request a Quote", href: routes.requestQuote },
   secondaryCta: { label: "Explore Services", href: routes.services },
-  image: { src: "/images/hero/Golden Harbor Sunset with Container Ship.png", alt: "", position: "object-[70%_center]" },
+  image: { src: "/images/hero/golden harbour 2.png", alt: "", position: "object-[100%_center]" },
 };
