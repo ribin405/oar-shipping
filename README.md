@@ -115,3 +115,8 @@ Content is kept in the repository as typed data under `src/content/`, separate f
 git remote add origin https://github.com/ribin405/oar-shipping.git
 git branch -M main
 git push -u origin main
+
+
+git add .
+git commit -m "our shipping "
+git push
