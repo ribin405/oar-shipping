@@ -63,8 +63,7 @@ export function CapabilityGrid({
                 }
                 linkLabel={linkLabel}
                 featuredImage={Boolean(image) && cardPresentation === "hover"}
-                navyGradient={slug === "port-logistics" && cardPresentation === "hover"}
-                referenceLayout={Boolean(image) && cardPresentation === "hover" && slug !== "port-logistics"}
+                referenceLayout={Boolean(image) && cardPresentation === "hover"}
                 imagePresentation={cardPresentation}
                 media={
                   image ? (
