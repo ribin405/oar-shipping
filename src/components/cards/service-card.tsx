@@ -20,6 +20,7 @@ interface ServiceCardProps {
   navyGradient?: boolean;
   /** Show the reference card layout at rest and the full-image treatment on hover. */
   referenceLayout?: boolean;
+  imagePresentation?: "hover" | "inline";
 }
 
 export function ServiceCard({
@@ -33,7 +34,10 @@ export function ServiceCard({
   featuredImage = false,
   navyGradient = false,
   referenceLayout = false,
+  imagePresentation = "hover",
 }: ServiceCardProps) {
+  const inlineImage = imagePresentation === "inline" && Boolean(media);
+
   return (
     <Card
       as="article"
@@ -48,11 +52,14 @@ export function ServiceCard({
           {icon ? <span className="text-link [&_svg]:size-7">{icon}</span> : null}
         </div>
       ) : null}
+      {inlineImage && media ? (
+        <div className="overflow-hidden rounded-md border border-border">{media}</div>
+      ) : null}
       <div className={featuredImage ? "service-card__copy service-card__copy--featured" : "service-card__copy"}>
         <h3 className="service-card__title type-h3 text-foreground">{title}</h3>
         <p className="service-card__description type-body text-muted">{description}</p>
       </div>
-      {media ? (
+      {media && !inlineImage ? (
         featuredImage && !referenceLayout ? <div aria-hidden="true" className="service-card__image-space" /> :
           <div className="service-card__media overflow-hidden rounded-md border border-border">{media}</div>
       ) : null}

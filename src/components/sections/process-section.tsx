@@ -12,6 +12,7 @@ interface ProcessSectionProps {
   description?: string;
   /** Step labels ("01" to "05") to emphasise, for pages about one part of the journey. */
   highlight?: readonly string[];
+  spacing?: "default" | "compact";
 }
 
 /** The five-step operating model. Defaults to the homepage copy. */
@@ -21,11 +22,12 @@ export function ProcessSection({
   title = processContent.title,
   description = processContent.description,
   highlight,
+  spacing = "default",
 }: ProcessSectionProps) {
   const steps = processContent.steps.map((step) => ({ ...step, highlighted: highlight?.includes(step.label) }));
 
   return (
-    <Section surface={surface} labelledBy={TITLE_ID}>
+    <Section surface={surface} spacing={spacing} labelledBy={TITLE_ID}>
       <SectionHeader eyebrow={eyebrow} title={title} description={description} titleId={TITLE_ID} />
       <RouteFlow steps={steps} layout="xl" className="xl:items-stretch" />
       <p className="type-body-sm mt-12 max-w-xl text-muted">{processContent.disclaimer}</p>

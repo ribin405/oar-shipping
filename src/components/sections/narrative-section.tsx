@@ -20,6 +20,7 @@ interface NarrativeSectionProps {
   secondaryAction?: NarrativeLink;
   /** Visual or list shown beside the text from `lg` upward. */
   aside?: ReactNode;
+  spacing?: "default" | "compact";
 }
 
 /** Heading with one to three paragraphs, optionally paired with a visual. */
@@ -32,11 +33,12 @@ export function NarrativeSection({
   action,
   secondaryAction,
   aside,
+  spacing = "default",
 }: NarrativeSectionProps) {
   const titleId = `${id}-title`;
 
   return (
-    <Section id={id} surface={surface} labelledBy={titleId}>
+    <Section id={id} surface={surface} spacing={spacing} labelledBy={titleId}>
       <div className={cn("grid items-center gap-12", Boolean(aside) && "lg:grid-cols-2 lg:gap-16")}>
         <div className="flex max-w-2xl flex-col items-start gap-4">
           <Eyebrow>{eyebrow}</Eyebrow>

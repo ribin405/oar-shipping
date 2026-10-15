@@ -1,46 +1,103 @@
 import type { CSSProperties } from "react";
+import { Check } from "lucide-react";
 
 import { Section } from "@/components/layout/section";
-import { SectionHeader } from "@/components/layout/section-header";
+import { MediaFrame } from "@/components/media/media-frame";
 import { ArrowLink } from "@/components/ui/arrow-link";
-import { Card } from "@/components/ui/card";
-import { IconBox } from "@/components/ui/icon-box";
+import { Eyebrow } from "@/components/ui/eyebrow";
 import { PlayOnView } from "@/components/ui/play-on-view";
-import { principles, whyOarContent } from "@/content/home/why-oar";
+import { whyOarContent } from "@/content/home/why-oar";
 
 const TITLE_ID = "why-oar-title";
 
 export function WhyOarSection() {
-  const { eyebrow, title, description, action } = whyOarContent;
+  const { eyebrow, description, action } = whyOarContent;
+  const supportingPoints = [
+    "Connect suppliers, cargo, transport and port-side activity.",
+    "Work with an understanding of the UAE maritime environment.",
+    "Shape execution around the requirement and its timing.",
+  ];
+  const operationalPoints = [
+    "Suppliers, cargo, transport and port-side activity brought into one flow.",
+    "Documentation and customs requirements coordinated alongside cargo movement.",
+    "Each movement shaped by the cargo, port and vessel operation involved.",
+  ];
 
   return (
-    <Section labelledBy={TITLE_ID} className="why-oar-section pt-8 md:pt-12">
+    <Section surface="muted" className="why-oar-section">
       <PlayOnView className="why-oar-motion">
-        <SectionHeader
-          eyebrow={eyebrow}
-          title={title}
-          description={description}
-          titleId={TITLE_ID}
-          action={<ArrowLink href={action.href}>{action.label}</ArrowLink>}
-          className="why-oar-intro"
-        />
-        <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {principles.map(({ title, description, icon: Icon }, index) => (
-            <li key={title} className="why-oar-card relative pt-5" style={{ "--why-index": index } as CSSProperties}>
-              <span aria-hidden="true" className="absolute top-0 left-0 h-px w-full bg-border" />
-              <span aria-hidden="true" className="why-oar-node absolute -top-1 left-0 size-2.5 rounded-full bg-link" />
-              <Card as="article" padding="md" className="why-oar-card-surface h-full gap-5 bg-card">
-                <IconBox className="why-oar-icon">
-                  <Icon aria-hidden="true" />
-                </IconBox>
-                <div className="flex flex-col gap-2">
-                  <h3 className="type-h3 text-foreground">{title}</h3>
-                  <p className="type-body text-muted">{description}</p>
-                </div>
-              </Card>
-            </li>
-          ))}
-        </ul>
+        <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-14">
+          <article aria-labelledby={TITLE_ID} className="flex min-w-0 flex-col">
+            <header className="flex max-w-2xl flex-col items-start gap-4">
+              <Eyebrow>{eyebrow}</Eyebrow>
+              <h2 id={TITLE_ID} className="type-h1 max-w-[16ch]">
+                More Than Logistics. It&apos;s Coordination.
+              </h2>
+              <p className="type-body-lg text-muted">{description}</p>
+            </header>
+
+            <ul className="mt-6 grid gap-3" aria-label="How Oar coordinates port-side requirements">
+              {supportingPoints.map((point, index) => (
+                <li
+                  key={point}
+                  className="why-oar-principle flex items-start gap-3"
+                  style={{ "--why-index": index } as CSSProperties}
+                >
+                  <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-signal-cyan/20 text-marine-blue">
+                    <Check aria-hidden="true" className="size-3.5" strokeWidth={2.5} />
+                  </span>
+                  <span className="type-body text-foreground">{point}</span>
+                </li>
+              ))}
+            </ul>
+            <ArrowLink href={action.href} className="mt-5 self-start">{action.label}</ArrowLink>
+
+            <MediaFrame
+              src="/images/hero/ship 1.jpg"
+              alt="A container ship underway near a port terminal in hazy light."
+              ratio="landscape"
+              position="object-center"
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              className="mt-8 rounded-lg shadow-panel lg:mt-auto lg:pt-8"
+            />
+          </article>
+
+          <article aria-labelledby="operational-control-title" className="flex min-w-0 flex-col">
+            <header className="flex max-w-2xl flex-col items-start gap-4">
+              <Eyebrow>Operational control</Eyebrow>
+              <h2 id="operational-control-title" className="type-h1 max-w-[16ch]">
+                Built around operational control.
+              </h2>
+              <p className="type-body-lg text-muted">
+                Oar&apos;s role is to coordinate the shore-side details that keep vessel-related logistics moving, with clear communication and controlled execution from supplier to vessel.
+              </p>
+            </header>
+
+            <ul className="mt-6 grid gap-3" aria-label="Oar's operational approach">
+              {operationalPoints.map((point, index) => (
+                <li
+                  key={point}
+                  className="why-oar-principle flex items-start gap-3"
+                  style={{ "--why-index": index + supportingPoints.length } as CSSProperties}
+                >
+                  <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-signal-cyan/20 text-marine-blue">
+                    <Check aria-hidden="true" className="size-3.5" strokeWidth={2.5} />
+                  </span>
+                  <span className="type-body text-foreground">{point}</span>
+                </li>
+              ))}
+            </ul>
+
+            <MediaFrame
+              src="/images/services/port-coordination.jpg"
+              alt="Aerial view of container rows and a road through a port terminal."
+              ratio="landscape"
+              position="object-center"
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              className="mt-8 rounded-lg shadow-panel lg:mt-auto lg:pt-8"
+            />
+          </article>
+        </div>
       </PlayOnView>
     </Section>
   );

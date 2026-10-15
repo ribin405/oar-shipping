@@ -27,7 +27,7 @@ export function Card({ as: Tag = "div", padding = "lg", interactive = false, cla
   return (
     <Tag
       className={cn(
-        "relative flex flex-col overflow-hidden rounded-lg border border-border bg- hover:card",
+        "relative flex flex-col overflow-hidden rounded-lg border border-border bg-card",
         paddingStyles[padding],
         interactive &&
           "transition-[box-shadow,border-color,background-color,background-color] duration-200 ease-standard hover:border-muted hover:shadow-panel has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-focus",

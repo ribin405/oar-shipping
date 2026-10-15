@@ -22,18 +22,18 @@ const TITLE_ID = "page-title";
 /** Opening band for inner pages: the page's single <h1>, a lead and an optional CTA. */
 export function InnerPageHero({ eyebrow, title, description, cta, meta, visual, variant = "dark" }: InnerPageHeroProps) {
   return (
-    <Section surface={variant} labelledBy={TITLE_ID} className="relative overflow-hidden">
+    <Section surface={variant} spacing="compact" labelledBy={TITLE_ID} className="relative overflow-hidden">
       {variant === "dark" ? <div aria-hidden="true" className="bg-technical-grid absolute inset-0 opacity-40" /> : null}
-      <div className={cn("relative grid items-center gap-12", Boolean(visual) && "lg:grid-cols-12")}>
-        <div className={cn("flex max-w-3xl flex-col items-start gap-6", Boolean(visual) && "lg:col-span-7")}>
+      <div className={cn("relative grid items-center gap-8 md:gap-10", Boolean(visual) && "lg:grid-cols-12")}>
+        <div className={cn("flex max-w-3xl flex-col items-start gap-5 md:gap-6", Boolean(visual) && "lg:col-span-7")}>
           <Eyebrow>{eyebrow}</Eyebrow>
-          <h1 id={TITLE_ID} className="type-display">
+          <h1 id={TITLE_ID} className="type-display max-w-[19ch] text-balance">
             {title}
           </h1>
           <p className="type-body-lg max-w-2xl text-muted">{description}</p>
           {meta}
           {cta ? (
-            <ButtonLink href={cta.href} size="lg" className="mt-2">
+            <ButtonLink href={cta.href} size="lg" className="mt-1 w-full sm:w-auto">
               {cta.label}
             </ButtonLink>
           ) : null}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { JsonLd } from "@/components/seo/json-ld";
-import { HomePreloader } from "@/components/layout/home-preloader";
 import { CapabilityStrip } from "@/components/sections/capability-strip";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 import { HeroSection } from "@/components/sections/hero-section";
@@ -11,7 +10,6 @@ import { PortsSection } from "@/components/sections/ports-section";
 import { ProblemSection } from "@/components/sections/problem-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { SupplierVesselFlow } from "@/components/sections/supplier-vessel-flow";
-import { TrustSection } from "@/components/sections/trust-section";
 import { WhyOarSection } from "@/components/sections/why-oar-section";
 import { routes } from "@/config/routes";
 import { buildPageMetadata } from "@/lib/seo/metadata";
@@ -27,20 +25,20 @@ export const metadata: Metadata = buildPageMetadata({
 export default function HomePage() {
   return (
     <>
-      <HomePreloader />
       <JsonLd data={buildSiteGraph()} />
-      <HeroSection>
-        <CapabilityStrip />
-      </HeroSection>
-      <ProblemSection />
-      <SupplierVesselFlow />
-      <ServicesSection />
-      <PortsSection />
-      <IndustriesSection />
-      <WhyOarSection />
-      <TrustSection />
-      <InsightsSection />
-      <FinalCtaSection />
+      <div data-home-theme>
+        <HeroSection>
+          <CapabilityStrip />
+        </HeroSection>
+        <ProblemSection />
+        <SupplierVesselFlow />
+        <ServicesSection />
+        <PortsSection />
+        <IndustriesSection />
+        <WhyOarSection />
+        <InsightsSection />
+        <FinalCtaSection />
+      </div>
     </>
   );
 }

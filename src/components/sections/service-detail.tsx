@@ -47,13 +47,22 @@ export function ServiceDetail({ service }: { service: Service }) {
         cta={copy.cta.primaryCta}
         visual={
           service.image ? (
-            <MediaFrame src={service.image.src} alt={service.image.alt} position={service.image.position} ratio="standard" className="rounded-lg" />
+            <MediaFrame
+              src={service.image.src}
+              alt={service.image.alt}
+              position={service.image.position}
+              ratio="standard"
+              sizes="(min-width: 1440px) 511px, (min-width: 1280px) 39vw, (min-width: 1024px) 38vw, 100vw"
+              preload
+              className="rounded-lg"
+            />
           ) : undefined
         }
       />
 
       <NarrativeSection
         id="problem"
+        spacing="compact"
         eyebrow={copy.problemEyebrow}
         title={service.problem.title}
         paragraphs={service.problem.paragraphs}
@@ -61,6 +70,7 @@ export function ServiceDetail({ service }: { service: Service }) {
 
       <NarrativeSection
         id="role"
+        spacing="compact"
         surface="dark"
         eyebrow={copy.roleEyebrow}
         title={service.role.title}
@@ -70,20 +80,21 @@ export function ServiceDetail({ service }: { service: Service }) {
         aside={<JourneyDiagram heading={copy.roleDiagramHeading} nodes={copy.roleNodes} />}
       />
 
-      <Section surface="muted" labelledBy="coordinates-title">
+      <Section surface="muted" spacing="compact" labelledBy="coordinates-title">
         <SectionHeader eyebrow={copy.coordinates.eyebrow} title={copy.coordinates.title} titleId="coordinates-title" />
         <PrincipleGrid principles={coordinates} />
       </Section>
 
       <ProcessSection
         surface="light"
+        spacing="compact"
         eyebrow={copy.process.eyebrow}
         title={copy.process.title}
         description={service.processNote}
         highlight={service.processFocus}
       />
 
-      <Section surface="dark" labelledBy="requirements-title">
+      <Section surface="dark" spacing="compact" labelledBy="requirements-title">
         <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="flex max-w-2xl flex-col items-start gap-4">
             <Eyebrow>{copy.requirements.eyebrow}</Eyebrow>
@@ -98,7 +109,7 @@ export function ServiceDetail({ service }: { service: Service }) {
         </div>
       </Section>
 
-      <Section labelledBy="industries-title">
+      <Section spacing="compact" labelledBy="industries-title">
         <SectionHeader
           eyebrow={copy.industries.eyebrow}
           title={copy.industries.title}
@@ -108,7 +119,7 @@ export function ServiceDetail({ service }: { service: Service }) {
         <IndustryGrid variant="detail" slugs={service.audiences} />
       </Section>
 
-      <Section surface="muted" labelledBy="related-title">
+      <Section surface="muted" spacing="compact" labelledBy="related-title">
         <SectionHeader
           eyebrow={copy.related.eyebrow}
           title={copy.related.title}
@@ -118,7 +129,7 @@ export function ServiceDetail({ service }: { service: Service }) {
         <CapabilityGrid linkTo="detail" linkLabel="Explore service" slugs={service.related} />
       </Section>
 
-      <Section labelledBy="faq-title">
+      <Section spacing="compact" labelledBy="faq-title">
         <div className="mx-auto max-w-3xl">
           <SectionHeader eyebrow={copy.faq.eyebrow} title={copy.faq.title} titleId="faq-title" />
           <Accordion items={service.faq} />

@@ -31,10 +31,11 @@ export default function InsightsPage() {
   return (
     <>
       <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Insights" }]} path={routes.insights} />
-      <InnerPageHero {...hero} />
+      <InnerPageHero {...hero} variant="light" />
 
       <NarrativeSection
         id="intro"
+        surface="muted"
         eyebrow={intro.eyebrow}
         title={intro.title}
         paragraphs={intro.paragraphs}

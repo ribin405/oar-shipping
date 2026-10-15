@@ -43,24 +43,24 @@ export function HeroSection({ children }: { children?: ReactNode }) {
       )}
 
       <div className="relative flex flex-1 items-center">
-      <Container className="pt-32 pb-16 md:pt-36 md:pb-24">
-        <div className="flex max-w-2xl flex-col items-start gap-6">
-          <Eyebrow items={eyebrow} framed />
-          <h1 id="hero-title" className="type-display max-w-xl">
-            {title}
-          </h1>
-          <p className="type-body-lg max-w-xl text-muted">{description}</p>
-          <div className="flex w-full flex-col gap-4 pt-2 sm:w-auto sm:flex-row">
-            <ButtonLink href={primaryCta.href} size="lg" className="w-full sm:w-auto">
-              {primaryCta.label}
-              <ArrowRight aria-hidden="true" />
-            </ButtonLink>
-            <ButtonLink href={secondaryCta.href} variant="secondary" size="lg" className="w-full sm:w-auto">
-              {secondaryCta.label}
-            </ButtonLink>
+        <Container className="pt-24 pb-10 sm:pt-28 sm:pb-12 md:pt-36 md:pb-16">
+          <div className="flex max-w-3xl flex-col items-start gap-5 sm:gap-7">
+            <Eyebrow items={eyebrow} framed />
+            <h1 id="hero-title" className="home-hero-title max-w-[12ch]">
+              {title}
+            </h1>
+            <p className="type-body-lg max-w-md text-muted">{description}</p>
+            <div className="flex w-full flex-col gap-3 pt-1 sm:w-auto sm:flex-row sm:gap-4">
+              <ButtonLink href={primaryCta.href} size="lg" className="w-full sm:w-auto">
+                {primaryCta.label}
+                <ArrowRight aria-hidden="true" />
+              </ButtonLink>
+              <ButtonLink href={secondaryCta.href} variant="secondary" size="lg" className="w-full sm:w-auto">
+                {secondaryCta.label}
+              </ButtonLink>
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
       </div>
       {children}
     </section>

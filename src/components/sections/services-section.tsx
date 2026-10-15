@@ -18,7 +18,7 @@ export function ServicesSection() {
         titleId={TITLE_ID}
         action={<ArrowLink href={viewAll.href}>{viewAll.label}</ArrowLink>}
       />
-      <CapabilityGrid linkTo="detail" linkLabel={cardLinkLabel} />
+      <CapabilityGrid linkTo="detail" linkLabel={cardLinkLabel} imagePresentation="featured" />
     </Section>
   );
 }

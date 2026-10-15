@@ -7,7 +7,6 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
 import { NarrativeSection } from "@/components/sections/narrative-section";
 import { PrincipleGrid } from "@/components/sections/principle-grid";
-import { SupplierVesselFlow } from "@/components/sections/supplier-vessel-flow";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { routes } from "@/config/routes";
 import { aboutContent, aboutPrinciples } from "@/content/about/page";
@@ -26,8 +25,7 @@ export default function AboutPage() {
   return (
     <>
       <InnerPageHero {...hero} />
-      <NarrativeSection id="positioning" {...positioning} />
-      <SupplierVesselFlow />
+      <NarrativeSection id="positioning" {...positioning} spacing="compact" />
       <Section surface="muted" labelledBy="focus-title">
         <SectionHeader
           eyebrow={focus.eyebrow}

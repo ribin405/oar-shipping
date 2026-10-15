@@ -25,6 +25,6 @@ export const problemContent = {
   description:
     "Behind every vessel delivery are suppliers, cargo movements, documentation, clearance, transport and port-side coordination. When those pieces are disconnected, vessel operations carry the complexity.",
   resolution:
-    "Oar Shipping is a marine logistics and port-execution coordinator in the UAE, bringing those moving parts together from supplier door to vessel deck for ship managers, ship chandlers and shipping agents.",
+    "Oar Shipping keeps these shore-side activities connected around each vessel requirement.",
   visualLabel: "Brought together by Oar",
 };

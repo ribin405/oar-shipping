@@ -32,11 +32,11 @@ export default function RequestQuotePage() {
       <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Request a Quote" }]} path={routes.requestQuote} />
       <InnerPageHero {...hero} />
 
-      <Section labelledBy="rfq-title">
+      <Section spacing="compact" labelledBy="rfq-title">
         <h2 id="rfq-title" className="sr-only">
           Quote request form
         </h2>
-        <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-8">
             <QuoteForm serviceOptions={serviceOptions} />
           </div>

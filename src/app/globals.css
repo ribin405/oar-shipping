@@ -120,6 +120,75 @@
   --focus: var(--color-signal-cyan);
 }
 
+/*
+ * Homepage-only identity: keep the approved palette and typography scoped to
+ * this route so shared inner-page components retain their current foundation.
+ */
+[data-home-theme] {
+  --color-midnight: #06121b;
+  --color-deep-navy: #0b2233;
+  --color-marine-blue: #087e8b;
+  --color-ocean: #076d79;
+  --color-signal-cyan: #35c4d6;
+  --color-off-white: #f4f3ef;
+  --color-white: #ffffff;
+  --color-slate: #687781;
+  --color-dark-text: #172630;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.5rem;
+}
+
+[data-home-theme] [data-surface="light"],
+[data-home-theme] [data-surface="muted"] {
+  --muted: color-mix(in srgb, var(--color-slate) 80%, var(--color-dark-text));
+}
+
+[data-home-theme] .type-display {
+  font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+[data-home-theme] .type-h1 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.home-hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 6.2vw, 6rem);
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+[data-home-theme] .service-card--featured-image::before {
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-midnight) 26%, transparent) 0%,
+    color-mix(in srgb, var(--color-midnight) 48%, transparent) 48%,
+    color-mix(in srgb, var(--color-midnight) 92%, transparent) 100%
+  );
+}
+
+[data-home-theme] .service-card--port-logistics::before {
+  background-image:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-deep-navy) 58%, transparent),
+      color-mix(in srgb, var(--color-ocean) 22%, transparent) 52%,
+      color-mix(in srgb, var(--color-midnight) 72%, transparent)
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-midnight) 24%, transparent),
+      color-mix(in srgb, var(--color-midnight) 90%, transparent)
+    );
+}
+
 /* Semantic typography. Headings are Manrope, everything else Inter. */
 @utility type-display {
   font-family: var(--font-heading);
@@ -132,6 +201,52 @@
     font-size: 3rem;
     line-height: 3.5rem;
     letter-spacing: -0.02em;
+  }
+}
+
+/* Homepage capability links read as a continuous operational rail, not cards. */
+.capability-rail__item {
+  border-inline-end: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.capability-rail__item:nth-child(2n) {
+  border-inline-end: 0;
+}
+
+.capability-rail__item:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+@media (min-width: 40rem) {
+  .capability-rail__item:nth-child(2n) {
+    border-inline-end: 1px solid var(--border);
+  }
+
+  .capability-rail__item:nth-child(3n) {
+    border-inline-end: 0;
+  }
+
+  .capability-rail__item:nth-last-child(-n + 2) {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .capability-rail__item:nth-last-child(-n + 3) {
+    border-bottom: 0;
+  }
+}
+
+@media (min-width: 64rem) {
+  .capability-rail__item:nth-child(3n) {
+    border-inline-end: 1px solid var(--border);
+  }
+
+  .capability-rail__item:nth-child(6n) {
+    border-inline-end: 0;
+  }
+
+  .capability-rail__item:nth-last-child(-n + 3) {
+    border-bottom: 0;
   }
 }
 
@@ -376,11 +491,11 @@
 }
 
 [data-mp="play"] .mp-curves {
-  animation: mp-reveal 1s cubic-bezier(0.4, 0, 0.2, 1) 0.7s backwards;
+  animation: mp-reveal 0.65s cubic-bezier(0.4, 0, 0.2, 1) 0.3s backwards;
 }
 
 [data-mp="play"] .mp-label {
-  animation: mp-settle 0.7s ease-out 1.7s backwards;
+  animation: mp-settle 0.45s ease-out 0.6s backwards;
 }
 
 /*
@@ -391,14 +506,14 @@
 @keyframes ind-from-left {
   from {
     opacity: 0;
-    transform: translateX(-56px);
+    transform: translateX(-18px);
   }
 }
 
 @keyframes ind-from-right {
   from {
     opacity: 0;
-    transform: translateX(56px);
+    transform: translateX(18px);
   }
 }
 
@@ -407,8 +522,8 @@
 }
 
 [data-mp="play"] .ind-item {
-  animation: ind-from-left 0.7s var(--ease-standard) backwards;
-  animation-delay: calc(var(--i) * 90ms);
+  animation: ind-from-left 0.48s var(--ease-standard) backwards;
+  animation-delay: calc(var(--i) * 60ms);
 }
 
 [data-mp="play"] .ind-item:nth-child(even) {
@@ -433,7 +548,7 @@
 @keyframes svc-push-up {
   from {
     opacity: 0;
-    transform: translateY(48px);
+    transform: translateY(18px);
   }
 }
 
@@ -442,8 +557,8 @@
 }
 
 [data-mp="play"] .svc-item {
-  animation: svc-push-up 0.7s var(--ease-standard) backwards;
-  animation-delay: calc(var(--i) * 90ms);
+  animation: svc-push-up 0.48s var(--ease-standard) backwards;
+  animation-delay: calc(var(--i) * 60ms);
 }
 
 /* Full-card image treatment for service grids, with a dedicated gradient on Port Logistics. */
@@ -451,6 +566,73 @@
   isolation: isolate;
   background-color: var(--color-midnight);
   padding-block: 1.25rem;
+}
+
+/* Mobile-first signature supplier-to-vessel sequence on the homepage. */
+.supplier-vessel-flow .flow-connector {
+  position: absolute;
+  z-index: 0;
+  top: 1.4rem;
+  bottom: 1.4rem;
+  left: 1.2rem;
+  width: 1px;
+  background: color-mix(in srgb, var(--color-signal-cyan) 52%, transparent);
+}
+
+.supplier-vessel-flow .flow-stage {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  align-content: start;
+  column-gap: 0.875rem;
+}
+
+.supplier-vessel-flow .flow-stage-marker {
+  z-index: 1;
+  grid-row: span 4;
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-signal-cyan) 55%, transparent);
+  border-radius: 9999px;
+  background: var(--color-midnight);
+  color: var(--color-signal-cyan);
+}
+
+.supplier-vessel-flow .flow-stage-marker--emphasis {
+  border-color: var(--color-signal-cyan);
+  background: var(--color-deep-navy);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-signal-cyan) 10%, transparent);
+}
+
+.supplier-vessel-flow .flow-stage > .type-eyebrow {
+  margin-top: 0.125rem;
+}
+
+@media (min-width: 48rem) {
+  .supplier-vessel-flow .flow-connector {
+    display: none;
+  }
+
+  .supplier-vessel-flow .flow-stage {
+    display: block;
+  }
+
+  .supplier-vessel-flow .flow-stage > .type-eyebrow {
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  .supplier-vessel-flow .flow-connector {
+    top: 1.2rem;
+    right: 1rem;
+    bottom: auto;
+    left: 1rem;
+    display: block;
+    width: auto;
+    height: 1px;
+  }
 }
 
 /* Port Logistics returns to its reference card at rest, then reveals the existing image treatment on hover. */
@@ -538,7 +720,7 @@
   filter: brightness(0.82) saturate(0.9);
   opacity: 0.72;
   transform: scale(1.001);
-  transition: transform 800ms cubic-bezier(0.2, 0, 0, 1), filter 800ms cubic-bezier(0.2, 0, 0, 1), opacity 450ms var(--ease-standard);
+  transition: transform 480ms cubic-bezier(0.2, 0, 0, 1), filter 480ms cubic-bezier(0.2, 0, 0, 1), opacity 350ms var(--ease-standard);
 }
 
 .service-card--featured-image > :not(.service-card__backdrop) {
@@ -614,7 +796,7 @@
   }
 
   .service-card--reference-layout .service-card__media > div {
-    aspect-ratio: 3.5 / 1;
+    aspect-ratio: 3 / 2;
   }
 
   .service-card__copy {
@@ -641,7 +823,7 @@
 .service-card--featured-image:focus-within .service-card__backdrop img {
   filter: brightness(0.68) saturate(1.08);
   opacity: 0.62;
-  transform: scale(1.075);
+  transform: scale(1.04);
 }
 
 .service-card--featured-image:hover .service-card__title,
@@ -678,26 +860,7 @@
   color: var(--color-white);
 }
 
-/* Homepage Why Oar section: soft route-grid texture, staggered reveal and tactile card hover. */
-.why-oar-section {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.why-oar-section::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background-image:
-    radial-gradient(ellipse at 92% 12%, color-mix(in srgb, var(--link) 9%, transparent), transparent 38%),
-    linear-gradient(to right, color-mix(in srgb, var(--border) 34%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--border) 34%, transparent) 1px, transparent 1px);
-  background-size: auto, 48px 48px, 48px 48px;
-  content: "";
-  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
-  pointer-events: none;
-}
+/* Open, editorial Why Oar list; its reveal remains immediate without IO and respects reduced motion. */
 
 @keyframes why-oar-intro-in {
   from {
@@ -709,187 +872,20 @@
 @keyframes why-oar-card-in {
   from {
     opacity: 0;
-    transform: translateY(28px) rotateX(-5deg);
+    transform: translateY(14px);
   }
 }
 
 [data-mp="armed"] .why-oar-intro,
-[data-mp="armed"] .why-oar-card {
+[data-mp="armed"] .why-oar-principle {
   opacity: 0;
 }
 
 [data-mp="play"] .why-oar-intro {
-  animation: why-oar-intro-in 650ms var(--ease-standard) both;
+  animation: why-oar-intro-in 480ms var(--ease-standard) both;
 }
 
-[data-mp="play"] .why-oar-card {
-  animation: why-oar-card-in 720ms var(--ease-standard) backwards;
-  animation-delay: calc(var(--why-index) * 110ms + 120ms);
-  perspective: 800px;
-}
-
-.why-oar-node {
-  transition: transform 260ms var(--ease-standard), box-shadow 260ms var(--ease-standard);
-}
-
-.why-oar-card-surface {
-  transform: translateY(0);
-  transition:
-    transform 320ms var(--ease-standard),
-    border-color 320ms var(--ease-standard),
-    box-shadow 320ms var(--ease-standard);
-}
-
-.why-oar-icon {
-  transition:
-    transform 320ms var(--ease-standard),
-    background-color 320ms var(--ease-standard),
-    color 320ms var(--ease-standard);
-}
-
-.why-oar-card:hover .why-oar-card-surface,
-.why-oar-card:focus-within .why-oar-card-surface {
-  transform: translateY(-7px);
-  border-color: color-mix(in srgb, var(--link) 45%, var(--border));
-  box-shadow: 0 16px 36px color-mix(in srgb, var(--link) 13%, transparent);
-}
-
-.why-oar-card:hover .why-oar-icon,
-.why-oar-card:focus-within .why-oar-icon {
-  transform: translateY(-2px) rotate(-5deg);
-  background-color: color-mix(in srgb, var(--link) 10%, var(--card));
-  color: var(--link);
-}
-
-.why-oar-card:hover .why-oar-node,
-.why-oar-card:focus-within .why-oar-node {
-  transform: scale(1.35);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--link) 12%, transparent);
-}
-
-/* CSS-only branded homepage preloader: no client bundle or network dependency. */
-.oar-preloader {
-  position: fixed;
-  z-index: 100;
-  inset: 0;
-  display: grid;
-  overflow: hidden;
-  place-items: center;
-  color: var(--color-white);
-  background:
-    radial-gradient(ellipse at 50% 43%, rgb(39 184 214 / 8%), transparent 38%),
-    linear-gradient(145deg, #000000, #05080a 60%, #000000);
-  animation: oar-preloader-exit 520ms cubic-bezier(0.76, 0, 0.24, 1) 820ms forwards;
-}
-
-.oar-preloader__glow {
-  position: absolute;
-  inset: 0;
-  opacity: 0.28;
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 4%) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 4%) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse at center, black 8%, transparent 72%);
-}
-
-.oar-preloader__content {
-  position: relative;
-  display: flex;
-  width: min(88vw, 360px);
-  flex-direction: column;
-  align-items: center;
-  animation: oar-preloader-arrive 720ms cubic-bezier(0.2, 0, 0, 1) both;
-}
-
-.oar-preloader__logo {
-  display: block;
-  width: min(48vw, 206px);
-  aspect-ratio: 640 / 248;
-  background-color: var(--color-white);
-  mask-image: url("/images/brand/oar-logo.png");
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: contain;
-  filter: drop-shadow(0 0 22px rgb(39 184 214 / 18%));
-}
-
-.oar-preloader__tagline {
-  margin-top: 22px;
-  color: color-mix(in srgb, var(--color-white) 78%, transparent);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.oar-preloader__tagline span {
-  padding-inline: 0.35em;
-  color: var(--color-signal-cyan);
-}
-
-.oar-preloader__wave {
-  width: 176px;
-  height: 24px;
-  margin-top: 36px;
-  overflow: visible;
-}
-
-.oar-preloader__wave-track,
-.oar-preloader__wave-line {
-  stroke-linecap: round;
-  stroke-width: 1.8;
-}
-
-.oar-preloader__wave-track {
-  stroke: rgb(255 255 255 / 16%);
-}
-
-.oar-preloader__wave-line {
-  stroke: var(--color-signal-cyan);
-  stroke-dasharray: 54 174;
-  animation: oar-wave-sail 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  filter: drop-shadow(0 0 5px rgb(39 184 214 / 55%));
-}
-
-.oar-preloader__loading {
-  margin-top: 12px;
-  color: color-mix(in srgb, var(--color-white) 56%, transparent);
-  font-size: 0.66rem;
-  letter-spacing: 0.1em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-@keyframes oar-preloader-arrive {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-
-@keyframes oar-wave-sail {
-  to {
-    stroke-dashoffset: -228;
-  }
-}
-
-@keyframes oar-preloader-exit {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .oar-preloader {
-    animation-delay: 0ms;
-    animation-duration: 1ms;
-  }
-
-  .oar-preloader__content,
-  .oar-preloader__wave-line {
-    animation-duration: 1ms;
-  }
+[data-mp="play"] .why-oar-principle {
+  animation: why-oar-card-in 500ms var(--ease-standard) backwards;
+  animation-delay: calc(var(--why-index) * 70ms + 60ms);
 }

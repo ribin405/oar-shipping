@@ -10,7 +10,7 @@ export function IndustriesSection() {
   const { eyebrow, title, description, viewAll } = industriesIntro;
 
   return (
-    <Section labelledBy={TITLE_ID} className="pb-8 md:pb-12">
+    <Section surface="muted" labelledBy={TITLE_ID} className="pb-8 md:pb-12">
       <SectionHeader
         eyebrow={eyebrow}
         title={title}
