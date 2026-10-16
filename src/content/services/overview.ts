@@ -2,7 +2,7 @@ import { routes } from "@/config/routes";
 
 export const servicesOverviewContent = {
   hero: {
-    eyebrow: "Marine logistics • Port execution",
+    eyebrow: "All Marine Services",
     title: "Port-side logistics built around the vessel requirement.",
     description:
       "Oar coordinates the supplier, cargo, documentation, transport and port-side activities that move marine cargo to the vessel. Six services, one supplier-to-vessel journey, for ship managers, ship chandlers and shipping agents.",

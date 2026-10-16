@@ -24,9 +24,9 @@ interface HeroContent {
 }
 
 export const heroContent: HeroContent = {
-  eyebrow: ["Marine logistics", "Port execution"],
+  eyebrow: [""],
   title: "Creators of Calm Port Calls",
-  description: "Marine logistics and port execution that connects suppliers, cargo and vessels across UAE ports.",
+  description: "All Marine Services that connects suppliers, cargo and vessels across UAE ports.",
   primaryCta: { label: "Request a Quote", href: routes.requestQuote },
   secondaryCta: { label: "Explore Services", href: routes.services },
   image: { src: "/images/hero/oar-hero.webp", alt: "", position: "object-[65%_center] lg:object-[100%_center]" },
