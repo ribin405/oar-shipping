@@ -10,32 +10,32 @@ import { NarrativeSection } from "@/components/sections/narrative-section";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { Badge } from "@/components/ui/badge";
 import { routes } from "@/config/routes";
-import { getFeaturedInsight, getSortedInsights } from "@/content/insights";
+import { getFeaturedInsight, getSortedInsights, hasInsights } from "@/content/insights";
 import { insightsOverviewContent } from "@/content/insights/overview";
 import { insightPageContent } from "@/content/insights/shared";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Marine Logistics & Port Execution Insights",
+  title: "Insights: Ship Supply, Customs & Port Costs",
   description:
-    "Perspectives on marine logistics, port execution and the coordination required to move cargo from supplier to vessel.",
+    "Practical perspectives on ship chandling, customs and logistics, marine services and PDA review across UAE ports.",
   path: routes.insights,
+  noindex: !hasInsights,
 });
 
 export default function InsightsPage() {
   const { hero, intro, featured, all, perspective, cta } = insightsOverviewContent;
   const featuredInsight = getFeaturedInsight();
   const rest = getSortedInsights().filter((insight) => insight !== featuredInsight);
-  const hasInsights = featuredInsight !== undefined || rest.length > 0;
 
   return (
     <>
       <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Insights" }]} path={routes.insights} />
-      <InnerPageHero {...hero} variant="light" />
+      <InnerPageHero {...hero} />
 
       <NarrativeSection
         id="intro"
-        surface="muted"
+       
         eyebrow={intro.eyebrow}
         title={intro.title}
         paragraphs={intro.paragraphs}
@@ -54,7 +54,7 @@ export default function InsightsPage() {
       />
 
       {featuredInsight ? (
-        <Section surface="muted" labelledBy="featured-title">
+        <Section labelledBy="featured-title">
           <SectionHeader eyebrow={featured.eyebrow} title={featured.title} titleId="featured-title" />
           <InsightGrid
             insights={[featuredInsight]}
@@ -72,7 +72,7 @@ export default function InsightsPage() {
       ) : null}
 
       {hasInsights ? null : (
-        <Section surface="muted" labelledBy="perspective-title">
+        <Section labelledBy="perspective-title">
           <SectionHeader
             eyebrow={perspective.eyebrow}
             title={perspective.title}

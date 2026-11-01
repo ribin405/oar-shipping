@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 import { PageShell } from "@/components/layout/page-shell";
 import { WhatsAppFab } from "@/components/layout/whatsapp-fab";
-import { fontBody, fontHeading } from "@/lib/fonts";
+import { fontBody, fontHeading, fontSerif } from "@/lib/fonts";
 import { rootMetadata } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/site-config";
 
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang={siteConfig.defaultLocale}
       data-scroll-behavior="smooth"
-      className={`${fontBody.variable} ${fontHeading.variable}`}
+      className={`${fontBody.variable} ${fontHeading.variable} ${fontSerif.variable}`}
     >
       <body>
         <PageShell>{children}</PageShell>

@@ -11,6 +11,9 @@ export const insights: readonly Insight[] = [];
 
 validateInsights(insights);
 
+/** Insights is linked, listed in the sitemap and indexable only once there is at least one published article. */
+export const hasInsights = insights.length > 0;
+
 export function getInsight(slug: string): Insight | undefined {
   return insights.find((insight) => insight.slug === slug);
 }

@@ -30,7 +30,7 @@ export function JourneyDiagram({ heading, nodes, orientation = "vertical" }: Jou
       </div>
       <ol className={cn("flex flex-col p-6", row && "lg:grid lg:grid-cols-6")}>
         {nodes.map((node, index) => (
-          <li key={node.label} className={cn("flex gap-4 not-last:pb-6", row && "lg:flex-col lg:gap-3 lg:pr-4 lg:pb-0")}>
+          <li key={node.label} className={cn("flex min-w-0 gap-4 not-last:pb-6", row && "lg:flex-col lg:gap-3 lg:pr-4 lg:pb-0")}>
             <span aria-hidden="true" className={cn("flex flex-col items-center", row && "lg:w-full lg:flex-row")}>
               <span className="mt-1.5 size-3 shrink-0 rounded-sm bg-link lg:mt-0" />
               {index < nodes.length - 1 ? (
@@ -38,7 +38,7 @@ export function JourneyDiagram({ heading, nodes, orientation = "vertical" }: Jou
               ) : null}
             </span>
             <div className="flex flex-col gap-1">
-              <p className="type-h4 text-foreground">{node.label}</p>
+              <p className="type-h4 text-foreground [overflow-wrap:anywhere]">{node.label}</p>
               {node.description ? <p className="type-body text-muted">{node.description}</p> : null}
             </div>
           </li>

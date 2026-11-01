@@ -4,7 +4,6 @@ import { useEffect, useRef, type ReactNode } from "react";
 
 interface PlayOnViewProps {
   className?: string;
-  surface?: string;
   children: ReactNode;
 }
 
@@ -14,7 +13,7 @@ interface PlayOnViewProps {
  * prefers reduced motion, nothing is hidden and nothing animates: the content
  * is complete at rest. Content below the fold is hidden only until it plays.
  */
-export function PlayOnView({ className, surface, children }: PlayOnViewProps) {
+export function PlayOnView({ className, children }: PlayOnViewProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,17 +31,21 @@ export function PlayOnView({ className, surface, children }: PlayOnViewProps) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
+        // A quarter of the element, or a fifth of the viewport for tall stacked grids on phones,
+        // where a quarter of the element can exceed the whole viewport and would never be reached.
+        const viewport = entry.rootBounds?.height ?? window.innerHeight;
+        if (entry.intersectionRatio < 0.25 && entry.intersectionRect.height < viewport * 0.2) return;
         el.dataset.mp = "play";
         observer.disconnect();
       },
-      { threshold: 0.25 },
+      { threshold: [0, 0.05, 0.1, 0.15, 0.2, 0.25] },
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div ref={ref} data-surface={surface} className={className}>
+    <div ref={ref} className={className}>
       {children}
     </div>
   );

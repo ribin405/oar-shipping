@@ -1,61 +1,32 @@
-import { Link2, MapPin, Timer, Waypoints } from "lucide-react";
-
 import { routes } from "@/config/routes";
-import type { Principle } from "@/types/principle";
 
+/**
+ * About page copy, from the client's final website content. Company history,
+ * licence numbers and the founder message have not been supplied, so they stay out.
+ */
 export const aboutContent = {
   hero: {
-    eyebrow: "About Oar",
-    title: "Connecting the shore-side operation to the vessel.",
+    eyebrow: "About Oar Shipping",
+    title: "A UAE marine services group, based in Fujairah.",
     description:
-      "Oar focuses on marine logistics and port execution, coordinating the movement of suppliers, cargo and vessel requirements across the UAE maritime environment.",
+      "Ship chandling, customs and logistics, marine services and independent PDA review, with one partner and one point of contact.",
     cta: { label: "Request a Quote", href: routes.requestQuote },
+    photo: { src: "/images/hero/golden-horizon.webp", alt: "" },
   },
-  positioning: {
-    eyebrow: "Creators of Calm Port Calls",
-    title: "Port-side logistics involve more than moving cargo.",
-    paragraphs: [
-      "Oar Shipping is a marine logistics and port-execution coordinator in the UAE. Marine logistics here means the shore-side movement of cargo between suppliers and vessels; port execution means coordinating that movement through the port-side steps, from documentation and transport to timing and handover at the vessel.",
-      "Oar's role is to coordinate those moving parts and connect the supplier side of the journey with the vessel.",
+  advantage: {
+    eyebrow: "Our Advantage",
+    title: "Why clients choose us",
+    points: [
+      { title: "24/7 operations", text: "Across UAE ports." },
+      { title: "Port relationships", text: "Strong links with authorities, agents and suppliers." },
+      { title: "Fast communication", text: "Digital RFQs and WhatsApp support." },
+      { title: "Local execution partner", text: "Trusted by global brands to deliver on the ground in the UAE." },
+      { title: "Owner-side transparency", text: "Independent PDA review." },
     ],
   },
-  focus: {
-    eyebrow: "What we focus on",
-    title: "Six areas of shore-side execution.",
-    description: "The services Oar brings together around a vessel requirement.",
-    action: { label: "View all services", href: routes.services },
-  },
-  principles: {
-    eyebrow: "How we work",
-    title: "The principles behind the operation.",
-    action: { label: "Why Oar", href: routes.whyOar },
-  },
-  cta: {
-    title: "Have a port requirement to coordinate?",
-    description: "Tell us what needs to move, where it needs to go and when the vessel requires it.",
-    primaryCta: { label: "Request a Quote", href: routes.requestQuote },
+  group: {
+    eyebrow: "Group",
+    title: "Oar Shipping Group",
+    companies: ["Oar Technologies FZ LLC", "Al Mejdaf Shipping LLC"],
   },
 };
-
-export const aboutPrinciples: readonly Principle[] = [
-  {
-    title: "Operational Coordination",
-    description: "Bring the moving parts of a port-side requirement together.",
-    icon: Waypoints,
-  },
-  {
-    title: "Local Understanding",
-    description: "Work with an understanding of the UAE maritime and port environment.",
-    icon: MapPin,
-  },
-  {
-    title: "Responsiveness",
-    description: "Stay focused on the requirement, timing and coordination needed for execution.",
-    icon: Timer,
-  },
-  {
-    title: "Controlled Execution",
-    description: "Keep cargo, transport, documentation and port-side activities connected.",
-    icon: Link2,
-  },
-];

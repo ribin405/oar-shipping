@@ -76,18 +76,17 @@ export function MobileNavigation({ items, cta }: MobileNavigationProps) {
         id={panelId}
         aria-label="Primary"
         hidden={!open}
-        data-surface="dark"
         onClick={handlePanelClick}
-        className="fixed inset-x-0 top-16 bottom-0 overflow-y-auto overscroll-contain bg-background"
+        className="fixed inset-x-3 top-[4.75rem] max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain rounded-xl border border-border bg-white/95 shadow-overlay backdrop-blur-xl md:inset-x-6"
       >
-        <div className="mx-auto flex w-full max-w-content flex-col gap-8 px-4 py-8 md:px-6">
+        <div className="flex w-full flex-col gap-6 p-5">
           <ul className="flex flex-col">
             {items.map((item) => (
               <li key={item.href} className="border-b border-border">
                 <NavLink
                   href={item.href}
-                  className="type-h3 flex items-center justify-between py-4 text-muted transition-colors duration-200 ease-standard hover:text-foreground"
-                  activeClassName="text-link"
+                  className="type-h4 flex items-center justify-between py-3.5 text-muted transition-colors duration-200 ease-standard hover:text-foreground"
+                  activeClassName="text-gold-deep"
                 >
                   {item.label}
                 </NavLink>

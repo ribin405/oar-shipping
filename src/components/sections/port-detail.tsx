@@ -53,7 +53,7 @@ export function PortDetail({ port }: { port: Port }) {
       {port.oarRole?.length ? (
         <NarrativeSection
           id="oar-role"
-          surface="dark"
+         
           eyebrow={copy.oarRole.eyebrow}
           title={`Oar and ${port.name}`}
           paragraphs={port.oarRole}
@@ -61,7 +61,7 @@ export function PortDetail({ port }: { port: Port }) {
       ) : null}
 
       {port.services?.length ? (
-        <Section surface="muted" labelledBy="port-services-title">
+        <Section labelledBy="port-services-title">
           <SectionHeader
             eyebrow={copy.services.eyebrow}
             title={copy.services.title}
@@ -82,7 +82,7 @@ export function PortDetail({ port }: { port: Port }) {
       ) : null}
 
       {port.audiences?.length ? (
-        <Section surface="muted" labelledBy="port-industries-title">
+        <Section labelledBy="port-industries-title">
           <SectionHeader
             eyebrow={copy.industries.eyebrow}
             title={copy.industries.title}

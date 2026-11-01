@@ -35,13 +35,13 @@ export function Footer() {
   const channels = getContactChannels(contactDetails);
 
   return (
-    <footer data-surface="dark" className="bg-background text-foreground">
-      <Container className="py-16">
+    <footer className="site-footer text-foreground">
+      <Container className="pt-16 pb-10">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           <div className="flex flex-col gap-6 md:col-span-2 lg:col-span-4">
             <Logo />
             <p className="type-body-lg max-w-sm text-muted">
-              Marine logistics and port execution that connects suppliers, cargo and vessels across UAE ports.
+              Ship chandling, customs, logistics and marine services across all UAE ports, with one point of contact.
             </p>
             <ButtonLink href={navigationCta.href} className="self-start">
               {navigationCta.label}

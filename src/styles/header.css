@@ -1,0 +1,47 @@
+/*
+ * Global header: a floating frosted pill pinned to the top of the viewport.
+ * The glass lives on a pseudo-element, not on the bar, because a backdrop
+ * filter on the bar would turn it into the containing block for the fixed
+ * mobile menu panel.
+ */
+@layer components {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    padding-top: 0.75rem;
+    pointer-events: none;
+  }
+
+  .site-header__bar {
+    position: relative;
+    display: flex;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-inline: 1.25rem 0.5rem;
+    pointer-events: auto;
+    isolation: isolate;
+  }
+
+  .site-header__bar::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border: 1px solid rgb(11 34 51 / 8%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 80%);
+    box-shadow: 0 10px 30px -14px rgb(11 34 51 / 28%);
+    content: "";
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+  }
+
+  @media (min-width: 64rem) {
+    .site-header__bar {
+      height: 3.75rem;
+      padding-inline: 1.5rem 0.625rem;
+    }
+  }
+}

@@ -3,13 +3,29 @@ import { Link2, MapPin, Timer, Waypoints } from "lucide-react";
 import { routes } from "@/config/routes";
 import type { Principle } from "@/types/principle";
 
-export const whyOarContent = {
-  eyebrow: "Why Oar",
+/** Homepage "Why Oar" block: two sets of reasons, shown beside the local-execution offer. */
+export const homeWhyOar = {
   action: { label: "Why Oar in detail", href: routes.whyOar },
-  title: "We coordinate the shore-side complexity around the vessel.",
-  description:
-    "From supplier coordination and cargo movement to documentation, transport and port-side execution, Oar focuses on connecting the moving parts that sit between the supplier and the vessel.",
-};
+  primary: {
+    eyebrow: "Why Oar Shipping",
+    title: "Built for speed, compliance and clarity.",
+    points: [
+      { title: "One point of contact", text: "Supply, clearance and marine services coordinated together." },
+      { title: "24/7 operations", text: "Urgent orders and after-hours port calls handled." },
+      { title: "Transparent costs", text: "Clear quotes and disbursement accounts, plus PDA review." },
+      { title: "Proper documents", text: "Delivery, customs and SDS paperwork on every job." },
+    ],
+  },
+  secondary: {
+    eyebrow: "Our Advantage",
+    title: "Why clients choose us",
+    points: [
+      { title: "Port relationships", text: "Strong links with authorities, agents and suppliers." },
+      { title: "Fast communication", text: "Digital RFQs and WhatsApp support." },
+      { title: "Owner-side transparency", text: "Independent PDA review." },
+    ],
+  },
+} as const;
 
 /** Positioning statements only; none is a quantitative promise. */
 export const principles: readonly Principle[] = [

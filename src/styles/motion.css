@@ -1,0 +1,72 @@
+/*
+ * Entrance animations driven by PlayOnView. The wrapper sets data-mp="armed"
+ * only for content below the fold (hidden until it scrolls in) and
+ * data-mp="play" to run the sequence once; without JavaScript, or with reduced
+ * motion, nothing is armed and everything is visible at rest.
+ */
+
+/*
+ * Shared card reveal (PlayOnView). Add `reveal` plus one direction class to each
+ * item and set `--i` to its index for the stagger:
+ *   reveal-up     rises into place
+ *   reveal-left   slides in from the left
+ *   reveal-right  slides in from the right
+ *   reveal-sides  alternates left/right; on three columns the middle one rises
+ * Same rest-state rules as above: nothing is hidden unless the wrapper is armed.
+ */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@keyframes reveal-left {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+}
+
+@keyframes reveal-right {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+}
+
+[data-mp="armed"] .reveal {
+  opacity: 0;
+}
+
+[data-mp="play"] .reveal {
+  animation: reveal-up 0.48s var(--ease-standard) backwards;
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+[data-mp="play"] .reveal-left {
+  animation-name: reveal-left;
+}
+
+[data-mp="play"] .reveal-right,
+[data-mp="play"] .reveal-sides:nth-child(even) {
+  animation-name: reveal-right;
+}
+
+[data-mp="play"] .reveal-sides:nth-child(odd) {
+  animation-name: reveal-left;
+}
+
+@media (min-width: 64rem) {
+  [data-mp="play"] .reveal-sides:nth-child(3n + 1) {
+    animation-name: reveal-left;
+  }
+
+  [data-mp="play"] .reveal-sides:nth-child(3n + 2) {
+    animation-name: reveal-up;
+  }
+
+  [data-mp="play"] .reveal-sides:nth-child(3n) {
+    animation-name: reveal-right;
+  }
+}

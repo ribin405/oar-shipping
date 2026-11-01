@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "primary" | "secondary" | "ghost" | "dark";
+type ButtonVariant = "primary" | "secondary" | "ghost";
 type ButtonSize = "md" | "lg";
 
 interface ButtonStyleOptions {
@@ -14,17 +14,15 @@ interface ButtonStyleOptions {
 }
 
 const baseStyles =
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-colors duration-200 ease-standard " +
+  "inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-colors duration-200 ease-standard " +
   "[&_svg]:size-[1.125em] [&_svg]:shrink-0 " +
   "aria-disabled:pointer-events-none aria-disabled:opacity-50 disabled:pointer-events-none disabled:opacity-50";
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-white hover:bg-primary-hover active:bg-deep-navy",
-  /* Surface-aware: reads as a bordered button on light and a dark command button on dark. */
-  secondary: "border border-border bg-card text-foreground hover:border-muted hover:bg-foreground/5",
+  /* Blue gradient with a glow and a light sweep on hover (see components.css). */
+  primary: "btn-primary text-white active:brightness-95",
+  secondary: "border border-foreground/16 bg-white/85 text-foreground hover:border-foreground/30 hover:bg-white",
   ghost: "text-foreground hover:bg-foreground/8 active:bg-foreground/12",
-  /* Always Deep Navy; for emphasis on light surfaces. */
-  dark: "border border-white/14 bg-deep-navy text-white hover:bg-primary active:bg-midnight",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

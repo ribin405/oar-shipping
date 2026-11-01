@@ -1,18 +1,17 @@
 import { routes } from "@/config/routes";
+import type { ServiceSlug } from "@/types/service";
 
 export const servicesIntro = {
-  eyebrow: "Our services",
-  title: "Port-side execution built around the vessel.",
-  description:
-    "From cargo coordination and customs clearance to transportation and vessel delivery, Oar brings the shore-side pieces together around the operational requirement.",
-  cardLinkLabel: "Explore service",
+  eyebrow: "Our Divisions",
+  title: "Four divisions. One accountable partner.",
+  description: "Supply, clearance, logistics and coordination handled by one team.",
+  cardLinkLabel: "View division",
   viewAll: { label: "View all services", href: routes.services },
-};
-
-export const industriesIntro = {
-  eyebrow: "Who we serve",
-  title: "Built around the teams responsible for keeping vessels moving.",
-  description:
-    "Oar supports the companies coordinating vessel supply, cargo movement and port-side requirements across UAE maritime operations.",
-  viewAll: { label: "View all industries", href: routes.industries },
+  /** Cover photograph for each division's panel, under /public/images/divisions. */
+  panelImages: {
+    "ship-chandling": "/images/divisions/ship-chandling.jpg",
+    "customs-logistics": "/images/divisions/customs-logistics.jpg",
+    "marine-services": "/images/divisions/marine-services.jpg",
+    "pda-review": "/images/divisions/pda-review.jpg",
+  } satisfies Record<ServiceSlug, string>,
 };

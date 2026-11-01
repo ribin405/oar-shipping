@@ -1,0 +1,83 @@
+/*
+ * Oar design tokens.
+ *
+ * Layer 1 (@theme): the brand palette plus radii, shadows, fonts and layout
+ *   width. The default Tailwind palette is removed, so components can only use
+ *   brand tokens.
+ * Layer 2 (@theme inline + :root): semantic colors (background, foreground,
+ *   muted, border, card, link, focus). The site is a single light theme on a
+ *   flat white page, so there are no per-section surfaces.
+ *
+ * Spacing uses Tailwind's 4px scale, which already contains the 8px-based
+ * steps (2 = 8px ... 40 = 160px).
+ */
+@theme {
+  --color-*: initial;
+
+  /* Brand palette */
+  --color-midnight: #071521;
+  --color-deep-navy: #0b2233;
+  --color-marine-blue: #0b607d;
+  --color-ocean: #0a7ea4;
+  --color-signal-cyan: #27b8d6;
+  --color-off-white: #f5f7f8;
+  --color-white: #ffffff;
+  --color-slate: #647481;
+  --color-dark-text: #10212b;
+  --color-line: #d9e1e5;
+  --color-error: #ba1a1a;
+  /* Warm accent for lines, icons and markers. Use gold-deep for any gold text. */
+  --color-gold: #d9a441;
+  --color-gold-deep: #a9741a;
+
+  /* Static semantic roles */
+  --color-primary: var(--color-marine-blue);
+  --color-primary-hover: var(--color-ocean);
+  --color-accent: var(--color-signal-cyan);
+  /* Form control edges: Line (#D9E1E5) is 1.3:1 on white, so controls use a derived 3:1 step. */
+  --color-control: color-mix(in srgb, var(--color-slate) 70%, var(--color-line));
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
+
+  /* Maximum page width including horizontal padding (1320px). */
+  --container-content: 82.5rem;
+
+  /* Soft, rounded geometry: 4px micro, 10px controls, 14px cards, 20px feature panels. */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+
+  /* Shadows tinted with Deep Navy. `card` is the resting card; `panel` and `overlay` lift on hover and for floating UI. */
+  --shadow-card: 0 1px 2px rgb(11 34 51 / 0.05), 0 20px 40px -26px rgb(11 34 51 / 0.35);
+  --shadow-panel: 0 8px 30px rgb(11 34 51 / 0.1);
+  --shadow-overlay: 0 4px 12px rgb(11 34 51 / 0.06), 0 16px 40px rgb(11 34 51 / 0.14);
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Semantic colors resolve to the CSS variables below. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-link: var(--link);
+  --color-focus: var(--focus);
+}
+
+:root {
+  --background: var(--color-white);
+  --foreground: var(--color-deep-navy);
+  /* Slate on white is 4.9:1; this derived step keeps small text comfortably above 4.5:1. */
+  --muted: color-mix(in srgb, var(--color-slate) 80%, var(--color-dark-text));
+  --border: var(--color-line);
+  --card: var(--color-white);
+  --link: var(--color-marine-blue);
+  --focus: var(--color-ocean);
+
+  --checkbox-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5'/%3E%3C/svg%3E");
+}

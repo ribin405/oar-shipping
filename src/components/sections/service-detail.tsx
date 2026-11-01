@@ -3,32 +3,21 @@ import { SectionHeader } from "@/components/layout/section-header";
 import { MediaFrame } from "@/components/media/media-frame";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { CapabilityGrid } from "@/components/sections/capability-grid";
+import { CoverageSection } from "@/components/sections/coverage-section";
 import { CtaSection } from "@/components/sections/cta-section";
-import { IndustryGrid } from "@/components/sections/industry-grid";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
-import { JourneyDiagram } from "@/components/sections/journey-diagram";
-import { NarrativeSection } from "@/components/sections/narrative-section";
-import { PrincipleGrid } from "@/components/sections/principle-grid";
-import { ProcessSection } from "@/components/sections/process-section";
+import { OfferGrid } from "@/components/sections/offer-grid";
+import { ServiceProcess } from "@/components/sections/service-process";
+import { PortCallSection } from "@/components/sections/port-call-section";
 import { JsonLd } from "@/components/seo/json-ld";
-import { Accordion } from "@/components/ui/accordion";
 import { ArrowLink } from "@/components/ui/arrow-link";
-import { CheckList } from "@/components/ui/check-list";
-import { Eyebrow } from "@/components/ui/eyebrow";
 import { routes } from "@/config/routes";
-import { coordinationKinds } from "@/content/services/coordination";
 import { servicePageContent as copy } from "@/content/services/shared";
 import { buildServiceNode } from "@/lib/seo/structured-data";
 import type { Service } from "@/types/service";
 
 /** The one template behind every /services/[slug] page. All content comes from the service record. */
 export function ServiceDetail({ service }: { service: Service }) {
-  const coordinates = service.coordinates.map(({ kind, description }) => ({
-    title: coordinationKinds[kind].label,
-    icon: coordinationKinds[kind].icon,
-    description,
-  }));
-
   return (
     <>
       <Breadcrumbs
@@ -44,7 +33,8 @@ export function ServiceDetail({ service }: { service: Service }) {
         eyebrow={service.title}
         title={service.hero.title}
         description={service.hero.description}
-        cta={copy.cta.primaryCta}
+        cta={service.heroAction ?? copy.cta.primaryCta}
+        compactTitle
         visual={
           service.image ? (
             <MediaFrame
@@ -54,86 +44,34 @@ export function ServiceDetail({ service }: { service: Service }) {
               ratio="standard"
               sizes="(min-width: 1440px) 511px, (min-width: 1280px) 39vw, (min-width: 1024px) 38vw, 100vw"
               preload
-              className="rounded-lg"
+              className="media-wash rounded-lg"
             />
           ) : undefined
         }
       />
 
-      <NarrativeSection
-        id="problem"
-        spacing="compact"
-        eyebrow={copy.problemEyebrow}
-        title={service.problem.title}
-        paragraphs={service.problem.paragraphs}
-      />
-
-      <NarrativeSection
-        id="role"
-        spacing="compact"
-        surface="dark"
-        eyebrow={copy.roleEyebrow}
-        title={service.role.title}
-        paragraphs={service.role.paragraphs}
-        action={copy.roleLinks.whyOar}
-        secondaryAction={copy.roleLinks.about}
-        aside={<JourneyDiagram heading={copy.roleDiagramHeading} nodes={copy.roleNodes} />}
-      />
-
-      <Section surface="muted" spacing="compact" labelledBy="coordinates-title">
-        <SectionHeader eyebrow={copy.coordinates.eyebrow} title={copy.coordinates.title} titleId="coordinates-title" />
-        <PrincipleGrid principles={coordinates} />
+      <Section labelledBy="offer-title">
+        <SectionHeader eyebrow={service.offer.eyebrow} title={service.offer.title} titleId="offer-title" />
+        <OfferGrid groups={service.offer.groups} />
       </Section>
 
-      <ProcessSection
-        surface="light"
-        spacing="compact"
-        eyebrow={copy.process.eyebrow}
-        title={copy.process.title}
-        description={service.processNote}
-        highlight={service.processFocus}
-      />
+      {service.showCoordination ? <PortCallSection /> : null}
 
-      <Section surface="dark" spacing="compact" labelledBy="requirements-title">
-        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="flex max-w-2xl flex-col items-start gap-4">
-            <Eyebrow>{copy.requirements.eyebrow}</Eyebrow>
-            <h2 id="requirements-title" className="type-h1">
-              {copy.requirements.title}
-            </h2>
-            <p className="type-body-lg text-muted">{copy.requirements.note}</p>
-          </div>
-          <div className="rounded-lg border border-border bg-card p-6 md:p-8">
-            <CheckList items={service.requirements} className="type-body-lg gap-4 text-foreground" />
-          </div>
-        </div>
+      <Section spacing="compact" labelledBy="process-title">
+        <SectionHeader eyebrow={copy.process.eyebrow} title={copy.process.title} titleId="process-title" />
+        <ServiceProcess steps={service.process} />
       </Section>
 
-      <Section spacing="compact" labelledBy="industries-title">
-        <SectionHeader
-          eyebrow={copy.industries.eyebrow}
-          title={copy.industries.title}
-          titleId="industries-title"
-          action={<ArrowLink href={copy.industries.action.href}>{copy.industries.action.label}</ArrowLink>}
-        />
-        <IndustryGrid variant="detail" slugs={service.audiences} />
-      </Section>
+      <CoverageSection id="coverage-title" {...copy.coverage} />
 
-      <Section surface="muted" spacing="compact" labelledBy="related-title">
+      <Section spacing="compact" labelledBy="related-title">
         <SectionHeader
           eyebrow={copy.related.eyebrow}
           title={copy.related.title}
           titleId="related-title"
           action={<ArrowLink href={copy.related.action.href}>{copy.related.action.label}</ArrowLink>}
         />
-        <CapabilityGrid linkTo="detail" linkLabel="Explore service" slugs={service.related} />
-      </Section>
-
-      <Section spacing="compact" labelledBy="faq-title">
-        <div className="mx-auto max-w-3xl">
-          <SectionHeader eyebrow={copy.faq.eyebrow} title={copy.faq.title} titleId="faq-title" />
-          <Accordion items={service.faq} />
-        </div>
+        <CapabilityGrid linkTo="detail" linkLabel="View services" slugs={service.related} />
       </Section>
 
       <CtaSection {...copy.cta} />

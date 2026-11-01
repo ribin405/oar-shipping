@@ -10,17 +10,19 @@ import { JourneyDiagram } from "@/components/sections/journey-diagram";
 import { NarrativeSection } from "@/components/sections/narrative-section";
 import { PortGrid } from "@/components/sections/port-grid";
 import { ArrowLink } from "@/components/ui/arrow-link";
+import { CompassPattern } from "@/components/ui/compass-pattern";
 import { CheckList } from "@/components/ui/check-list";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { routes } from "@/config/routes";
 import { ports } from "@/content/ports";
+import { coveragePorts, otherPortsLabel } from "@/content/ports/coverage";
 import { portsOverviewContent } from "@/content/ports/overview";
+import { lowerFirst } from "@/lib/format";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Ports & Locations",
-  description:
-    "How Oar approaches port-side coordination in the UAE maritime environment. Specific ports are listed here only once they have been confirmed.",
+  title: "UAE Ports We Cover",
+  description: `Oar covers ${coveragePorts.join(", ")} and ${lowerFirst(otherPortsLabel)}.`,
   path: routes.ports,
 });
 
@@ -30,7 +32,7 @@ export default function PortsPage() {
   return (
     <>
       <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Ports & Locations" }]} path={routes.ports} />
-      <InnerPageHero {...hero} />
+      <InnerPageHero {...hero} visual={<CompassPattern className="hidden lg:block" />} />
 
       <NarrativeSection
         id="positioning"
@@ -41,7 +43,7 @@ export default function PortsPage() {
       />
 
       {ports.length > 0 ? (
-        <Section surface="dark" labelledBy="locations-title">
+        <Section labelledBy="locations-title">
           <SectionHeader
             eyebrow={locations.eyebrow}
             title={locations.title}
@@ -51,7 +53,7 @@ export default function PortsPage() {
           <PortGrid ports={ports} className="lg:grid-cols-3" />
         </Section>
       ) : (
-        <Section surface="dark" labelledBy="requirement-title">
+        <Section labelledBy="requirement-title">
           <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
             <div className="flex max-w-2xl flex-col items-start gap-4">
               <Eyebrow>{requirement.eyebrow}</Eyebrow>
@@ -67,7 +69,7 @@ export default function PortsPage() {
         </Section>
       )}
 
-      <Section surface="muted" labelledBy="services-title">
+      <Section labelledBy="services-title">
         <SectionHeader
           eyebrow={services.eyebrow}
           title={services.title}

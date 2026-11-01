@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Section, type SectionSurface } from "@/components/layout/section";
+import { Section } from "@/components/layout/section";
 import { ArrowLink } from "@/components/ui/arrow-link";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,6 @@ interface NarrativeLink {
 
 interface NarrativeSectionProps {
   id: string;
-  surface?: SectionSurface;
   eyebrow: string;
   title: string;
   paragraphs: readonly string[];
@@ -26,7 +25,6 @@ interface NarrativeSectionProps {
 /** Heading with one to three paragraphs, optionally paired with a visual. */
 export function NarrativeSection({
   id,
-  surface = "light",
   eyebrow,
   title,
   paragraphs,
@@ -38,7 +36,7 @@ export function NarrativeSection({
   const titleId = `${id}-title`;
 
   return (
-    <Section id={id} surface={surface} spacing={spacing} labelledBy={titleId}>
+    <Section id={id} spacing={spacing} labelledBy={titleId}>
       <div className={cn("grid items-center gap-12", Boolean(aside) && "lg:grid-cols-2 lg:gap-16")}>
         <div className="flex max-w-2xl flex-col items-start gap-4">
           <Eyebrow>{eyebrow}</Eyebrow>

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { routes } from "@/config/routes";
-import { insights } from "@/content/insights";
+import { hasInsights, insights } from "@/content/insights";
 import { ports } from "@/content/ports";
 import { services } from "@/content/services";
 import { absoluteUrl } from "@/lib/seo/url";
@@ -20,7 +20,7 @@ const publishedPaths: readonly string[] = [
   ...services.map(({ slug }) => routes.service(slug)),
   routes.ports,
   ...ports.map(({ slug }) => routes.port(slug)),
-  routes.insights,
+  ...(hasInsights ? [routes.insights] : []),
   ...insights.map(({ slug }) => routes.insight(slug)),
   routes.contact,
   routes.requestQuote,

@@ -4,25 +4,41 @@ Visual source: the approved Stitch design (colors, type, geometry, section rhyth
 
 Live reference: run `npm run dev` and open `/design-system` (development only; not built into production).
 
-## Tokens (`src/app/globals.css`)
+## Styles (`src/styles/`)
 
-- **Brand palette** (`bg-midnight`, `text-marine-blue`, ...): Midnight, Deep Navy, Marine Blue, Ocean, Signal Cyan, Off White, White, Slate, Dark Text, Line (the approved "Border" `#D9E1E5`), Error. The default Tailwind palette is removed.
-- **Static roles:** `surface`, `surface-muted`, `surface-dark`, `surface-dark-elevated`, `primary`, `primary-hover`, `accent`, `control` (derived 3:1 border for form controls).
-- **Surface-aware roles:** `background`, `foreground`, `muted`, `border`, `card`, `link`, `focus`. These change with the nearest `data-surface` ancestor, so components never hard-code text colors for dark sections.
-- **Typography:** `type-display`, `type-h1`..`type-h4`, `type-body-lg`, `type-body`, `type-body-sm`, `type-label`, `type-eyebrow`. Section titles use `type-h1` (36px) on an `<h2>`; pages use `type-display` for the single `<h1>`.
-- **Geometry:** radii 4px (`rounded-sm`, badges/checkboxes), 6px (`rounded-md`, controls/buttons), 8px (`rounded-lg`, cards), 12px (`rounded-xl`, hero media). Shadows: `shadow-panel`, `shadow-overlay`; prefer borders.
+`src/app/globals.css` only imports Tailwind and the files below, in this order:
+
+| File | Role |
+| --- | --- |
+| `theme.css` | Design tokens: brand palette, semantic colors, radii, shadows, fonts, layout width |
+| `typography.css` | `type-*` utilities |
+| `base.css` | Element defaults: box model, page scroll, body, focus, reduced motion |
+| `header.css` | The floating header pill |
+| `motion.css` | Entrance animations driven by `PlayOnView` (`reveal*`) |
+| `components.css` | Shared rules Tailwind cannot express: buttons (`btn-primary`, `btn-light`, `link-light`), interactive cards, image wash, gold markers, chips, the section header, ruled lists, the closing band, service-page pieces |
+| `home.css` | Homepage blocks in page order: hero, facts strip, divisions, port-call process, UAE port map, Why Oar, PDA review, footer spacing |
+
+## Tokens (`theme.css`)
+
+- **Brand palette** (`bg-midnight`, `text-marine-blue`, ...): Midnight, Deep Navy, Marine Blue, Ocean, Signal Cyan, Off White, White, Slate, Dark Text, Line (`#D9E1E5`), Error, and Gold (`#D9A441`, for lines, icons and markers) with Gold Deep (`#A9741A`, the only gold allowed for text). The default Tailwind palette is removed.
+- **Static roles:** `primary`, `primary-hover`, `accent`, `control` (derived 3:1 border for form controls).
+- **Semantic roles:** `background`, `foreground`, `muted`, `border`, `card` (frosted white), `link`, `focus`. The site is one light theme, so these are plain `:root` values; there are no per-section surfaces.
+- **Typography:** `type-display`, `type-h1`..`type-h4`, `type-body-lg`, `type-body`, `type-body-sm`, `type-label`, `type-eyebrow`. Section titles use `type-h1` on an `<h2>`; pages use `type-display` for the single `<h1>`.
+- **Geometry:** radii 4px (`rounded-sm`), 10px (`rounded-md`, controls), 14px (`rounded-lg`, cards), 20px (`rounded-xl`, feature panels); buttons are pills (`rounded-full`). Shadows: `shadow-card` (resting card), `shadow-panel` (hover), `shadow-overlay` (floating UI).
 - **Layout:** `max-w-content` (1320px) with 16/24/32px gutters via `Container`. Spacing uses Tailwind's scale.
 
-## Surfaces
+## Flat white page
 
-`Section` sets `data-surface="light | muted | dark | dark-elevated"`. Use `Section` for every page band; use `spacing="default | compact | hero"` for vertical rhythm.
+Every page is flat white. There is no backdrop layer, gradient, grain or animated decoration: structure comes from hairline rules (`--color-deep-navy` on the section rule, `--border` between rows), real photographs and type. `Section` is only spacing plus the `Container`. The only dark blocks are the UAE port map and the closing band.
+
+**Section header.** Every section opens with `SectionHeader`: a hairline rule, a number or label in the left column (`index` such as "01", plus an `eyebrow`), a serif title (`type-title`, Fraunces) and a lead paragraph. Pages that do not number their sections pass only `eyebrow`. The serif is used for section titles and the facts and process figures only; headings and UI stay Manrope and Inter.
 
 ## Components
 
 | Layer | Components |
 | --- | --- |
 | `layout/` | `Container`, `Section`, `SectionHeader`, `StatusPage` |
-| `ui/` | `Button`, `ButtonLink`, `Eyebrow`, `Badge`, `ArrowLink`, `IconBox`, `Card`, `RouteFlow` |
+| `ui/` | `Button`, `ButtonLink`, `Eyebrow`, `Badge`, `ArrowLink`, `IconBox`, `Card`, `RouteFlow`, `PlayOnView` |
 | `cards/` | `ServiceCard`, `IndustryCard`, `PortCard`, `InsightCard` (props only, no business data) |
 | `forms/` | `Label`, `FormField`, `Input`, `Textarea`, `Select`, `Checkbox` |
 | `media/` | `MediaFrame` |
@@ -35,43 +51,50 @@ Whole-card links: put an `ArrowLink` with `stretched` inside a `Card interactive
 
 ## Images
 
-Use `MediaFrame` (`next/image`, local files under `public/images/`). Ratios: `landscape` 16:9, `standard` 3:2, `portrait` 4:5, `square`, `fill` (hero background). Overlays: `scrim` (bottom fade for captions), `hero` (Midnight left-to-right wash). Set `preload` only on the LCP image (Next 16 replaces `priority`).
+Use `MediaFrame` (`next/image`, local files under `public/images/`). Ratios: `landscape` 16:9, `standard` 3:2, `portrait` 4:5, `square`, `fill` (hero background). Overlay: `scrim` (bottom fade for captions). Add `media-wash` for the navy wash that clears on hover. Set `preload` only on the LCP image (Next 16 replaces `priority`).
 
 ## Motion
 
-Motion communicates direction and state, never decoration: color/shadow transitions at 200ms (`ease-standard`), a 2px arrow nudge on link hover, a spinner for loading. Always gate movement with `motion-safe:`; `globals.css` also neutralizes animation under `prefers-reduced-motion`. No animation library is installed; add `motion` only when a localized client component needs it.
+Motion communicates direction and state, never decoration: color/shadow transitions at 200ms (`ease-standard`), a 2px arrow nudge on link hover, a spinner for loading. Always gate movement with `motion-safe:`; `base.css` also neutralizes animation under `prefers-reduced-motion`. No animation library is installed; add `motion` only when a localized client component needs it.
 
 ## Responsive decisions
 
 - Headings scale at `md` (Display 32 -> 48px, H1 26 -> 36px). Section spacing steps up at `md`.
-- Header navigation switches at `lg` (Stitch shows links at 1024px+, with a menu below); both layouts must read `@/config/navigation`.
+- Header navigation switches at `lg` (links at 1024px+, with a menu below); both layouts must read `@/config/navigation`.
 - `RouteFlow` stacks vertically with downward connectors below `lg`, and runs left to right with arrows from `lg`.
 - Card grids go 1 column, 2 at `md`, 3 at `lg`. Buttons stay content-width; use `fullWidth` for stacked mobile CTAs.
 
 ## Global shell (`components/layout`, `components/navigation`)
 
 - `PageShell` (used by the root layout): skip link, `Header`, the single `<main id="main-content">`, `Footer`. The root layout stays a Server Component.
-- `Header` is server-rendered, sticky, 64px (72px at `lg`). Navigation comes from `config/navigation.ts`; footer groupings live in `config/footer.ts`.
-- **Header modes:** solid by default. A page with a full-bleed dark hero renders any element with `data-header="overlay"`; the header then floats, transparent with light text, until the page scrolls or the mobile menu opens. This is CSS only (`.site-header` in `globals.css`); `HeaderScrollState` sets `data-scrolled` on `<html>` with an IntersectionObserver. Pages stay Server Components.
-- **Client components (and why):** `NavLink` (current-route state via `usePathname`), `MobileNavigation` (open/close state, Escape, scroll lock), `HeaderScrollState` (IntersectionObserver). Everything else is server-rendered.
+- `Header` is server-rendered: a frosted white pill pinned to the top of the viewport (`header.css`). It never moves or hides while scrolling. The glass sits on a pseudo-element because a backdrop filter on the bar itself would become the containing block of the fixed mobile menu. Navigation comes from `config/navigation.ts`; footer groupings live in `config/footer.ts`. The active link gets a gold underline.
+- **Client components (and why):** `NavLink` (current-route state via `usePathname`), `MobileNavigation` (open/close state, Escape, scroll lock), `PlayOnView` (arms and plays entrance animation). Everything else is server-rendered.
 - **Logo:** `Logo` masks `public/images/brand/oar-logo.png` (white on transparent, derived from the client-supplied logo) with the current text color. Replace that file (or point the mask at an SVG) when final brand assets arrive.
 - **Footer legal links:** add Privacy Policy and Terms to `footerLegalLinks` when those pages exist; they render automatically.
 
-## Homepage hero image
+## Homepage
 
-The hero reads `heroContent.image` in `src/content/home/hero.ts` (currently `null`, which renders the navy backdrop). To enable the photograph, add a ~2400x1350 JPEG or WebP under `public/images/hero/` and set `{ src, alt: "", position }`. `MediaFrame` handles optimization, preload, the Midnight wash and (on narrow screens) a uniform extra wash. Keep the image brand-free: no third-party logos or terminal branding, and no text baked in. The photograph must be licensed or approved by OAR.
+Sections, in order: `HeroSection`, `FactsStrip`, `DivisionsSection` (01), `PortCallSection` (02), `PortsSection` (03), `WhyOarSection` (04), `PdaSection` (05) and the closing `CtaSection`. Copy lives in `src/content/home/*`. Insights is not on the homepage until real articles exist.
+
+- **Hero:** a full-bleed photograph (`<picture>`: a 3:4 portrait crop below 1024px, the landscape photograph above) with the headline and two actions on a navy scrim; it runs up behind the floating header. The photo moves with transform only, never from opacity 0, so it stays the paint the browser measures for LCP.
+- **Facts strip:** four plain facts from the client (`content/home/facts.ts`), no figures or logos.
+- **Divisions:** the four service divisions (from `content/services/capabilities.ts`, photographs in `public/images/divisions`) as photo panels. On wide, hover-capable screens the hovered or focused panel widens through CSS only; elsewhere they stack with the text visible. Each panel is one link.
+- **Port-call process:** `PortCallSection` (also used on the Services pages) shows the four stages in one ruled row (two columns on phones) and the activities Oar plans together.
+- **UAE port map:** `UaePortMap` draws the UAE coast and the ten ports in SVG (outline and positions in `content/ports/map.ts`; a simplified schematic, labelled as such). Labels hide on phones; the port chips beside it name the ports.
+- **Why Oar:** three ruled columns: the two sets of reasons and the local-execution offer.
+- **Closing band:** `CtaSection` is the one closing call to action on every page: a navy band with the quote button and each confirmed contact route from `config/contact.ts`.
 
 ## Content-ready homepage sections
 
-`PortsSection` and `InsightsSection` read typed, intentionally empty collections (`src/content/ports/index.ts`, `src/content/insights/index.ts`). With no entries they show a general UAE statement with a conceptual (non-geographic) route graphic, and a topic list. Add verified `Port` or `Insight` entries and they render `PortCard` / `InsightCard` automatically. `TrustSection` is editorial until OAR approves credentials, partnerships or case studies. `RouteFlow` takes `layout="xl"` for flows with many steps (vertical until 1280px).
+`PortsSection` reads a typed, intentionally empty collection (`src/content/ports/index.ts`); with no entries it shows the UAE port map, and once verified `Port` entries exist it renders `PortCard`s instead. Insights read `src/content/insights/index.ts` the same way on the `/insights` pages. `RouteFlow` takes `layout="xl"` for flows with many steps (vertical until 1280px).
 
 ## Inner pages
 
-Inner pages (`/about`, `/why-oar`, `/industries`) compose shared sections: `InnerPageHero` (the page's single `<h1>`; supports an optional `visual` and light/dark variant), `NarrativeSection` (heading, paragraphs, optional aside), `CapabilityGrid` (`linkTo="detail" | "listing"`), `PrincipleGrid`, `IndustryGrid` (`variant="summary" | "detail"`), `JourneyDiagram` (OAR band across an ordered journey; `orientation="vertical" | "responsive"`), `MovingPartsPanel` and `CtaSection`. Page copy lives in `src/content/<page>/page.ts`; services and audiences have one source each (`content/services/capabilities.ts`, `content/industries/audiences.ts`). Use `title: { absolute }` in `buildPageMetadata` to skip the site title template.
+Inner pages open with `InnerPageHero` (the page's single `<h1>`; optional `visual` and `compactTitle`; give it a `photo` for a full-width band, or `layout="split"` for text beside a photograph) and are built from the same blocks as the homepage. `/about` is the hero, `DivisionsSection`, a ruled list of the five advantages and the group companies (names only), then the closing band. `/why-oar` is the hero, `WhyOarSection`, `PortCallSection` and `PdaSection`. `/industries` uses `IndustryGrid` (`variant="summary" | "detail"`), `NarrativeSection` and `CapabilityGrid`. Number sections with `SectionHeader`'s `index` prop; the shared sections take an optional `index`. Page copy lives in `src/content/<page>/page.ts`; services and audiences have one source each (`content/services/capabilities.ts`, `content/industries/audiences.ts`). Use `title: { absolute }` in `buildPageMetadata` to skip the site title template.
 
 ## Services architecture
 
-One typed collection drives every service surface. `content/services/capabilities.ts` holds each service's slug, title, icon and summary (used by the homepage, strip, footer and listings); `content/services/<slug>.ts` holds its detail content (`ServiceDetailContent`); `content/services/index.ts` merges them into `services` and exposes `getService`. `ServiceSlug` is a union and the detail map is a `Record<ServiceSlug, ...>`, so a missing service fails type-checking. `/services/[slug]` renders the single `ServiceDetail` template with `generateStaticParams` and `dynamicParams = false` (unknown slugs return a real 404). Related services, audiences (`AudienceSlug`), coordinated activities (`CoordinationKind`) and FAQs are all data. `Accordion` uses native `<details>` (no JavaScript). An approved service image can be set per service via `image`; it renders through `InnerPageHero`'s `visual` slot.
+One typed collection drives every service surface. `content/services/capabilities.ts` holds each service's slug, title, icon and summary (used by the homepage, strip, footer and listings); `content/services/<slug>.ts` holds its detail content (`ServiceDetailContent`); `content/services/index.ts` merges them into `services` and exposes `getService`. `ServiceSlug` is a union and the detail map is a `Record<ServiceSlug, ...>`, so a missing service fails type-checking. `/services/[slug]` renders the single `ServiceDetail` template with `generateStaticParams` and `dynamicParams = false` (unknown slugs return a real 404). Offer groups, process steps and related services are all data. `Accordion` uses native `<details>` (no JavaScript). An approved service image can be set per service via `image`; it renders through `InnerPageHero`'s `visual` slot.
 
 ## Ports architecture
 
@@ -81,7 +104,7 @@ To add a verified port: append one `Port` entry (`types/port.ts`) to the collect
 
 ## Insights architecture
 
-`content/insights/index.ts` is the canonical, intentionally empty collection of approved insights, with `getInsight`, `getSortedInsights`, `getFeaturedInsight`, `getRelatedInsights` (drops unknown and self references) and `getReadingTimeMinutes` (derived from `content`, never hand-entered). `/insights/[slug]` renders the single `InsightDetail` template (`generateStaticParams`, `dynamicParams = false`, `notFound()`); `/insights` shows the grid, and a featured entry, only when entries exist, and an editorial perspective section otherwise. The homepage Insights section reads the same collection and falls back to its topics list.
+`content/insights/index.ts` is the canonical, intentionally empty collection of approved insights, with `getInsight`, `getSortedInsights`, `getFeaturedInsight`, `getRelatedInsights` (drops unknown and self references) and `getReadingTimeMinutes` (derived from `content`, never hand-entered). `/insights/[slug]` renders the single `InsightDetail` template (`generateStaticParams`, `dynamicParams = false`, `notFound()`); `/insights` shows the grid, and a featured entry, only when entries exist, and an editorial perspective section otherwise. The homepage does not show Insights until entries exist.
 
 To publish an insight: add one `Insight` entry (required: `slug`, `title`, `excerpt`, `kind`). Set `author`, `publishedAt`, `image`, `category` and related items only when approved and real; body text is structured `InsightBlock`s (heading, paragraph, list, quote), rendered as semantic HTML, never raw HTML. Categories are labels, not routes.
 

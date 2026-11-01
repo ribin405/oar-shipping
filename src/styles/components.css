@@ -1,0 +1,668 @@
+/*
+ * Shared component rules that Tailwind utilities cannot express cleanly:
+ * buttons, interactive cards, the image wash, gold markers, chips, the section
+ * header, ruled lists, the closing band and the service-page building blocks. Unlayered on purpose, so these rules win over
+ * Tailwind utilities where they overlap.
+ */
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(135deg, var(--color-marine-blue), var(--color-ocean));
+  box-shadow: 0 8px 22px rgb(10 126 164 / 30%);
+  transition:
+    box-shadow 300ms var(--ease-standard),
+    transform 300ms var(--ease-standard);
+}
+
+/* A soft light sweep crosses the button on hover. */
+.btn-primary::after {
+  position: absolute;
+  inset-block: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 32%), transparent);
+  content: "";
+  pointer-events: none;
+  transform: skewX(-20deg);
+  transition: left 700ms var(--ease-standard);
+}
+
+/* Hover effects only on devices that can hover, so touch screens never get a stuck state. */
+@media (hover: hover) {
+  .btn-primary:hover {
+    box-shadow: 0 12px 28px rgb(39 184 214 / 42%);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:hover::after {
+    left: 120%;
+  }
+}
+
+/* ---------- Cards ---------- */
+.card-interactive,
+.bento-card {
+  transition:
+    transform 350ms var(--ease-standard),
+    box-shadow 250ms var(--ease-standard),
+    border-color 200ms var(--ease-standard);
+}
+
+/* A gold-to-cyan line draws along the bottom edge on hover or keyboard focus. */
+.card-interactive::after,
+.bento-card::after {
+  position: absolute;
+  z-index: 3;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-gold), var(--color-signal-cyan));
+  content: "";
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 450ms var(--ease-standard);
+}
+
+.card-interactive:focus-within::after,
+.bento-card:focus-within::after {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .card-interactive:hover,
+  .bento-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .card-interactive:hover::after,
+  .bento-card:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Image wash ---------- */
+/* Add `media-wash` to a MediaFrame: a navy wash at rest, full colour on hover or focus. */
+.media-wash img {
+  filter: grayscale(0.25) contrast(1.04);
+  transition:
+    transform 600ms var(--ease-standard),
+    filter 400ms var(--ease-standard);
+}
+
+.media-wash::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgb(7 21 33 / 34%), rgb(11 96 125 / 26%));
+  content: "";
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease-standard);
+}
+
+.card-interactive:focus-within .media-wash img,
+.bento-card:focus-within .media-wash img {
+  transform: scale(1.06);
+  filter: none;
+}
+
+.card-interactive:focus-within .media-wash::after,
+.bento-card:focus-within .media-wash::after {
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .card-interactive:hover .media-wash img,
+  .bento-card:hover .media-wash img,
+  .industry-row:hover .media-wash img {
+    transform: scale(1.06);
+    filter: none;
+  }
+
+  .card-interactive:hover .media-wash::after,
+  .bento-card:hover .media-wash::after,
+  .industry-row:hover .media-wash::after {
+    opacity: 0;
+  }
+}
+
+/* ---------- Gold markers ---------- */
+/* Diamond tile used as a list tick and chip icon. */
+.mark {
+  display: grid;
+  width: 1.375rem;
+  height: 1.375rem;
+  flex: none;
+  place-items: center;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--color-gold) 18%, transparent);
+}
+
+.mark::before {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  background: var(--color-gold);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  content: "";
+}
+
+/* Bulleted list with small gold diamonds. */
+.diamond-list li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.diamond-list li::before {
+  position: absolute;
+  top: 0.55em;
+  left: 0.25rem;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  background: var(--color-gold);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  content: "";
+}
+
+/* ---------- Chips ---------- */
+/* Small pill with a gold diamond: port names, topics. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.4375rem 0.875rem 0.4375rem 0.5rem;
+  border: 1px solid rgb(11 34 51 / 10%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 88%);
+  box-shadow: 0 6px 14px -10px rgb(11 34 51 / 40%);
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition:
+    border-color 200ms var(--ease-standard),
+    transform 250ms var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .chip:hover {
+    border-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+    transform: translateY(-2px);
+  }
+}
+
+/* ---------- Service pages ---------- */
+.service-process__step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.service-process__num {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: var(--color-midnight);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+@media (min-width: 64rem) {
+  .service-process {
+    grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
+  }
+
+  .service-process__step:not(:last-child)::after {
+    position: absolute;
+    top: 1.25rem;
+    right: -0.75rem;
+    left: 3.25rem;
+    height: 1px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--color-gold) 60%, transparent), transparent);
+    content: "";
+  }
+}
+
+/* ---------- Light buttons (on photographs and navy) ---------- */
+.btn-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8125rem 1.375rem;
+  border-radius: 2px;
+  background: #fff;
+  color: var(--color-deep-navy);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 200ms var(--ease-standard);
+}
+
+.btn-light:hover {
+  background: var(--color-off-white);
+}
+
+.link-light {
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+
+/* ---------- Section header ---------- */
+/* A hairline rule, a number or label, and a serif title: the one header every section opens with. */
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.section-header__rule {
+  display: grid;
+  gap: 0.75rem 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-deep-navy);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.section-header__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-top: 0.5rem;
+}
+
+.section-header__index {
+  color: var(--color-gold-deep);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+
+.section-header__eyebrow {
+  color: var(--muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-header__title {
+  max-width: 24ch;
+  margin: 0;
+}
+
+.section-header__desc {
+  max-width: 52ch;
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+@media (min-width: 48rem) {
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-header__rule {
+    grid-template-columns: 7rem minmax(0, 1fr) auto;
+  }
+
+  .section-header__rule--bare {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .section-header__action {
+    align-self: end;
+  }
+}
+
+/* ---------- Ruled list ---------- */
+/* Rows between hairlines: used for points and facts instead of cards. */
+.ruled {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-deep-navy);
+  list-style: none;
+}
+
+.ruled > li {
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.ruled--numbered {
+  counter-reset: row;
+}
+
+.ruled--numbered > li {
+  counter-increment: row;
+}
+
+.ruled--numbered strong::before {
+  margin-right: 0.875rem;
+  color: var(--color-gold-deep);
+  content: counter(row, decimal-leading-zero);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.ruled strong {
+  display: block;
+  font-weight: 600;
+}
+
+.ruled span {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* ---------- Closing band ---------- */
+/* The one closing call to action: navy, with every way to reach Oar. */
+.closing {
+  background: var(--color-deep-navy);
+  color: #fff;
+}
+
+.closing__inner {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  padding-block: 3rem;
+}
+
+.closing__title {
+  max-width: 15ch;
+  margin: 0;
+}
+
+.closing__text {
+  max-width: 42ch;
+  margin: 0.75rem 0 0;
+  color: rgb(255 255 255 / 80%);
+  font-size: 0.9375rem;
+}
+
+.closing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: 1.5rem;
+}
+
+.closing__contacts {
+  margin: 0;
+  border-top: 1px solid rgb(255 255 255 / 35%);
+}
+
+.closing__contacts > div {
+  display: grid;
+  gap: 0.625rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgb(255 255 255 / 18%);
+  font-size: 0.875rem;
+  grid-template-columns: 7rem minmax(0, 1fr);
+}
+
+.closing__contacts dt {
+  padding-top: 0.125rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  opacity: 0.65;
+  text-transform: uppercase;
+}
+
+.closing__contacts dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.closing__contacts a:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 64rem) {
+  .closing__inner {
+    padding-block: 4.5rem;
+    gap: 4rem;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  }
+}
+
+/* ---------- Inner page hero with a photograph ---------- */
+/* Band: a full-width photograph with a serif headline on a navy fade. Split: text on white beside a photograph. */
+.page-hero--band {
+  position: relative;
+  display: flex;
+  min-height: 21rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: var(--color-midnight);
+  color: #fff;
+}
+
+.page-hero__photo {
+  position: absolute;
+  inset: 0;
+}
+
+.page-hero--band::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(7 21 33 / 45%), rgb(7 21 33 / 0%) 30%),
+    linear-gradient(0deg, rgb(7 21 33 / 88%), rgb(7 21 33 / 20%) 70%);
+  content: "";
+}
+
+.page-hero__copy {
+  position: relative;
+  z-index: 2;
+  padding-block: 5rem 2.5rem;
+}
+
+.page-hero__kick {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.page-hero__kick::before {
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.page-hero__title {
+  max-width: 18ch;
+  margin: 0.625rem 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 5.4vw, 3.75rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 144;
+  text-wrap: balance;
+}
+
+.page-hero__lead {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.page-hero__cta {
+  margin-top: 1.25rem;
+  border-color: rgb(255 255 255 / 55%);
+  background: rgb(7 21 33 / 25%);
+  color: #fff;
+}
+
+.page-hero__cta:hover {
+  background: rgb(255 255 255 / 12%);
+  color: #fff;
+}
+
+.page-hero--split {
+  padding-block: 2rem 1rem;
+}
+
+.page-hero__grid {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+.page-hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.page-hero--split .page-hero__title {
+  margin: 0;
+  color: var(--foreground);
+}
+
+.page-hero__side {
+  position: relative;
+  min-height: 16rem;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-deep-navy);
+}
+
+@media (min-width: 64rem) {
+  .page-hero--band {
+    min-height: 26rem;
+  }
+
+  .page-hero__copy {
+    padding-block: 6rem 3.5rem;
+  }
+
+  .page-hero__grid {
+    gap: 4rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .page-hero__side {
+    min-height: 24rem;
+  }
+}
+
+/* ---------- Compass pattern ---------- */
+/* Gold compass rose (CompassPattern). Only the tick ring turns, one revolution in four minutes. */
+.compass {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 26rem;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.compass__ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: compass-turn 240s linear infinite;
+}
+
+@keyframes compass-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.compass__tick {
+  stroke: var(--color-gold);
+  stroke-opacity: 0.55;
+  stroke-width: 1;
+}
+
+.compass__tick--major {
+  stroke-opacity: 0.95;
+  stroke-width: 1.6;
+}
+
+.compass__line {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 1.4;
+}
+
+.compass__line--soft {
+  stroke-opacity: 0.4;
+  stroke-width: 1;
+}
+
+.compass__star {
+  fill: color-mix(in srgb, var(--color-gold) 16%, transparent);
+  stroke: var(--color-gold);
+  stroke-linejoin: round;
+  stroke-width: 1.2;
+}
+
+.compass__star--major {
+  fill: color-mix(in srgb, var(--color-gold) 55%, transparent);
+}
+
+.compass__dot {
+  fill: var(--color-gold);
+}
+
+.compass__north {
+  fill: var(--color-gold-deep);
+  font-family: var(--font-serif);
+  font-size: 20px;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .compass__ring {
+    animation: none;
+  }
+
+  .btn-primary::after,
+  .btn-light,
+  .chip,
+  .media-wash img,
+  .media-wash::after,
+  .card-interactive,
+  .card-interactive::after,
+  .bento-card,
+  .bento-card::after {
+    transition: none;
+  }
+
+  .btn-primary:hover,
+  .card-interactive:hover,
+  .bento-card:hover,
+  .chip:hover {
+    transform: none;
+  }
+
+  .btn-primary::after {
+    display: none;
+  }
+}

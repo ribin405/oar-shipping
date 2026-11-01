@@ -11,7 +11,7 @@ import { IndustryCard } from "@/components/cards/industry-card";
 import { InsightCard } from "@/components/cards/insight-card";
 import { PortCard } from "@/components/cards/port-card";
 import { ServiceCard } from "@/components/cards/service-card";
-import { Section, type SectionSurface } from "@/components/layout/section";
+import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/layout/section-header";
 import { Badge } from "@/components/ui/badge";
 import { Button, ButtonLink } from "@/components/ui/button";
@@ -36,18 +36,17 @@ const flowSteps = [
 ] as const;
 
 const placeholderMedia = (ratio: string) => (
-  <div className={`${ratio} bg-deep-navy`} role="img" aria-label="Placeholder image" />
+  <div className={`${ratio} bg-line`} role="img" aria-label="Placeholder image" />
 );
 
-function Showcase({ surface, children }: { surface: SectionSurface; children: ReactNode }) {
+function Showcase({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <Section surface={surface} spacing="compact">
-      <SectionHeader eyebrow={`Surface: ${surface}`} title="Sample section heading" description="Lead paragraph in muted text on this surface." />
+    <Section spacing="compact">
+      <SectionHeader eyebrow={label} title="Sample section heading" description="Lead paragraph in muted text on the site canvas." />
       <div className="flex flex-wrap items-center gap-4">
         <Button>Primary</Button>
         <Button variant="secondary">Secondary</Button>
         <Button variant="ghost">Ghost</Button>
-        <Button variant="dark">Dark</Button>
         <Button disabled>Disabled</Button>
         <Button loading>Loading</Button>
       </div>
@@ -111,9 +110,8 @@ export default function DesignSystemPage() {
         </div>
       </Section>
 
-      <Showcase surface="light">
+      <Showcase label="Cards with media">
         <ServiceCard
-          index="01"
           icon={<Warehouse />}
           title="Sample service"
           description="Neutral placeholder description for a service card."
@@ -133,7 +131,7 @@ export default function DesignSystemPage() {
         />
       </Showcase>
 
-      <Showcase surface="muted">
+      <Showcase label="Cards without media">
         <ServiceCard title="Sample service" description="Neutral placeholder description." href="/design-system" linkLabel="Link label" />
         <IndustryCard icon={<Anchor />} title="Linked industry" description="Whole card is one link." href="/design-system" linkLabel="Link label" />
         <PortCard
@@ -148,40 +146,10 @@ export default function DesignSystemPage() {
         />
       </Showcase>
 
-      <Showcase surface="dark">
-        <ServiceCard
-          index="01"
-          icon={<Warehouse />}
-          title="Sample service"
-          description="Neutral placeholder description."
-          href="/design-system"
-          linkLabel="Link label"
-        />
-        <PortCard
-          region="Region"
-          badge="Badge"
-          title="Sample location"
-          details={[{ label: "Label one", value: "Value one" }]}
-          href="/design-system"
-          linkLabel="Link label"
-        />
-        <IndustryCard icon={<Ship />} title="Sample industry" description="Neutral placeholder description." />
-      </Showcase>
-
-      <Section surface="dark-elevated">
+      <Section spacing="compact">
         <SectionHeader
-          align="center"
-          eyebrow="Surface: dark-elevated"
-          title="Sample flow heading"
-          description="Directional flow that stacks vertically on mobile."
-        />
-        <RouteFlow steps={flowSteps} />
-      </Section>
-
-      <Section surface="muted" spacing="compact">
-        <SectionHeader
-          eyebrow="Route flow on muted"
-          title="Sample flow on a light surface"
+          eyebrow="Route flow"
+          title="Directional flow that stacks vertically on mobile"
           action={<ButtonLink href="/design-system" variant="secondary">Header action</ButtonLink>}
         />
         <RouteFlow steps={flowSteps} />

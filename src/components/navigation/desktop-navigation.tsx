@@ -10,7 +10,7 @@ export function DesktopNavigation({ items }: { items: readonly NavigationItem[] 
             <NavLink
               href={item.href}
               className="type-body inline-block border-b-2 border-transparent py-2 text-muted transition-colors duration-200 ease-standard hover:text-foreground"
-              activeClassName="border-link font-semibold text-foreground"
+              activeClassName="border-gold! font-semibold text-foreground"
             >
               {item.label}
             </NavLink>

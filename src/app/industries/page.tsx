@@ -6,12 +6,14 @@ import { CapabilityGrid } from "@/components/sections/capability-grid";
 import { CtaSection } from "@/components/sections/cta-section";
 import { IndustryGrid } from "@/components/sections/industry-grid";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
-import { JourneyDiagram } from "@/components/sections/journey-diagram";
-import { NarrativeSection } from "@/components/sections/narrative-section";
 import { ArrowLink } from "@/components/ui/arrow-link";
+import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
+import { JsonLd } from "@/components/seo/json-ld";
 import { routes } from "@/config/routes";
+import { finalCtaContent } from "@/content/home/final-cta";
 import { industriesPageContent } from "@/content/industries/page";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { buildPageNode } from "@/lib/seo/structured-data";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Industries: Ship Managers, Chandlers & Agents",
@@ -21,31 +23,37 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function IndustriesPage() {
-  const { hero, audiences, shared, capabilities, cta } = industriesPageContent;
+  const { hero, audiences, shared, capabilities } = industriesPageContent;
 
   return (
     <>
+      <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Industries" }]} path={routes.industries} />
+      <JsonLd data={buildPageNode("WebPage", routes.industries, metadata)} />
       <InnerPageHero {...hero} />
       <Section labelledBy="audiences-title">
         <SectionHeader
+          index="01"
           eyebrow={audiences.eyebrow}
           title={audiences.title}
           description={audiences.description}
           titleId="audiences-title"
         />
-        <IndustryGrid variant="detail" />
+        <IndustryGrid variant="detail" layout="rows" />
       </Section>
-      <NarrativeSection
-        id="shared"
-        surface="dark"
-        eyebrow={shared.eyebrow}
-        title={shared.title}
-        paragraphs={shared.paragraphs}
-        action={shared.action}
-        aside={<JourneyDiagram heading={shared.diagramHeading} nodes={shared.nodes} orientation="responsive" />}
-      />
-      <Section surface="muted" labelledBy="capabilities-title">
+      <Section labelledBy="shared-title">
         <SectionHeader
+          index="02"
+          eyebrow={shared.eyebrow}
+          title={shared.title}
+          description={shared.paragraphs[0]}
+          titleId="shared-title"
+          className="mb-0 md:mb-0"
+          action={<ArrowLink href={shared.action.href}>{shared.action.label}</ArrowLink>}
+        />
+      </Section>
+      <Section labelledBy="capabilities-title">
+        <SectionHeader
+          index="03"
           eyebrow={capabilities.eyebrow}
           title={capabilities.title}
           description={capabilities.description}
@@ -54,7 +62,7 @@ export default function IndustriesPage() {
         />
         <CapabilityGrid linkTo="detail" linkLabel="Explore service" />
       </Section>
-      <CtaSection {...cta} />
+      <CtaSection {...finalCtaContent} />
     </>
   );
 }

@@ -1,6 +1,8 @@
 import { audienceSlugs, type IndustryAudience } from "@/types/industry";
 import type { Insight } from "@/types/insight";
 import type { Port } from "@/types/port";
+import { assertSeoText, renderedTitle } from "@/lib/seo/limits";
+import { siteConfig } from "@/lib/site-config";
 import { serviceSlugs, type Service } from "@/types/service";
 
 /**
@@ -56,14 +58,15 @@ export function validateServices(services: readonly Service[]): void {
     requireText(where, "description", service.description);
     requireText(where, "metaTitle", service.metaTitle);
     requireText(where, "metaDescription", service.metaDescription);
+    assertSeoText(where, { title: renderedTitle(service.metaTitle, siteConfig.name), description: service.metaDescription });
     requireText(where, "hero.title", service.hero.title);
     requireText(where, "hero.description", service.hero.description);
-    requireItems(where, "problem paragraph", service.problem.paragraphs);
-    requireItems(where, "role paragraph", service.role.paragraphs);
-    requireItems(where, "coordinates", service.coordinates);
-    requireItems(where, "requirements", service.requirements);
-    requireItems(where, "audiences", service.audiences);
-    requireItems(where, "faq", service.faq);
+    requireItems(where, "offer groups", service.offer.groups);
+    requireItems(where, "process steps", service.process);
+    for (const group of service.offer.groups) {
+      requireText(where, "offer group title", group.title);
+      if (!group.items?.length && !group.description) fail(`${where} group "${group.title}" needs items or a description.`);
+    }
     requireNoSelfOrDuplicates(where, "related", service.slug, service.related);
   }
 }

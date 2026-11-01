@@ -2,50 +2,55 @@ import type { Metadata } from "next";
 
 import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/layout/section-header";
-import { CapabilityGrid } from "@/components/sections/capability-grid";
+import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { CtaSection } from "@/components/sections/cta-section";
+import { DivisionsSection } from "@/components/sections/divisions-section";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
-import { NarrativeSection } from "@/components/sections/narrative-section";
-import { PrincipleGrid } from "@/components/sections/principle-grid";
-import { ArrowLink } from "@/components/ui/arrow-link";
+import { JsonLd } from "@/components/seo/json-ld";
 import { routes } from "@/config/routes";
-import { aboutContent, aboutPrinciples } from "@/content/about/page";
+import { aboutContent } from "@/content/about/page";
+import { finalCtaContent } from "@/content/home/final-cta";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { buildPageNode } from "@/lib/seo/structured-data";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: { absolute: "About Oar | Marine Logistics & Port Execution" },
+  title: { absolute: "About Oar Shipping | UAE Marine Services Group, Fujairah" },
   description:
-    "Oar focuses on marine logistics and port execution, coordinating suppliers, cargo and vessel requirements across the UAE maritime environment.",
+    "Oar Shipping is a UAE marine services group based in Fujairah: ship chandling, customs and logistics, marine services and PDA review with one point of contact.",
   path: routes.about,
 });
 
 export default function AboutPage() {
-  const { hero, positioning, focus, principles, cta } = aboutContent;
+  const { hero, advantage, group } = aboutContent;
 
   return (
     <>
+      <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "About" }]} path={routes.about} />
+      <JsonLd data={buildPageNode("AboutPage", routes.about, metadata)} />
       <InnerPageHero {...hero} />
-      <NarrativeSection id="positioning" {...positioning} spacing="compact" />
-      <Section surface="muted" labelledBy="focus-title">
-        <SectionHeader
-          eyebrow={focus.eyebrow}
-          title={focus.title}
-          description={focus.description}
-          titleId="focus-title"
-          action={<ArrowLink href={focus.action.href}>{focus.action.label}</ArrowLink>}
-        />
-        <CapabilityGrid linkTo="detail" linkLabel="Explore service" />
+      <DivisionsSection index="01" />
+      <Section labelledBy="advantage-title">
+        <SectionHeader index="02" eyebrow={advantage.eyebrow} title={advantage.title} titleId="advantage-title" />
+        <ul className="ruled ruled--numbered">
+          {advantage.points.map(({ title, text }) => (
+            <li key={title}>
+              <strong>{title}</strong>
+              <span>{text}</span>
+            </li>
+          ))}
+        </ul>
       </Section>
-      <Section labelledBy="principles-title">
-        <SectionHeader
-          eyebrow={principles.eyebrow}
-          title={principles.title}
-          titleId="principles-title"
-          action={<ArrowLink href={principles.action.href}>{principles.action.label}</ArrowLink>}
-        />
-        <PrincipleGrid principles={aboutPrinciples} />
+      <Section labelledBy="group-title">
+        <SectionHeader index="03" eyebrow={group.eyebrow} title={group.title} titleId="group-title" />
+        <ul className="ruled">
+          {group.companies.map((company) => (
+            <li key={company}>
+              <strong>{company}</strong>
+            </li>
+          ))}
+        </ul>
       </Section>
-      <CtaSection {...cta} />
+      <CtaSection {...finalCtaContent} />
     </>
   );
 }

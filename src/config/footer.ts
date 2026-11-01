@@ -1,4 +1,5 @@
 import { routes } from "@/config/routes";
+import { hasInsights } from "@/content/insights";
 import { serviceCapabilities } from "@/content/services/capabilities";
 import type { NavigationItem } from "@/config/navigation";
 
@@ -13,7 +14,7 @@ export const footerCompanyLinks: readonly NavigationItem[] = [
   { label: "Why Oar", href: routes.whyOar },
   { label: "Industries", href: routes.industries },
   { label: "Ports & Locations", href: routes.ports },
-  { label: "Insights", href: routes.insights },
+  ...(hasInsights ? [{ label: "Insights", href: routes.insights }] : []),
   { label: "Contact", href: routes.contact },
 ];
 

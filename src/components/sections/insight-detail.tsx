@@ -82,7 +82,7 @@ export function InsightDetail({ insight, relatedInsights = [] }: InsightDetailPr
       ) : null}
 
       {insight.relatedServices?.length ? (
-        <Section surface="muted" labelledBy="insight-services-title">
+        <Section labelledBy="insight-services-title">
           <SectionHeader
             eyebrow={copy.services.eyebrow}
             title={copy.services.title}
@@ -106,7 +106,7 @@ export function InsightDetail({ insight, relatedInsights = [] }: InsightDetailPr
       ) : null}
 
       {relatedInsights.length > 0 ? (
-        <Section surface="muted" labelledBy="related-insights-title">
+        <Section labelledBy="related-insights-title">
           <SectionHeader eyebrow={copy.related.eyebrow} title={copy.related.title} titleId="related-insights-title" />
           <InsightGrid insights={relatedInsights} linkLabel={copy.cardLinkLabel} />
         </Section>

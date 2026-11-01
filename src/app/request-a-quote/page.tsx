@@ -15,9 +15,9 @@ import { getContactChannels } from "@/lib/contact";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Request a Marine Logistics Quote",
+  title: "Request a Quote",
   description:
-    "Tell Oar about your requirement: the service you need, cargo, pickup location, delivery port, vessel and timing.",
+    "Tell Oar about your vessel, port and requirement to get a quote for ship chandling, customs clearance, logistics, marine services or PDA review.",
   path: routes.requestQuote,
 });
 

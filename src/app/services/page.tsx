@@ -4,33 +4,33 @@ import { Section } from "@/components/layout/section";
 import { SectionHeader } from "@/components/layout/section-header";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { CapabilityGrid } from "@/components/sections/capability-grid";
+import { CoverageSection } from "@/components/sections/coverage-section";
 import { CtaSection } from "@/components/sections/cta-section";
-import { IndustryGrid } from "@/components/sections/industry-grid";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
-import { MovingPartsPanel } from "@/components/sections/moving-parts-panel";
-import { NarrativeSection } from "@/components/sections/narrative-section";
-import { ProcessSection } from "@/components/sections/process-section";
-import { ArrowLink } from "@/components/ui/arrow-link";
+import { PortCallSection } from "@/components/sections/port-call-section";
+import { JsonLd } from "@/components/seo/json-ld";
 import { routes } from "@/config/routes";
+import { serviceCapabilities } from "@/content/services/capabilities";
 import { servicesOverviewContent } from "@/content/services/overview";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { buildPageNode } from "@/lib/seo/structured-data";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Port & Vessel Logistics Services (UAE)",
+  title: "Ship Chandling, Customs, Logistics & Marine Services",
   description:
-    "Oar's six services, from port logistics and delivery to the vessel to customs, warehousing, transport and port coordination, connected from supplier to vessel.",
+    "Oar's four divisions: ship chandling, customs and logistics, marine services and an independent PDA review for ship owners, across all UAE ports.",
   path: routes.services,
 });
 
 export default function ServicesPage() {
-  const { hero, intro, grid, process, audiences, cta } = servicesOverviewContent;
+  const { hero, grid, coverage, cta } = servicesOverviewContent;
 
   return (
     <>
+      <JsonLd data={buildPageNode("CollectionPage", routes.services, metadata, serviceCapabilities.map(({ slug, title }) => ({ name: title, path: routes.service(slug) })))} />
       <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Services" }]} path={routes.services} />
       <InnerPageHero {...hero} />
-      <NarrativeSection id="intro" {...intro} aside={<MovingPartsPanel />} />
-      <Section surface="muted" labelledBy="services-grid-title">
+      <Section labelledBy="services-grid-title">
         <SectionHeader
           eyebrow={grid.eyebrow}
           title={grid.title}
@@ -39,17 +39,8 @@ export default function ServicesPage() {
         />
         <CapabilityGrid linkTo="detail" linkLabel={grid.cardLinkLabel} />
       </Section>
-      <ProcessSection surface="light" {...process} />
-      <Section surface="muted" labelledBy="audiences-title">
-        <SectionHeader
-          eyebrow={audiences.eyebrow}
-          title={audiences.title}
-          description={audiences.description}
-          titleId="audiences-title"
-          action={<ArrowLink href={audiences.action.href}>{audiences.action.label}</ArrowLink>}
-        />
-        <IndustryGrid />
-      </Section>
+      <PortCallSection />
+      <CoverageSection id="coverage-title" {...coverage} />
       <CtaSection {...cta} />
     </>
   );

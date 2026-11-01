@@ -1,9 +1,10 @@
+import { contactDetails } from "@/config/contact";
 import { routes } from "@/config/routes";
+import { getWhatsAppHref } from "@/lib/contact";
 
 export const finalCtaContent = {
-  eyebrow: "Ready to coordinate your next port requirement?",
-  title: "Let's move your requirement from supplier door to vessel deck.",
-  description: "Tell us what you need to move, where it needs to go and when the vessel requires it.",
+  title: "Ready to simplify your UAE port call?",
+  description: "Supply, clearance and marine services with one partner.",
   primaryCta: { label: "Request a Quote", href: routes.requestQuote },
-  secondaryCta: { label: "Contact Oar", href: routes.contact },
+  secondaryCta: { label: "WhatsApp Us", href: getWhatsAppHref(contactDetails) ?? routes.contact },
 };

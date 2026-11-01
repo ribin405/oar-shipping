@@ -12,7 +12,7 @@ export interface SiteConfig {
   url: string | undefined;
   /** False for non-production deployments (e.g. Vercel previews) and when no valid public origin is configured: nothing is indexable. */
   indexable: boolean;
-  /** Approved social-sharing image as a root-relative path under /public. Null until Oar supplies one. */
+  /** Social-sharing image (1200 x 630) as a root-relative path under /public. Null to send no image. */
   ogImage: { path: string; alt: string; width: number; height: number } | null;
   defaultLocale: string;
 }
@@ -20,7 +20,7 @@ export interface SiteConfig {
 const DEVELOPMENT_SITE_URL = "http://localhost:3000";
 
 const name = "Oar Shipping";
-const tagline = "Marine Logistics & Port Execution";
+const tagline = "Ship Chandling, Customs, Logistics & Marine Services";
 const isProduction = process.env.NODE_ENV === "production";
 /** A production origin must be public: loopback hosts are treated as unconfigured. */
 const LOCAL_HOSTNAMES = /^(localhost|127\.\d+\.\d+\.\d+|0\.0\.0\.0|\[::1?\])$/i;
@@ -45,9 +45,14 @@ export const siteConfig: SiteConfig = {
   tagline,
   defaultTitle: `${name} | ${tagline}`,
   description:
-    "Oar Shipping is an international B2B marine logistics and port-execution company operating in the UAE.",
+    "UAE marine services group based in Fujairah: ship chandling, customs and logistics, marine services and independent PDA review across all UAE ports, 24/7.",
   url,
   indexable: url !== undefined && (!process.env.VERCEL_ENV || process.env.VERCEL_ENV === "production"),
-  ogImage: null,
+  ogImage: {
+    path: "/images/og/oar-og.jpg",
+    alt: "A container ship at sea at sunset",
+    width: 1200,
+    height: 630,
+  },
   defaultLocale: "en",
 };

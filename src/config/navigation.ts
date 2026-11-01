@@ -1,4 +1,5 @@
 import { routes } from "@/config/routes";
+import { hasInsights } from "@/content/insights";
 
 export interface NavigationItem {
   label: string;
@@ -12,7 +13,7 @@ export const primaryNavigation: readonly NavigationItem[] = [
   { label: "Services", href: routes.services },
   { label: "Industries", href: routes.industries },
   { label: "Ports & Locations", href: routes.ports },
-  { label: "Insights", href: routes.insights },
+  ...(hasInsights ? [{ label: "Insights", href: routes.insights }] : []),
   { label: "Contact", href: routes.contact },
 ];
 

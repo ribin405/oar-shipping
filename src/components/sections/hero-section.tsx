@@ -1,68 +1,68 @@
 import { ArrowRight } from "lucide-react";
-import type { ReactNode } from "react";
+import { getImageProps } from "next/image";
+import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { Container } from "@/components/layout/container";
-import { MediaFrame } from "@/components/media/media-frame";
-import { ButtonLink } from "@/components/ui/button";
-import { Eyebrow } from "@/components/ui/eyebrow";
 import { heroContent } from "@/content/home/hero";
 
 /**
- * Homepage hero. `data-header="overlay"` makes the global header float over
- * it, transparent until the page scrolls (see `.site-header` in globals.css).
+ * Homepage hero: a full-bleed photograph with the headline and two actions on a
+ * navy scrim. It runs up behind the floating header (see `.hero` in home.css).
  */
-export function HeroSection({ children }: { children?: ReactNode }) {
-  const { eyebrow, title, description, primaryCta, secondaryCta, image } = heroContent;
+export function HeroSection() {
+  const { eyebrow, title, primaryCta, secondaryCta, image } = heroContent;
+  const words = title.split(" ");
+
+  // Art direction: a portrait crop below 1024px, the landscape photograph above. Only the matching file
+  // downloads; fetchPriority stands in for `preload`, which would fetch both.
+  const common = {
+    alt: image?.alt ?? "",
+    fill: true as const,
+    sizes: "100vw",
+    loading: "eager" as const,
+    fetchPriority: "high" as const,
+  };
+  const desktop = image ? getImageProps({ ...common, src: image.src }).props : null;
+  const mobile = image?.mobile ? getImageProps({ ...common, src: image.mobile.src }).props : null;
+  const photo = mobile ?? desktop;
 
   return (
-    <section
-      data-header="overlay"
-      data-surface="dark"
-      aria-labelledby="hero-title"
-      className="relative isolate flex min-h-[max(34rem,min(46rem,80svh))] flex-col overflow-hidden bg-background text-foreground"
-    >
-      {image ? (
-        <>
-          <MediaFrame
-            src={image.src}
-            alt={image.alt}
-            ratio="fill"
-            overlay="hero"
-            position={image.position}
-            sizes="100vw"
-            preload
-          />
-          {/* Uniform wash for narrow screens, where copy spans the full image width. */}
-          <div aria-hidden="true" className="absolute inset-0 bg-midnight/55 lg:hidden" />
-        </>
-      ) : (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_15%,rgb(11_96_125/0.4),transparent_60%)]"
-        />
-      )}
+    <section aria-labelledby="hero-title" className="hero">
+      {photo && desktop ? (
+        <div className="hero__photo">
+          <picture>
+            <source media="(min-width: 64rem)" srcSet={desktop.srcSet} sizes="100vw" />
+            <img {...photo} alt={photo.alt} className="hero__img" />
+          </picture>
+        </div>
+      ) : null}
 
-      <div className="relative flex flex-1 items-center">
-        <Container className="pt-24 pb-10 sm:pt-28 sm:pb-12 md:pt-36 md:pb-16">
-          <div className="flex max-w-3xl flex-col items-start gap-5 sm:gap-7">
-            <Eyebrow items={eyebrow} framed />
-            <h1 id="hero-title" className="home-hero-title max-w-[12ch]">
-              {title}
-            </h1>
-            <p className="type-body-lg max-w-md text-muted">{description}</p>
-            <div className="flex w-full flex-col gap-3 pt-1 sm:w-auto sm:flex-row sm:gap-4">
-              <ButtonLink href={primaryCta.href} size="lg" className="w-full sm:w-auto">
-                {primaryCta.label}
-                <ArrowRight aria-hidden="true" />
-              </ButtonLink>
-              <ButtonLink href={secondaryCta.href} variant="secondary" size="lg" className="w-full sm:w-auto">
-                {secondaryCta.label}
-              </ButtonLink>
-            </div>
+      <div className="hero__copy">
+        <Container>
+          <p className="hero__kick">{eyebrow.join(" · ")}</p>
+          <h1 id="hero-title" className="hero__title">
+            {words.map((word, index) => (
+              <span key={`${word}-${index}`}>
+                {index > 0 ? " " : null}
+                <span className="hero__word">
+                  <span style={{ "--k": index } as CSSProperties}>{word}</span>
+                </span>
+              </span>
+            ))}
+          </h1>
+          <div className="hero__actions">
+            <Link href={primaryCta.href} className="btn-light">
+              {primaryCta.label}
+              <ArrowRight aria-hidden="true" />
+            </Link>
+            <Link href={secondaryCta.href} className="link-light">
+              {secondaryCta.label}
+              <ArrowRight aria-hidden="true" />
+            </Link>
           </div>
         </Container>
       </div>
-      {children}
     </section>
   );
 }

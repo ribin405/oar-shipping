@@ -11,6 +11,11 @@ export interface ContactChannel {
   icon: LucideIcon;
 }
 
+/** Click-to-chat link for the verified WhatsApp number, or undefined when none is set. */
+export function getWhatsAppHref({ whatsapp }: Pick<ContactDetails, "whatsapp">): string | undefined {
+  return whatsapp ? `https://wa.me/${whatsapp.replace(/\D/g, "")}` : undefined;
+}
+
 /** Turns the verified details into display channels. Fields that are not set produce no channel. */
 export function getContactChannels({ email, phone, whatsapp, address, hours, social }: ContactDetails): ContactChannel[] {
   const channels: ContactChannel[] = [];
@@ -24,7 +29,7 @@ export function getContactChannels({ email, phone, whatsapp, address, hours, soc
       kind: "whatsapp",
       label: "WhatsApp",
       value: whatsapp,
-      href: `https://wa.me/${whatsapp.replace(/\D/g, "")}`,
+      href: getWhatsAppHref({ whatsapp }),
       icon: MessageCircle,
     });
   }

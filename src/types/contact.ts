@@ -12,6 +12,8 @@ export interface ContactDetails {
   whatsapp?: string;
   /** Office address as it should appear publicly. */
   address?: string;
+  /** Role-specific mailboxes, set only when Oar has confirmed they are live. */
+  departments?: { operations?: string; pda?: string; businessDevelopment?: string };
   /** Operating hours as they should appear publicly. */
   hours?: string;
   /** Verified public profiles. Add only URLs Oar has confirmed; never infer them from the company name. */

@@ -1,57 +1,36 @@
 import type { Metadata } from "next";
 
-import { Section } from "@/components/layout/section";
-import { SectionHeader } from "@/components/layout/section-header";
+import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { CtaSection } from "@/components/sections/cta-section";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
-import { JourneyDiagram } from "@/components/sections/journey-diagram";
-import { MovingPartsPanel } from "@/components/sections/moving-parts-panel";
-import { NarrativeSection } from "@/components/sections/narrative-section";
-import { PrincipleGrid } from "@/components/sections/principle-grid";
-import { CheckList } from "@/components/ui/check-list";
+import { PdaSection } from "@/components/sections/pda-section";
+import { PortCallSection } from "@/components/sections/port-call-section";
+import { WhyOarSection } from "@/components/sections/why-oar-section";
+import { JsonLd } from "@/components/seo/json-ld";
 import { routes } from "@/config/routes";
-import { whyOarPageContent, whyOarPrinciples } from "@/content/why-oar/page";
+import { finalCtaContent } from "@/content/home/final-cta";
+import { whyOarPageContent } from "@/content/why-oar/page";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { buildPageNode } from "@/lib/seo/structured-data";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: { absolute: "Why Oar | UAE Marine Logistics & Port Execution" },
+  title: { absolute: "Why Oar Shipping | One Partner for Every UAE Port Call" },
   description:
-    "Why Oar coordinates the shore-side activities between supplier and vessel: one operating model for cargo, documentation, transport and port-side execution in the UAE.",
+    "One point of contact for supply, clearance and marine services, a 24/7 operations desk, transparent costs with PDA review, and proper documents on every job.",
   path: routes.whyOar,
 });
 
+/** Why Oar: the homepage blocks in more depth, so the two pages cannot disagree. */
 export default function WhyOarPage() {
-  const { hero, challenge, role, principles, visibility, cta } = whyOarPageContent;
-
   return (
     <>
-      <InnerPageHero {...hero} />
-      <NarrativeSection id="challenge" {...challenge} aside={<MovingPartsPanel />} />
-      <NarrativeSection
-        id="role"
-        surface="dark"
-        eyebrow={role.eyebrow}
-        title={role.title}
-        paragraphs={role.paragraphs}
-        action={role.action}
-        aside={<JourneyDiagram heading={role.diagramHeading} nodes={role.nodes} />}
-      />
-      <Section surface="muted" labelledBy="principles-title">
-        <SectionHeader eyebrow={principles.eyebrow} title={principles.title} titleId="principles-title" />
-        <PrincipleGrid principles={whyOarPrinciples} />
-      </Section>
-      <NarrativeSection
-        id="visibility"
-        eyebrow={visibility.eyebrow}
-        title={visibility.title}
-        paragraphs={visibility.paragraphs}
-        aside={
-          <div className="rounded-lg border border-border bg-card p-6 md:p-8">
-            <CheckList items={visibility.points} className="type-body-lg gap-4 text-foreground" />
-          </div>
-        }
-      />
-      <CtaSection {...cta} />
+      <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Why Oar" }]} path={routes.whyOar} />
+      <JsonLd data={buildPageNode("WebPage", routes.whyOar, metadata)} />
+      <InnerPageHero {...whyOarPageContent.hero} layout="split" />
+      <WhyOarSection index="01" showAction={false} />
+      <PortCallSection index="02" />
+      <PdaSection index="03" />
+      <CtaSection {...finalCtaContent} />
     </>
   );
 }

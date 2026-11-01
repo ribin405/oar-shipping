@@ -1,43 +1,28 @@
 import type { LucideIcon } from "lucide-react";
 
-import type { ContentImage, Faq } from "@/types/content";
-import type { AudienceSlug } from "@/types/industry";
+import type { ContentImage } from "@/types/content";
 
-/** The six approved services. The union is derived from this list, so adding a service here makes the compiler (and content validation) require its capability and detail content. */
-export const serviceSlugs = [
-  "port-logistics",
-  "vessel-delivery",
-  "customs-clearance",
-  "warehousing",
-  "cargo-transportation",
-  "port-coordination",
-] as const;
+/** The four approved service divisions. The union is derived from this list, so adding one here makes the compiler (and content validation) require its capability and detail content. */
+export const serviceSlugs = ["ship-chandling", "customs-logistics", "marine-services", "pda-review"] as const;
 
 export type ServiceSlug = (typeof serviceSlugs)[number];
 
-/** Short entry point (title, icon, summary) used by the homepage, strip, footer and listings. */
+/** Short entry point (title, icon, summary) used by the homepage, hero index, footer and listings. */
 export interface ServiceCapability {
   slug: ServiceSlug;
   title: string;
   icon: LucideIcon;
   description: string;
-  /** Optional cover image for the service card and the service page. Leave unset until an approved, brand-free asset exists. */
+  /** Cover image for the service card and the service page. Leave unset until an approved, brand-free asset exists. */
   image?: ContentImage;
 }
 
-/** Controlled vocabulary of activities a service may coordinate; labels and icons live in one place. */
-export type CoordinationKind =
-  | "supplier"
-  | "cargo"
-  | "documentation"
-  | "customs"
-  | "transport"
-  | "storage"
-  | "port"
-  | "delivery";
-
-/** Step labels of the shared "how it works" process ("01" to "05"). */
-export type ProcessStepLabel = "01" | "02" | "03" | "04" | "05";
+/** One card of the "What we offer" grid: a title and either a short list or a single description. */
+export interface OfferGroup {
+  title: string;
+  items?: readonly string[];
+  description?: string;
+}
 
 /** Everything the service detail template renders beyond the capability record. */
 export interface ServiceDetailContent {
@@ -45,20 +30,14 @@ export interface ServiceDetailContent {
   metaTitle: string;
   metaDescription: string;
   hero: { title: string; description: string };
-  problem: { title: string; paragraphs: readonly string[] };
-  role: { title: string; paragraphs: readonly string[] };
-  /** Activities this service coordinates; `description` is service-specific. */
-  coordinates: readonly { kind: CoordinationKind; description: string }[];
-  /** Process steps this service mainly involves, highlighted in the shared process. */
-  processFocus: readonly ProcessStepLabel[];
-  processNote: string;
-  /** Information that may help Oar assess the requirement. Not a checklist every request must satisfy. */
-  requirements: readonly string[];
-  audiences: readonly AudienceSlug[];
+  /** Contact path for the hero button; defaults to the quote page. */
+  heroAction?: { label: string; href: string };
+  offer: { eyebrow: string; title: string; groups: readonly OfferGroup[] };
+  /** Show the shared port-call timeline (pre-arrival to departure) under the offer. */
+  showCoordination?: boolean;
+  /** The steps of "Our process", in order. */
+  process: readonly string[];
   related: readonly ServiceSlug[];
-  faq: readonly Faq[];
-  /** Optional approved image. Leave unset until an approved, brand-free asset exists. */
-  image?: ContentImage;
 }
 
 /** A complete service: capability record plus detail content. */

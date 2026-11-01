@@ -1,8 +1,9 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-import { Section } from "@/components/layout/section";
-import { ButtonLink } from "@/components/ui/button";
-import { Eyebrow } from "@/components/ui/eyebrow";
+import { Container } from "@/components/layout/container";
+import { contactDetails } from "@/config/contact";
+import { getWhatsAppHref } from "@/lib/contact";
 
 interface CtaLink {
   label: string;
@@ -10,79 +11,61 @@ interface CtaLink {
 }
 
 interface CtaSectionProps {
-  eyebrow?: string;
+  /** Unique heading id, in case a page ever holds more than one. */
+  id?: string;
   title: string;
   description: string;
   primaryCta: CtaLink;
   secondaryCta?: CtaLink;
-  spacing?: "compact" | "hero";
-  layout?: "centered" | "editorial";
 }
 
-const TITLE_ID = "cta-title";
+const { departments, whatsapp } = contactDetails;
 
-/** Closing call to action. One per page, directly above the footer. */
-export function CtaSection({
-  eyebrow,
-  title,
-  description,
-  primaryCta,
-  secondaryCta,
-  spacing = "compact",
-  layout = "centered",
-}: CtaSectionProps) {
-  const editorial = layout === "editorial";
+/** Each way to reach Oar, shown only when the client has confirmed it (see config/contact.ts). */
+const contactRows = [
+  { label: "Operations", value: departments?.operations, href: departments?.operations && `mailto:${departments.operations}` },
+  { label: "PDA review", value: departments?.pda, href: departments?.pda && `mailto:${departments.pda}` },
+  { label: "Business", value: departments?.businessDevelopment, href: departments?.businessDevelopment && `mailto:${departments.businessDevelopment}` },
+  { label: "WhatsApp", value: whatsapp, href: getWhatsAppHref({ whatsapp }) },
+].filter((row): row is { label: string; value: string; href: string | undefined } => Boolean(row.value));
 
-  const heading = (
-    <h2 id={TITLE_ID} className="type-display">
-      {title}
-    </h2>
-  );
-
-  const actions = (className: string) => (
-    <div className={className}>
-      <ButtonLink href={primaryCta.href} size="lg" className="w-full sm:w-auto">
-        {primaryCta.label}
-        <ArrowRight aria-hidden="true" />
-      </ButtonLink>
-      {secondaryCta ? (
-        <ButtonLink href={secondaryCta.href} variant="secondary" size="lg" className="w-full sm:w-auto">
-          {secondaryCta.label}
-        </ButtonLink>
-      ) : null}
-    </div>
-  );
+/** The closing band: one call to action and every confirmed way to reach Oar. Used at the foot of every page. */
+export function CtaSection({ id = "cta", title, description, primaryCta, secondaryCta }: CtaSectionProps) {
+  const titleId = `${id}-title`;
 
   return (
-    <Section
-      surface="dark-elevated"
-      spacing={spacing}
-      labelledBy={TITLE_ID}
-      className={editorial ? "relative overflow-hidden home-final-cta" : "relative overflow-hidden"}
-    >
-      {!editorial ? <div aria-hidden="true" className="bg-technical-grid absolute inset-0 opacity-40" /> : null}
-      {editorial ? (
-        <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:items-end lg:gap-16">
-          <div className="flex max-w-3xl flex-col items-start gap-5">
-            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-            {heading}
-            <p className="type-body-lg max-w-2xl text-muted">{description}</p>
+    <section aria-labelledby={titleId} className="closing">
+      <Container>
+        <div className="closing__inner">
+          <div>
+            <h2 id={titleId} className="closing__title type-title">
+              {title}
+            </h2>
+            <p className="closing__text">{description}</p>
+            <div className="closing__actions">
+              <Link href={primaryCta.href} className="btn-light">
+                {primaryCta.label}
+                <ArrowRight aria-hidden="true" />
+              </Link>
+              {secondaryCta ? (
+                <Link href={secondaryCta.href} className="link-light">
+                  {secondaryCta.label}
+                </Link>
+              ) : null}
+            </div>
           </div>
-          {actions("flex w-full flex-col gap-3 sm:flex-row lg:justify-end")}
+          {contactRows.length > 0 ? (
+            <dl className="closing__contacts">
+              {contactRows.map(({ label, value, href }) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{href ? <a href={href}>{value}</a> : value}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
         </div>
-      ) : (
-        <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-          {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-          {heading}
-          <p className="type-body-lg max-w-xl text-muted">{description}</p>
-          {actions("flex w-full flex-col gap-4 pt-2 sm:w-auto sm:flex-row")}
-          <div aria-hidden="true" className="mt-6 flex w-full max-w-sm items-center text-link">
-            <span className="size-2.5 rounded-sm bg-current" />
-            <span className="h-px flex-1 border-t border-dashed border-current opacity-60" />
-            <ArrowRight className="size-4" />
-          </div>
-        </div>
-      )}
-    </Section>
+      </Container>
+    </section>
   );
 }

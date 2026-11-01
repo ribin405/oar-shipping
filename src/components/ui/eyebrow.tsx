@@ -7,17 +7,14 @@ interface EyebrowProps {
   children?: ReactNode;
   /** Alternative to children: renders items separated by decorative bullets. */
   items?: readonly string[];
-  /** Draws a bordered chip; use for hero overlines on imagery. */
-  framed?: boolean;
   className?: string;
 }
 
-export function Eyebrow({ children, items, framed = false, className }: EyebrowProps) {
+export function Eyebrow({ children, items, className }: EyebrowProps) {
   return (
     <p
       className={cn(
         "type-eyebrow text-link",
-        framed && "inline-flex whitespace-nowrap rounded-lg border border-white/10 bg-black/35 px-3 py-1.5 backdrop-blur-sm",
         className,
       )}
     >

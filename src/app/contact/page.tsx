@@ -11,16 +11,18 @@ import { NarrativeSection } from "@/components/sections/narrative-section";
 import { PrincipleGrid } from "@/components/sections/principle-grid";
 import { CheckList } from "@/components/ui/check-list";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { JsonLd } from "@/components/seo/json-ld";
 import { contactDetails } from "@/config/contact";
 import { routes } from "@/config/routes";
 import { contactContent, engagementPaths } from "@/content/contact/page";
 import { getContactChannels } from "@/lib/contact";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { buildPageNode } from "@/lib/seo/structured-data";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: { absolute: "Contact Oar Shipping | Marine Logistics & Port Execution" },
+  title: { absolute: "Contact Oar Shipping | Quotes, WhatsApp and Email" },
   description:
-    "Discuss a marine logistics, port-execution or vessel-support requirement with Oar. Share the cargo, location, port and timing so the requirement can be assessed.",
+    "Reach Oar Shipping by WhatsApp or email for quotes, urgent after-hours port calls and PDA review across all UAE ports. Share the vessel, port and timing.",
   path: routes.contact,
 });
 
@@ -30,6 +32,7 @@ export default function ContactPage() {
 
   return (
     <>
+      <JsonLd data={buildPageNode("ContactPage", routes.contact, metadata)} />
       <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Contact" }]} path={routes.contact} />
       <InnerPageHero {...hero} />
 
@@ -41,12 +44,12 @@ export default function ContactPage() {
         aside={<JourneyDiagram heading={intro.diagramHeading} nodes={intro.nodes} />}
       />
 
-      <Section surface="muted" labelledBy="engage-title">
+      <Section labelledBy="engage-title">
         <SectionHeader eyebrow={engage.eyebrow} title={engage.title} titleId="engage-title" />
         <PrincipleGrid principles={engagementPaths} />
       </Section>
 
-      <Section surface="dark" labelledBy="guidance-title">
+      <Section labelledBy="guidance-title">
         <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="flex max-w-2xl flex-col items-start gap-4">
             <Eyebrow>{guidance.eyebrow}</Eyebrow>
