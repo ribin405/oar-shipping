@@ -23,7 +23,7 @@ export function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (character) => ESCAPES[character] ?? character);
 }
 
-function sectionsFor(data: QuoteFormData, serviceTitle: string): Section[] {
+function sectionsFor(data: QuoteFormData, serviceTitle: string | undefined): Section[] {
   return [
     {
       title: "Contact",
@@ -58,7 +58,7 @@ function sectionsFor(data: QuoteFormData, serviceTitle: string): Section[] {
  * contains only the canonical service title (never raw user input), the HTML
  * escapes every value, and only fields the visitor actually filled in appear.
  */
-export function buildQuoteEmail(data: QuoteFormData, serviceTitle: string): QuoteEmail {
+export function buildQuoteEmail(data: QuoteFormData, serviceTitle: string | undefined): QuoteEmail {
   const sections = sectionsFor(data, serviceTitle);
 
   const text = sections
@@ -80,5 +80,5 @@ ${sections
   .join("\n")}
 </div>`;
 
-  return { subject: `New Oar Shipping Quote Request — ${serviceTitle}`, text, html };
+  return { subject: serviceTitle ? `New Oar Shipping Quote Request — ${serviceTitle}` : "New Oar Shipping Quote Request", text, html };
 }

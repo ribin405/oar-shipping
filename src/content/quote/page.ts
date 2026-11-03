@@ -16,7 +16,6 @@ export const quotePageContent = {
     whatsappLead: "Prefer to message?",
   },
   form: {
-    requiredNote: "Fields marked * are required.",
     replyHint: "Email or phone: add at least one so we can reply. The other is optional.",
     submitLabel: "Send request",
     whatsappAlternative: "or message us on WhatsApp",

@@ -125,15 +125,13 @@ export function QuoteForm({ serviceOptions, whatsappHref }: QuoteFormProps) {
 
   return (
     <form onSubmit={handleFormSubmit} method="post" noValidate aria-label="Request a quote" className="flex flex-col gap-5">
-      <p className="type-body-sm text-muted">{copy.requiredNote}</p>
-
       <div className="grid gap-5 sm:grid-cols-2">
-        <FormField label={fields.name.label} error={errors.name?.message} required>
+        <FormField label={fields.name.label} error={errors.name?.message}>
           {(control) => (
             <Input {...register("name")} {...control} placeholder={fields.name.placeholder} autoComplete="name" />
           )}
         </FormField>
-        <FormField label={fields.company.label} error={errors.company?.message} required>
+        <FormField label={fields.company.label} error={errors.company?.message}>
           {(control) => (
             <Input
               {...register("company")}
@@ -170,10 +168,10 @@ export function QuoteForm({ serviceOptions, whatsappHref }: QuoteFormProps) {
       </div>
       <p className="type-body-sm -mt-2 text-muted">{copy.replyHint}</p>
 
-      <FormField label={fields.service.label} error={errors.service?.message} required>
+      <FormField label={fields.service.label} error={errors.service?.message}>
         {(control) => (
           <Select {...register("service")} {...control} defaultValue="">
-            <option value="" disabled>
+            <option value="">
               {fields.service.placeholder}
             </option>
             {serviceOptions.map((option) => (

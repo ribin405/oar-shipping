@@ -46,8 +46,9 @@ export async function deliverQuote(data: QuoteFormData): Promise<QuoteSubmission
   const config = readConfig();
   if (!config) return { success: false, code: "NOT_CONFIGURED" };
 
-  const serviceTitle =
-    data.service === "not-sure"
+  const serviceTitle = !data.service
+    ? undefined
+    : data.service === "not-sure"
       ? "Not sure yet"
       : (serviceCapabilities.find((service) => service.slug === data.service)?.title ?? data.service);
   const email = buildQuoteEmail(data, serviceTitle);

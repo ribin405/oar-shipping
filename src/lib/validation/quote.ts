@@ -2,9 +2,6 @@ import { z } from "zod";
 
 import { quoteServiceValues, type QuoteFormData } from "@/types/quote";
 
-const requiredText = (emptyMessage: string, max: number) =>
-  z.string().trim().min(1, emptyMessage).max(max, `Please keep this to ${max} characters or fewer.`);
-
 const optionalText = (max: number) => z.string().trim().max(max, `Please keep this to ${max} characters or fewer.`).optional();
 
 const emailPattern = z.string().email();
@@ -12,12 +9,13 @@ const emailPattern = z.string().email();
 /**
  * Validation for the quote request. Deliberately permissive: no country-specific
  * phone format, no vessel database checks, no character restrictions on names.
- * The service must be one of the canonical choices. Email and phone are each
- * optional, but one of them is required so the request can be answered.
+ * Name, company and service are optional; a service, when given, must be one of
+ * the canonical choices. Email and phone are each optional, but one of them is
+ * required so the request can be answered.
  */
 const quoteFields = z.object({
-  name: requiredText("Please enter your name.", 120),
-  company: requiredText("Please enter your company name.", 160),
+  name: optionalText(120),
+  company: optionalText(160),
   email: z
     .string()
     .trim()
@@ -30,7 +28,7 @@ const quoteFields = z.object({
     .max(40, "Please keep this to 40 characters or fewer.")
     .refine((value) => value === "" || value.replace(/\D/g, "").length >= 5, "Please enter a valid phone number.")
     .optional(),
-  service: z.enum(quoteServiceValues, { errorMap: () => ({ message: "Please select a service." }) }),
+  service: z.enum(["", ...quoteServiceValues], { errorMap: () => ({ message: "Please select a service." }) }).optional(),
   details: optionalText(2000),
   vesselName: optionalText(120),
   eta: z

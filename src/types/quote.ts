@@ -11,12 +11,12 @@ export type QuoteService = ServiceSlug | "not-sure";
  * `email` and `phone` is required, so every request can be answered.
  */
 export interface QuoteFormData {
-  name: string;
-  company: string;
+  name?: string;
+  company?: string;
   email?: string;
   phone?: string;
   /** Canonical service slug (or "not-sure"), not the display label. */
-  service: QuoteService;
+  service?: QuoteService | "";
   details?: string;
   vesselName?: string;
   /** Expected vessel arrival as a date value (YYYY-MM-DD). */
