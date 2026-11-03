@@ -614,17 +614,13 @@
 }
 
 /* ================= Why Oar ================= */
+/* Desktop (1024px and up): three open columns. Below that the groups become an accordion (see WhyOarGroups):
+   serif rows with a gold number and a ring chevron, one open at a time. Collapsing only applies once the page
+   has hydrated (`data-enhanced`), so without JavaScript everything stays open. */
 .why-grid {
   display: grid;
-  gap: 2.5rem;
+  gap: 0;
   grid-template-columns: minmax(0, 1fr);
-}
-
-@media (min-width: 64rem) {
-  .why-grid {
-    gap: 3rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
 
 .why-col__title {
@@ -638,6 +634,126 @@
   margin: 0 0 0.875rem;
   color: var(--muted);
   font-size: 0.875rem;
+}
+
+@media (min-width: 64rem) {
+  .why-grid {
+    gap: 3rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 63.999rem) {
+  .why-col {
+    border-bottom: 1px solid var(--border);
+    transition: border-color 300ms var(--ease-standard);
+  }
+
+  .why-col:first-child {
+    border-top: 1px solid var(--color-deep-navy);
+  }
+
+  .why-col--open {
+    border-bottom-color: var(--color-gold-deep);
+  }
+
+  .why-col__row {
+    margin: 0;
+  }
+
+  .why-col__toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .why-col__no {
+    width: 1.5rem;
+    flex: none;
+    color: var(--color-gold-deep);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .why-col__name {
+    flex: 1;
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 5.6vw, 1.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .why-col__chev {
+    display: grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex: none;
+    place-items: center;
+    border: 1px solid var(--color-gold-deep);
+    border-radius: 50%;
+    color: var(--color-gold-deep);
+    transition:
+      transform 300ms var(--ease-standard),
+      background-color 300ms var(--ease-standard),
+      color 300ms var(--ease-standard);
+  }
+
+  .why-col__chev svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .why-col--open .why-col__chev {
+    background: var(--color-gold-deep);
+    color: #fff;
+    transform: rotate(180deg);
+  }
+
+  .why-col__panel {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 350ms var(--ease-standard);
+  }
+
+  .why-col__inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .why-col__inner > :last-child {
+    margin-bottom: 1rem;
+  }
+
+  [data-enhanced] .why-col:not(.why-col--open) .why-col__panel {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows 350ms var(--ease-standard),
+      visibility 0s linear 350ms;
+  }
+
+  /* A group's own heading is the toggle, so its first rule is not needed under it. */
+  .why-col .ruled {
+    border-top-color: var(--border);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-col,
+  .why-col__chev,
+  .why-col__panel {
+    transition: none !important;
+  }
 }
 
 /* ================= PDA review ================= */

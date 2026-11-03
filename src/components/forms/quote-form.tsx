@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useForm } from "react-hook-form";
 
 import { FormField } from "@/components/forms/form-field";
@@ -21,27 +21,27 @@ interface ServiceOption {
   label: string;
 }
 
+interface QuoteFormProps {
+  serviceOptions: readonly ServiceOption[];
+  /** Click-to-chat link for the verified WhatsApp number, when there is one. */
+  whatsappHref?: string;
+}
+
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
 const { form: copy, failure } = quotePageContent;
 const { fields } = copy;
 
-function FormGroup({ legend, children }: { legend: string; children: ReactNode }) {
-  return (
-    <fieldset className="flex flex-col gap-5 border-t border-border pt-6">
-      <legend className="type-h4 float-left mb-1 w-full text-foreground">{legend}</legend>
-      <div className="grid w-full gap-5 sm:grid-cols-2">{children}</div>
-    </fieldset>
-  );
-}
-
 /**
- * Quote request form. Validates with Zod through React Hook Form and hands the
- * validated data to `submitQuote`. Nothing is stored or sent from here.
+ * The quote request form: six fields on one screen and an optional vessel
+ * block that stays folded until opened. Validates with Zod through React Hook
+ * Form and hands the validated data to `submitQuote`. Nothing is stored or
+ * sent from here.
  */
-export function QuoteForm({ serviceOptions }: { serviceOptions: readonly ServiceOption[] }) {
+export function QuoteForm({ serviceOptions, whatsappHref }: QuoteFormProps) {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [vesselOpen, setVesselOpen] = useState(false);
   const confirmationRef = useRef<HTMLHeadingElement>(null);
   const [honeypot, setHoneypot] = useState("");
   const submittingRef = useRef(false);
@@ -55,53 +55,45 @@ export function QuoteForm({ serviceOptions }: { serviceOptions: readonly Service
     formState: { errors },
   } = useForm<QuoteFormData>({
     resolver: zodResolver(quoteSchema),
-    defaultValues: {
-      name: "",
-      company: "",
-      email: "",
-      phone: "",
-      country: "",
-      cargoType: "",
-      pickupLocation: "",
-      deliveryPort: "",
-      vesselName: "",
-      eta: "",
-      cargoDetails: "",
-      requiredDeliveryDate: "",
-      additionalRequirements: "",
-    },
+    defaultValues: { name: "", company: "", email: "", phone: "", details: "", vesselName: "", eta: "" },
   });
 
   useEffect(() => {
     if (status === "success") confirmationRef.current?.focus();
   }, [status]);
 
-  const onSubmit = handleSubmit(async (data) => {
-    setStatus("submitting");
-    setErrorMessage(undefined);
+  const onSubmit = handleSubmit(
+    async (data) => {
+      setStatus("submitting");
+      setErrorMessage(undefined);
 
-    try {
-      const result = await submitQuote({ ...data, [HONEYPOT_FIELD]: honeypot });
+      try {
+        const result = await submitQuote({ ...data, [HONEYPOT_FIELD]: honeypot });
 
-      if (result.success) {
-        setStatus("success");
-        return;
-      }
+        if (result.success) {
+          setStatus("success");
+          return;
+        }
 
-      setStatus("error");
-      if (result.code === "VALIDATION_ERROR") {
-        const entries = Object.entries(result.fieldErrors) as [keyof QuoteFormData, string][];
-        for (const [field, message] of entries) setError(field, { message });
-        if (entries[0]) setFocus(entries[0][0]);
-        setErrorMessage(failure.validation);
-      } else {
+        setStatus("error");
+        if (result.code === "VALIDATION_ERROR") {
+          const entries = Object.entries(result.fieldErrors) as [keyof QuoteFormData, string][];
+          for (const [field, message] of entries) setError(field, { message });
+          if (entries[0]) setFocus(entries[0][0]);
+          setErrorMessage(failure.validation);
+        } else {
+          setErrorMessage(failure.generic);
+        }
+      } catch {
+        setStatus("error");
         setErrorMessage(failure.generic);
       }
-    } catch {
-      setStatus("error");
-      setErrorMessage(failure.generic);
-    }
-  });
+    },
+    // A problem inside the folded vessel block would be invisible, so open it.
+    (invalid) => {
+      if (invalid.vesselName || invalid.eta) setVesselOpen(true);
+    },
+  );
 
   // A ref (not state) guards against a second submit landing before the first re-render.
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -121,8 +113,10 @@ export function QuoteForm({ serviceOptions }: { serviceOptions: readonly Service
     return (
       <QuoteConfirmation
         headingRef={confirmationRef}
+        whatsappHref={whatsappHref}
         onReset={() => {
           reset();
+          setVesselOpen(false);
           setStatus("idle");
         }}
       />
@@ -130,10 +124,10 @@ export function QuoteForm({ serviceOptions }: { serviceOptions: readonly Service
   }
 
   return (
-    <form onSubmit={handleFormSubmit} method="post" noValidate aria-label="Request a quote" className="flex flex-col gap-8">
-      <p className="type-body text-muted">{copy.requiredNote}</p>
+    <form onSubmit={handleFormSubmit} method="post" noValidate aria-label="Request a quote" className="flex flex-col gap-5">
+      <p className="type-body-sm text-muted">{copy.requiredNote}</p>
 
-      <FormGroup legend={copy.groups.contact}>
+      <div className="grid gap-5 sm:grid-cols-2">
         <FormField label={fields.name.label} error={errors.name?.message} required>
           {(control) => (
             <Input {...register("name")} {...control} placeholder={fields.name.placeholder} autoComplete="name" />
@@ -149,7 +143,7 @@ export function QuoteForm({ serviceOptions }: { serviceOptions: readonly Service
             />
           )}
         </FormField>
-        <FormField label={fields.email.label} error={errors.email?.message} required>
+        <FormField label={fields.email.label} error={errors.email?.message}>
           {(control) => (
             <Input
               {...register("email")}
@@ -161,7 +155,7 @@ export function QuoteForm({ serviceOptions }: { serviceOptions: readonly Service
             />
           )}
         </FormField>
-        <FormField label={fields.phone.label} error={errors.phone?.message} required>
+        <FormField label={fields.phone.label} error={errors.phone?.message}>
           {(control) => (
             <Input
               {...register("phone")}
@@ -173,88 +167,47 @@ export function QuoteForm({ serviceOptions }: { serviceOptions: readonly Service
             />
           )}
         </FormField>
-        <FormField label={fields.country.label} error={errors.country?.message} required>
-          {(control) => (
-            <Input
-              {...register("country")}
-              {...control}
-              placeholder={fields.country.placeholder}
-              autoComplete="country-name"
-            />
-          )}
-        </FormField>
-      </FormGroup>
+      </div>
+      <p className="type-body-sm -mt-2 text-muted">{copy.replyHint}</p>
 
-      <FormGroup legend={copy.groups.requirement}>
-        <FormField label={fields.service.label} error={errors.service?.message} required>
-          {(control) => (
-            <Select {...register("service")} {...control} defaultValue="">
-              <option value="" disabled>
-                {fields.service.placeholder}
+      <FormField label={fields.service.label} error={errors.service?.message} required>
+        {(control) => (
+          <Select {...register("service")} {...control} defaultValue="">
+            <option value="" disabled>
+              {fields.service.placeholder}
+            </option>
+            {serviceOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
-              {serviceOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </Select>
-          )}
-        </FormField>
-        <FormField label={fields.cargoType.label} error={errors.cargoType?.message} required>
-          {(control) => <Input {...register("cargoType")} {...control} placeholder={fields.cargoType.placeholder} />}
-        </FormField>
-        <div className="sm:col-span-2">
-          <FormField
-            label={fields.cargoDetails.label}
-            helperText={fields.cargoDetails.helper}
-            error={errors.cargoDetails?.message}
-          >
+            ))}
+          </Select>
+        )}
+      </FormField>
+
+      <FormField label={fields.details.label} error={errors.details?.message}>
+        {(control) => <Textarea {...register("details")} {...control} placeholder={fields.details.placeholder} />}
+      </FormField>
+
+      <details
+        className="quote-optional"
+        open={vesselOpen}
+        onToggle={(event) => setVesselOpen(event.currentTarget.open)}
+      >
+        <summary>
+          {copy.vesselSummary} <span className="type-body-sm text-muted">{copy.vesselOptional}</span>
+        </summary>
+        <div className="grid gap-5 pt-4 sm:grid-cols-2">
+          <FormField label={fields.vesselName.label} error={errors.vesselName?.message}>
             {(control) => (
-              <Textarea {...register("cargoDetails")} {...control} placeholder={fields.cargoDetails.placeholder} />
+              <Input {...register("vesselName")} {...control} placeholder={fields.vesselName.placeholder} autoComplete="off" />
             )}
           </FormField>
-        </div>
-      </FormGroup>
-
-      <FormGroup legend={copy.groups.movement}>
-        <FormField label={fields.pickupLocation.label} error={errors.pickupLocation?.message} required>
-          {(control) => (
-            <Input {...register("pickupLocation")} {...control} placeholder={fields.pickupLocation.placeholder} />
-          )}
-        </FormField>
-        <FormField label={fields.deliveryPort.label} error={errors.deliveryPort?.message} required>
-          {(control) => (
-            <Input {...register("deliveryPort")} {...control} placeholder={fields.deliveryPort.placeholder} />
-          )}
-        </FormField>
-        <FormField label={fields.vesselName.label} error={errors.vesselName?.message} required>
-          {(control) => <Input {...register("vesselName")} {...control} placeholder={fields.vesselName.placeholder} />}
-        </FormField>
-        <FormField label={fields.eta.label} helperText={fields.eta.helper} error={errors.eta?.message}>
-          {(control) => <Input {...register("eta")} {...control} type="datetime-local" />}
-        </FormField>
-        <FormField
-          label={fields.requiredDeliveryDate.label}
-          helperText={fields.requiredDeliveryDate.helper}
-          error={errors.requiredDeliveryDate?.message}
-        >
-          {(control) => <Input {...register("requiredDeliveryDate")} {...control} type="date" />}
-        </FormField>
-      </FormGroup>
-
-      <FormGroup legend={copy.groups.additional}>
-        <div className="sm:col-span-2">
-          <FormField label={fields.additionalRequirements.label} error={errors.additionalRequirements?.message}>
-            {(control) => (
-              <Textarea
-                {...register("additionalRequirements")}
-                {...control}
-                placeholder={fields.additionalRequirements.placeholder}
-              />
-            )}
+          <FormField label={fields.eta.label} error={errors.eta?.message}>
+            {(control) => <Input {...register("eta")} {...control} type="date" />}
           </FormField>
         </div>
-      </FormGroup>
+      </details>
 
       <div aria-hidden="true" inert className="sr-only">
         <label>
@@ -276,9 +229,16 @@ export function QuoteForm({ serviceOptions }: { serviceOptions: readonly Service
         </p>
       ) : null}
 
-      <Button type="submit" size="lg" loading={status === "submitting"} className="w-full sm:w-auto sm:self-start">
-        {copy.submitLabel}
-      </Button>
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <Button type="submit" size="lg" loading={status === "submitting"} className="w-full sm:w-auto">
+          {copy.submitLabel}
+        </Button>
+        {whatsappHref ? (
+          <a href={whatsappHref} className="type-body text-link underline underline-offset-4">
+            {copy.whatsappAlternative}
+          </a>
+        ) : null}
+      </div>
     </form>
   );
 }

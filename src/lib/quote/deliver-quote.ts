@@ -46,14 +46,18 @@ export async function deliverQuote(data: QuoteFormData): Promise<QuoteSubmission
   const config = readConfig();
   if (!config) return { success: false, code: "NOT_CONFIGURED" };
 
-  const serviceTitle = serviceCapabilities.find((service) => service.slug === data.service)?.title ?? data.service;
+  const serviceTitle =
+    data.service === "not-sure"
+      ? "Not sure yet"
+      : (serviceCapabilities.find((service) => service.slug === data.service)?.title ?? data.service);
   const email = buildQuoteEmail(data, serviceTitle);
 
   try {
     const { error } = await new Resend(config.apiKey).emails.send({
       from: config.from,
       to: config.to,
-      replyTo: data.email,
+      // Reply-To only when the visitor gave an email; a phone-only request is answered by phone.
+      ...(data.email ? { replyTo: data.email } : {}),
       subject: email.subject,
       text: email.text,
       html: email.html,

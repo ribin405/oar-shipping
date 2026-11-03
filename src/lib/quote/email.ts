@@ -32,28 +32,22 @@ function sectionsFor(data: QuoteFormData, serviceTitle: string): Section[] {
         { label: "Company", value: data.company },
         { label: "Email", value: data.email },
         { label: "Phone", value: data.phone },
-        { label: "Country", value: data.country },
       ],
     },
     {
       title: "Requirement",
       rows: [
         { label: "Service", value: serviceTitle },
-        { label: "Cargo type", value: data.cargoType },
-        { label: "Cargo details", value: data.cargoDetails },
+        { label: "Service details", value: data.details },
       ],
     },
     {
-      title: "Movement",
+      title: "Vessel",
       rows: [
-        { label: "Pickup / Supplier Location", value: data.pickupLocation },
-        { label: "Delivery port", value: data.deliveryPort },
         { label: "Vessel name", value: data.vesselName },
         { label: "Vessel ETA", value: data.eta },
-        { label: "Required delivery date", value: data.requiredDeliveryDate },
       ],
     },
-    { title: "Additional information", rows: [{ label: "Additional requirements", value: data.additionalRequirements }] },
   ]
     .map((section) => ({ ...section, rows: section.rows.filter((row) => row.value && row.value.trim() !== "") }))
     .filter((section) => section.rows.length > 0);
