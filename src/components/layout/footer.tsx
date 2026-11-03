@@ -54,7 +54,23 @@ export function Footer() {
           </nav>
 
           <div className="flex flex-col gap-4 md:col-span-2 lg:col-span-3">
-            <h2 className="type-eyebrow text-link">Connect</h2>
+            {contactDetails.offices?.length ? (
+              <>
+                <h2 className="type-eyebrow text-link">Offices</h2>
+                <dl className="grid gap-3">
+                  {contactDetails.offices.map(({ role, company, locality }) => (
+                    <div key={company}>
+                      <dt className="type-body-sm text-muted">{role}</dt>
+                      <dd className="type-body font-medium">
+                        {company}
+                        <span className="block font-normal text-muted">{locality}, UAE</span>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </>
+            ) : null}
+            <h2 className="type-eyebrow text-link mt-2">Connect</h2>
             <ContactChannelList channels={channels} />
             <ArrowLink href={routes.contact} className="py-2">
               Contact Oar

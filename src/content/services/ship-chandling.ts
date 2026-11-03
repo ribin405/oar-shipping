@@ -14,10 +14,10 @@ export const shipChandling: ServiceDetailContent = {
     title: "Our services",
     groups: [
       {
-        title: "Provisions & Bonded Stores",
+        title: "Provisions Stores",
         items: [
           "Fresh, frozen and dry provisions",
-          "Galley stores and beverages",
+          "Galley stores ",
           "Bonded stores",
         ],
       },

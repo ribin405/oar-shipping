@@ -27,6 +27,5 @@ export const aboutContent = {
   group: {
     eyebrow: "Group",
     title: "Oar Shipping Group",
-    companies: ["Oar Technologies FZ LLC", "Al Mejdaf Shipping LLC"],
   },
 };

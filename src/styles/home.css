@@ -14,7 +14,7 @@
   min-height: max(37.5rem, 100svh);
   flex-direction: column;
   justify-content: flex-end;
-  margin-top: -4.25rem;
+  margin-top: -3.25rem;
   overflow: hidden;
   background: #071521;
   color: #fff;
@@ -148,9 +148,9 @@
   display: none;
 }
 
-/* Phones and tablets: one left-aligned stack (kicker, headline, two full-width actions) sitting low on the
-   photograph. Sizes scale with the screen width so a 360px phone and a 430px phone both set the headline
-   on three lines. */
+/* Phones and tablets (below 1024px): the photograph fills the upper part of the screen and melts into navy;
+   the headline, a gold "all UAE ports" line and two compact full-width actions sit on the navy below it.
+   Sizes scale with the screen width, so every phone sets the headline on two lines. */
 
 @media (max-width: 63.999rem) {
   /* The photograph takes the upper part of the screen and melts into navy, so the ship stays clear of the text. */
@@ -167,43 +167,59 @@
   }
 
   .hero__copy {
-    padding-block: 7rem calc(5.25rem + env(safe-area-inset-bottom, 0px));
+    padding-block: 7rem calc(1.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* The kicker moves under the headline, in gold on the navy, so no part of the photograph is ever behind it. */
+  .hero__stack {
+    display: flex;
+    flex-direction: column;
+    padding-inline: clamp(1rem, 6vw, 3rem);
+  }
+
+  .hero__title {
+    order: 1;
   }
 
   .hero__kick {
-    gap: 0.625rem;
-    margin-bottom: 1rem;
-    font-size: clamp(0.625rem, 2.9vw, 0.75rem);
+    order: 2;
+    margin-bottom: 1.25rem;
+    color: #f3d9a0;
+    font-size: clamp(0.6875rem, 3.1vw, 0.8125rem);
     letter-spacing: 0.12em;
   }
 
   .hero__kick::before {
-    width: 1.5rem;
+    display: none;
+  }
+
+  .hero__actions {
+    order: 3;
   }
 
   .hero__title {
-    max-width: 10ch;
-    margin-bottom: 1.75rem;
-    font-size: clamp(2.5rem, 12.8vw, 4.75rem);
+    max-width: none;
+    margin-bottom: 0.875rem;
+    font-size: clamp(2.25rem, 11.4vw, 4.75rem);
     line-height: 1;
   }
 
   .hero__actions {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.75rem;
+    gap: 0.5rem;
     max-width: 26rem;
   }
 
   .hero .btn-light,
   .hero .link-light {
     display: flex;
-    min-height: 3.25rem;
+    min-height: 2.5rem;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1.25rem;
-    border-radius: 2px;
-    font-size: 1rem;
+    padding: 0 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.9375rem;
     text-decoration: none;
   }
 
@@ -215,8 +231,8 @@
   .hero .btn-light svg,
   .hero .link-light svg {
     display: block;
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1rem;
+    height: 1rem;
   }
 }
 
@@ -232,13 +248,15 @@
 .facts > div {
   display: flex;
   flex-direction: column-reverse;
-  gap: 0.25rem;
-  padding: 1rem 1rem 1.125rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 1.5rem 1rem;
   border-left: 1px solid var(--border);
+  text-align: center;
 }
 
 .facts > div:nth-child(odd) {
-  padding-left: 0;
   border-left: 0;
 }
 
@@ -268,13 +286,12 @@
   }
 
   .facts > div {
-    padding: 1.25rem 1.5rem 1.375rem;
+    padding: 1.75rem 1.5rem;
     border-top: 0 !important;
     border-left: 1px solid var(--border) !important;
   }
 
   .facts > div:first-child {
-    padding-left: 0;
     border-left: 0 !important;
   }
 }

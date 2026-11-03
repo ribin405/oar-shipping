@@ -20,7 +20,7 @@ const link = (path: string): string => absoluteUrl(path) ?? path;
  * the site states.
  */
 export function buildLlmsTxt(): string {
-  const { departments, whatsapp } = contactDetails;
+  const { whatsapp } = contactDetails;
   const whatsappHref = getWhatsAppHref({ whatsapp });
   const lines: string[] = [
     `# ${siteConfig.name}`,
@@ -39,6 +39,9 @@ export function buildLlmsTxt(): string {
     "## How a port call runs",
     ...portCallContent.stages.map(({ label, title, description }) => `- ${label} ${title}: ${description}`),
     "",
+    "## Offices",
+    ...(contactDetails.offices ?? []).map(({ role, company, locality }) => `- ${role}: ${company}, ${locality}, UAE`),
+    "",
     "## Company",
     `- [About](${link(routes.about)})`,
     `- [Why Oar](${link(routes.whyOar)})`,
@@ -47,10 +50,7 @@ export function buildLlmsTxt(): string {
     "## Contact",
     `- [Request a quote](${link(routes.requestQuote)})`,
     `- [Contact page](${link(routes.contact)})`,
-    ...(contactDetails.email ? [`- General: ${contactDetails.email}`] : []),
-    ...(departments?.operations ? [`- Operations: ${departments.operations}`] : []),
-    ...(departments?.pda ? [`- PDA review: ${departments.pda}`] : []),
-    ...(departments?.businessDevelopment ? [`- Business development: ${departments.businessDevelopment}`] : []),
+    ...(contactDetails.email ? [`- Email: ${contactDetails.email}`] : []),
     ...(whatsapp && whatsappHref ? [`- WhatsApp: ${whatsapp} (${whatsappHref})`] : []),
     "",
   ];

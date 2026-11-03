@@ -105,8 +105,8 @@ export function UaePortMap() {
 
         <circle className="pm-compass" cx={800} cy={70} r={26} />
         <path className="pm-dot" d="M800 48 L807 78 L800 73 L793 78 Z" />
-        <text className="pm-name pm-small" x={800} y={38} textAnchor="middle">N</text>
-        <text className="pm-sub pm-small" x={852} y={692} textAnchor="end">Schematic, not for navigation</text>
+        <text className="pm-name pm-small" x={800} y={38} textAnchor="middle"> </text>
+        <text className="pm-sub pm-small" x={852} y={692} textAnchor="end"></text>
       </svg>
     </figure>
   );

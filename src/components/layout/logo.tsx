@@ -14,7 +14,7 @@ export function Logo({ className }: { className?: string }) {
     <Link href={routes.home} aria-label={`${siteConfig.name} home`} className={cn("inline-flex shrink-0 rounded-sm", className)}>
       <span
         aria-hidden="true"
-        className="aspect-[640/248] h-8 bg-current mask-[url(/images/brand/oar-logo.png)] mask-contain mask-center mask-no-repeat lg:h-9"
+        className="aspect-[640/248] h-6 bg-current md:h-7 mask-[url(/images/brand/oar-logo.png)] mask-contain mask-center mask-no-repeat lg:h-9"
       />
     </Link>
   );

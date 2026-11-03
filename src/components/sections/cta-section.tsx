@@ -19,13 +19,11 @@ interface CtaSectionProps {
   secondaryCta?: CtaLink;
 }
 
-const { departments, whatsapp } = contactDetails;
+const { email, whatsapp } = contactDetails;
 
-/** Each way to reach Oar, shown only when the client has confirmed it (see config/contact.ts). */
+/** Each way to reach Oar, shown only when it is set in config/contact.ts. */
 const contactRows = [
-  { label: "Operations", value: departments?.operations, href: departments?.operations && `mailto:${departments.operations}` },
-  { label: "PDA review", value: departments?.pda, href: departments?.pda && `mailto:${departments.pda}` },
-  { label: "Business", value: departments?.businessDevelopment, href: departments?.businessDevelopment && `mailto:${departments.businessDevelopment}` },
+  { label: "Email", value: email, href: email && `mailto:${email}` },
   { label: "WhatsApp", value: whatsapp, href: getWhatsAppHref({ whatsapp }) },
 ].filter((row): row is { label: string; value: string; href: string | undefined } => Boolean(row.value));
 

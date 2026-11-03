@@ -43,3 +43,8 @@ export const portMarkers: readonly PortMarker[] = [
 
 /** The port marked as Oar's head office. */
 export const headOfficePort: PortMarker["name"] = "Fujairah";
+
+/** A listed port's marker (with its approximate position), by name. */
+export function getPortMarker(name: PortMarker["name"]): PortMarker | undefined {
+  return portMarkers.find((marker) => marker.name === name);
+}

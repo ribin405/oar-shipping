@@ -66,7 +66,7 @@ export function MobileNavigation({ items, cta }: MobileNavigationProps) {
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
-        className="-mr-2"
+        className="-mr-1 h-9 px-3 text-sm"
       >
         {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
         {open ? "Close" : "Menu"}
@@ -77,15 +77,15 @@ export function MobileNavigation({ items, cta }: MobileNavigationProps) {
         aria-label="Primary"
         hidden={!open}
         onClick={handlePanelClick}
-        className="fixed inset-x-3 top-[4.75rem] max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain rounded-xl border border-border bg-white/95 shadow-overlay backdrop-blur-xl md:inset-x-6"
+        className="fixed inset-x-3 top-[3.75rem] max-h-[calc(100dvh-4.5rem)] overflow-y-auto overscroll-contain rounded-xl border border-border bg-white/95 shadow-overlay backdrop-blur-xl md:inset-x-6"
       >
-        <div className="flex w-full flex-col gap-6 p-5">
+        <div className="flex w-full flex-col gap-4 p-4">
           <ul className="flex flex-col">
             {items.map((item) => (
               <li key={item.href} className="border-b border-border">
                 <NavLink
                   href={item.href}
-                  className="type-h4 flex items-center justify-between py-3.5 text-muted transition-colors duration-200 ease-standard hover:text-foreground"
+                  className="flex items-center justify-between py-2.5 text-[0.9375rem] leading-6 font-medium text-muted transition-colors duration-200 ease-standard hover:text-foreground"
                   activeClassName="text-gold-deep"
                 >
                   {item.label}
@@ -93,7 +93,7 @@ export function MobileNavigation({ items, cta }: MobileNavigationProps) {
               </li>
             ))}
           </ul>
-          <ButtonLink href={cta.href} size="lg" fullWidth>
+          <ButtonLink href={cta.href} fullWidth>
             {cta.label}
           </ButtonLink>
         </div>

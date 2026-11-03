@@ -9,18 +9,18 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    padding-top: 0.75rem;
+    padding-top: 0.5rem;
     pointer-events: none;
   }
 
   .site-header__bar {
     position: relative;
     display: flex;
-    height: 3.5rem;
+    height: 2.75rem;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding-inline: 1.25rem 0.5rem;
+    padding-inline: 1rem 0.25rem;
     pointer-events: auto;
     isolation: isolate;
   }
@@ -39,6 +39,10 @@
   }
 
   @media (min-width: 64rem) {
+    .site-header {
+      padding-top: 0.75rem;
+    }
+
     .site-header__bar {
       height: 3.75rem;
       padding-inline: 1.5rem 0.625rem;

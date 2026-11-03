@@ -39,7 +39,7 @@ export function HeroSection() {
       ) : null}
 
       <div className="hero__copy">
-        <Container>
+        <Container className="hero__stack">
           <p className="hero__kick">{eyebrow.join(" · ")}</p>
           <h1 id="hero-title" className="hero__title">
             {words.map((word, index) => (

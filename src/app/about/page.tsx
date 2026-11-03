@@ -7,6 +7,7 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { DivisionsSection } from "@/components/sections/divisions-section";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
 import { JsonLd } from "@/components/seo/json-ld";
+import { contactDetails } from "@/config/contact";
 import { routes } from "@/config/routes";
 import { aboutContent } from "@/content/about/page";
 import { finalCtaContent } from "@/content/home/final-cta";
@@ -43,9 +44,12 @@ export default function AboutPage() {
       <Section labelledBy="group-title">
         <SectionHeader index="03" eyebrow={group.eyebrow} title={group.title} titleId="group-title" />
         <ul className="ruled">
-          {group.companies.map((company) => (
+          {(contactDetails.offices ?? []).map(({ company, role, locality }) => (
             <li key={company}>
               <strong>{company}</strong>
+              <span>
+                {role} · {locality}, UAE
+              </span>
             </li>
           ))}
         </ul>

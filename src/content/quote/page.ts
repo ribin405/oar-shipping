@@ -1,5 +1,4 @@
 import { routes } from "@/config/routes";
-import { contactContent } from "@/content/contact/page";
 
 export const quotePageContent = {
   hero: {
@@ -54,7 +53,16 @@ export const quotePageContent = {
   aside: {
     title: "What to share",
     description: "The more context you provide, the easier it is to understand the movement requirement.",
-    items: contactContent.guidance.items,
+    items: [
+      "Cargo type or requirement",
+      "Pickup or supplier location",
+      "Delivery port",
+      "Vessel name",
+      "Estimated arrival or required delivery timing",
+      "Cargo dimensions or quantity where relevant",
+      "Documentation or clearance requirements",
+      "Any special handling requirements",
+    ],
   },
   cta: {
     title: "Prefer to talk it through first?",

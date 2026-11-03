@@ -11,8 +11,8 @@ export const pdaReview: ServiceDetailContent = {
     description:
       "Independent review of the agent's Proforma Disbursement Account for ship owners and managers, before you pay.",
   },
-  heroAction: contactDetails.departments?.pda
-    ? { label: "Send your PDA", href: `mailto:${contactDetails.departments.pda}?subject=PDA%20review%20request` }
+  heroAction: contactDetails.email
+    ? { label: "Send your PDA", href: `mailto:${contactDetails.email}?subject=PDA%20review%20request` }
     : { label: "Ask about pricing", href: routes.contact },
   offer: {
     eyebrow: "What We Offer",

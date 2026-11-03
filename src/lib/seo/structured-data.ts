@@ -52,21 +52,12 @@ const serviceId = (slug: string): string | undefined => {
   return url ? `${url}#service` : undefined;
 };
 
-/** One ContactPoint per confirmed role mailbox. */
+/** The one confirmed mailbox as the organization's ContactPoint. */
 function contactPoints(): JsonLdNode[] {
-  const { email, departments } = contactDetails;
-  const roles = [
-    { contactType: "customer service", email },
-    { contactType: "operations", email: departments?.operations },
-    { contactType: "PDA review", email: departments?.pda },
-    { contactType: "business development", email: departments?.businessDevelopment },
-  ];
-
-  return roles.flatMap(({ contactType, email: address }) =>
-    address
-      ? [{ "@type": "ContactPoint", contactType, email: address, areaServed: "AE", availableLanguage: "English" }]
-      : [],
-  );
+  const { email } = contactDetails;
+  return email
+    ? [{ "@type": "ContactPoint", contactType: "customer service", email, areaServed: "AE", availableLanguage: "English" }]
+    : [];
 }
 
 /** Organization, WebSite and the homepage WebPage as one connected graph. */
@@ -95,6 +86,11 @@ export function buildSiteGraph(): JsonLdNode | undefined {
         logo,
         image: siteConfig.ogImage ? absoluteUrl(siteConfig.ogImage.path) : undefined,
         address: { "@type": "PostalAddress", addressLocality: "Fujairah", addressCountry: "AE" },
+        location: (contactDetails.offices ?? []).map(({ role, company, locality }) => ({
+          "@type": "Place",
+          name: `${role}: ${company}`,
+          address: { "@type": "PostalAddress", addressLocality: locality, addressCountry: "AE" },
+        })),
         areaServed: COUNTRY,
         knowsAbout: serviceCapabilities.map(({ title }) => title),
         contactPoint: contactPoints(),

@@ -1,7 +1,38 @@
-import { contactDetails } from "@/config/contact";
+"use client";
 
-/** Fixed, brand-colored shortcut to Oar's verified WhatsApp contact. */
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { contactDetails } from "@/config/contact";
+import { cn } from "@/lib/utils";
+
+/** Distance kept free at the foot of the viewport when deciding that the hero is still on screen. */
+const HERO_CLEARANCE = "0px 0px -88px 0px";
+
+/**
+ * Fixed, brand-colored shortcut to Oar's verified WhatsApp contact. On phones
+ * and tablets it stays out of the way while a page hero is on screen: the hero
+ * has its own "WhatsApp us" button at its foot, and the round button would sit
+ * on top of it.
+ */
 export function WhatsAppFab() {
+  const pathname = usePathname();
+  const [overHero, setOverHero] = useState(false);
+
+  useEffect(() => {
+    const hero = document.querySelector(".hero");
+    if (!hero || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(([entry]) => setOverHero(entry.isIntersecting), {
+      rootMargin: HERO_CLEARANCE,
+    });
+    observer.observe(hero);
+    return () => {
+      observer.disconnect();
+      setOverHero(false);
+    };
+  }, [pathname]);
+
   const number = contactDetails.whatsapp?.replace(/\D/g, "");
   if (!number) return null;
 
@@ -11,7 +42,10 @@ export function WhatsAppFab() {
       target="_blank"
       rel="noreferrer"
       aria-label="Chat with Oar Shipping on WhatsApp"
-      className="fixed right-5 bottom-5 z-30 flex size-14 items-center justify-center rounded-full border border-signal-cyan/50 bg-marine-blue text-white shadow-overlay transition-colors duration-200 ease-standard hover:bg-ocean focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal-cyan sm:right-7 sm:bottom-7"
+      className={cn(
+        "fixed right-5 bottom-5 z-30 flex size-14 items-center justify-center rounded-full border border-signal-cyan/50 bg-marine-blue text-white shadow-overlay transition-[opacity,visibility,background-color] duration-200 ease-standard hover:bg-ocean focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal-cyan sm:right-7 sm:bottom-7",
+        overHero && "max-lg:invisible max-lg:opacity-0",
+      )}
     >
       <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" className="size-7">
         <path

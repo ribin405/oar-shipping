@@ -24,7 +24,7 @@ interface HeroContent {
 }
 
 export const heroContent: HeroContent = {
-  eyebrow: ["Fujairah, UAE", "All UAE Ports", "24/7"],
+  eyebrow: [ "All UAE Ports", "24/7"],
   title: "One Partner. Every Marine Service.",
   description:
     "Ship chandling, customs clearance, logistics and marine services under one roof, with independent PDA review so owners know every dollar is worth it.",

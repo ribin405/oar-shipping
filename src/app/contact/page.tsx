@@ -6,15 +6,12 @@ import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { ContactChannelList } from "@/components/sections/contact-channels";
 import { CtaSection } from "@/components/sections/cta-section";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
-import { JourneyDiagram } from "@/components/sections/journey-diagram";
-import { NarrativeSection } from "@/components/sections/narrative-section";
-import { PrincipleGrid } from "@/components/sections/principle-grid";
-import { CheckList } from "@/components/ui/check-list";
-import { Eyebrow } from "@/components/ui/eyebrow";
+import { OfficesSection } from "@/components/sections/offices-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import { contactDetails } from "@/config/contact";
 import { routes } from "@/config/routes";
-import { contactContent, engagementPaths } from "@/content/contact/page";
+import { contactContent } from "@/content/contact/page";
+import { finalCtaContent } from "@/content/home/final-cta";
 import { getContactChannels } from "@/lib/contact";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { buildPageNode } from "@/lib/seo/structured-data";
@@ -26,8 +23,9 @@ export const metadata: Metadata = buildPageMetadata({
   path: routes.contact,
 });
 
+/** Contact: the 24/7 desk, the two offices on the east-coast map, and the direct channels. */
 export default function ContactPage() {
-  const { hero, intro, engage, guidance, details, cta } = contactContent;
+  const { hero, offices, details } = contactContent;
   const channels = getContactChannels(contactDetails);
 
   return (
@@ -35,45 +33,14 @@ export default function ContactPage() {
       <JsonLd data={buildPageNode("ContactPage", routes.contact, metadata)} />
       <Breadcrumbs items={[{ label: "Home", href: routes.home }, { label: "Contact" }]} path={routes.contact} />
       <InnerPageHero {...hero} />
-
-      <NarrativeSection
-        id="intro"
-        eyebrow={intro.eyebrow}
-        title={intro.title}
-        paragraphs={intro.paragraphs}
-        aside={<JourneyDiagram heading={intro.diagramHeading} nodes={intro.nodes} />}
-      />
-
-      <Section labelledBy="engage-title">
-        <SectionHeader eyebrow={engage.eyebrow} title={engage.title} titleId="engage-title" />
-        <PrincipleGrid principles={engagementPaths} />
-      </Section>
-
-      <Section labelledBy="guidance-title">
-        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="flex max-w-2xl flex-col items-start gap-4">
-            <Eyebrow>{guidance.eyebrow}</Eyebrow>
-            <h2 id="guidance-title" className="type-h1">
-              {guidance.title}
-            </h2>
-            <p className="type-body-lg text-muted">{guidance.description}</p>
-          </div>
-          <div className="rounded-lg border border-border bg-card p-6 md:p-8">
-            <CheckList items={guidance.items} className="type-body-lg gap-4 text-foreground" />
-          </div>
-        </div>
-      </Section>
-
+      <OfficesSection index="01" eyebrow={offices.eyebrow} title={offices.title} />
       {channels.length > 0 ? (
         <Section labelledBy="details-title">
-          <SectionHeader eyebrow={details.eyebrow} title={details.title} titleId="details-title" />
-          <div className="max-w-xl rounded-lg border border-border bg-card p-6 md:p-8">
-            <ContactChannelList channels={channels} showLabels className="gap-5" />
-          </div>
+          <SectionHeader index="02" eyebrow={details.eyebrow} title={details.title} titleId="details-title" />
+          <ContactChannelList channels={channels} showLabels className="max-w-xl gap-5" />
         </Section>
       ) : null}
-
-      <CtaSection {...cta} />
+      <CtaSection {...finalCtaContent} />
     </>
   );
 }
