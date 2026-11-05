@@ -4,6 +4,7 @@ import { Container } from "@/components/layout/container";
 import { Logo } from "@/components/layout/logo";
 import { ContactChannelList } from "@/components/sections/contact-channels";
 import { ArrowLink } from "@/components/ui/arrow-link";
+import { SocialLinks } from "@/components/ui/social-links";
 import { ButtonLink } from "@/components/ui/button";
 import { footerCompanyLinks, footerLegalLinks, footerServiceLinks } from "@/config/footer";
 import { navigationCta, type NavigationItem } from "@/config/navigation";
@@ -72,6 +73,12 @@ export function Footer() {
             ) : null}
             <h2 className="type-eyebrow text-link mt-2">Connect</h2>
             <ContactChannelList channels={channels} />
+            {contactDetails.social?.length ? (
+              <>
+                <h2 className="type-eyebrow text-link mt-2">Follow Oar</h2>
+                <SocialLinks profiles={contactDetails.social} />
+              </>
+            ) : null}
             <ArrowLink href={routes.contact} className="py-2">
               Contact Oar
             </ArrowLink>

@@ -1,9 +1,9 @@
-import { Clock, Globe, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from "lucide-react";
+import { Clock, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from "lucide-react";
 
 import type { ContactDetails } from "@/types/contact";
 
 export interface ContactChannel {
-  kind: "email" | "phone" | "whatsapp" | "address" | "hours" | "social";
+  kind: "email" | "phone" | "whatsapp" | "address" | "hours";
   label: string;
   value: string;
   /** Present for channels the visitor can act on directly. */
@@ -17,7 +17,7 @@ export function getWhatsAppHref({ whatsapp }: Pick<ContactDetails, "whatsapp">):
 }
 
 /** Turns the verified details into display channels. Fields that are not set produce no channel. */
-export function getContactChannels({ email, phone, whatsapp, address, hours, social }: ContactDetails): ContactChannel[] {
+export function getContactChannels({ email, phone, whatsapp, address, hours }: ContactDetails): ContactChannel[] {
   const channels: ContactChannel[] = [];
 
   if (email) channels.push({ kind: "email", label: "Email", value: email, href: `mailto:${email}`, icon: Mail });
@@ -36,9 +36,6 @@ export function getContactChannels({ email, phone, whatsapp, address, hours, soc
   if (address) channels.push({ kind: "address", label: "Office", value: address, icon: MapPin });
   if (hours) channels.push({ kind: "hours", label: "Operating hours", value: hours, icon: Clock });
 
-  for (const profile of social ?? []) {
-    channels.push({ kind: "social", label: profile.label, value: profile.url, href: profile.url, icon: Globe });
-  }
-
+  // Social profiles are rendered separately as icon links (see SocialLinks), not as text channels.
   return channels;
 }

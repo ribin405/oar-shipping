@@ -8,4 +8,10 @@ export const contactDetails: ContactDetails = {
   ],
   email: "oar@oarshipping.com",
   whatsapp: "+971 50 629 0690",
+  social: [
+    { label: "Facebook", url: "https://www.facebook.com/Oarshipping/" },
+    { label: "Instagram", url: "https://www.instagram.com/oar_shipping/" },
+    { label: "LinkedIn", url: "https://www.linkedin.com/company/105680523/" },
+    { label: "YouTube", url: "https://www.youtube.com/@OarShipping" },
+  ],
 };

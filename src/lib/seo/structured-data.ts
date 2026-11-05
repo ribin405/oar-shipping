@@ -94,6 +94,7 @@ export function buildSiteGraph(): JsonLdNode | undefined {
         areaServed: COUNTRY,
         knowsAbout: serviceCapabilities.map(({ title }) => title),
         contactPoint: contactPoints(),
+        sameAs: (contactDetails.social ?? []).map(({ url }) => url),
         hasOfferCatalog: { "@type": "OfferCatalog", name: "Marine services", itemListElement: offers },
       },
       {

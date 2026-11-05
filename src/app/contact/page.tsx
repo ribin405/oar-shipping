@@ -8,6 +8,7 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { InnerPageHero } from "@/components/sections/inner-page-hero";
 import { OfficesSection } from "@/components/sections/offices-section";
 import { JsonLd } from "@/components/seo/json-ld";
+import { SocialLinks } from "@/components/ui/social-links";
 import { contactDetails } from "@/config/contact";
 import { routes } from "@/config/routes";
 import { contactContent } from "@/content/contact/page";
@@ -38,6 +39,13 @@ export default function ContactPage() {
         <Section labelledBy="details-title">
           <SectionHeader index="02" eyebrow={details.eyebrow} title={details.title} titleId="details-title" />
           <ContactChannelList channels={channels} showLabels className="max-w-xl gap-5" />
+          {contactDetails.social?.length ? (
+            <div className="mt-10 flex max-w-xl flex-col gap-4 border-t border-border pt-8">
+              <h3 className="type-label text-foreground">Follow Oar Shipping</h3>
+              <p className="type-body text-muted">Port updates, vessel supply news and company news, on the channels we use.</p>
+              <SocialLinks profiles={contactDetails.social} />
+            </div>
+          ) : null}
         </Section>
       ) : null}
       <CtaSection {...finalCtaContent} />
