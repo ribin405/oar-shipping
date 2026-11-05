@@ -15,4 +15,5 @@ export const routes = {
   insight: (slug: string) => `/insights/${slug}`,
   contact: "/contact",
   requestQuote: "/request-a-quote",
+  privacy: "/privacy-policy",
 } as const;

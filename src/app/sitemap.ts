@@ -24,6 +24,7 @@ const publishedPaths: readonly string[] = [
   ...insights.map(({ slug }) => routes.insight(slug)),
   routes.contact,
   routes.requestQuote,
+  routes.privacy,
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

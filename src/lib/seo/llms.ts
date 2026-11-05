@@ -50,6 +50,7 @@ export function buildLlmsTxt(): string {
     "## Contact",
     `- [Request a quote](${link(routes.requestQuote)})`,
     `- [Contact page](${link(routes.contact)})`,
+    `- [Privacy policy](${link(routes.privacy)})`,
     ...(contactDetails.email ? [`- Email: ${contactDetails.email}`] : []),
     ...(whatsapp && whatsappHref ? [`- WhatsApp: ${whatsapp} (${whatsappHref})`] : []),
     "",

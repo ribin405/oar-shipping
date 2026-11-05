@@ -19,4 +19,4 @@ export const footerCompanyLinks: readonly NavigationItem[] = [
 ];
 
 /** Add Privacy Policy and Terms here once those pages exist; the footer renders them automatically. */
-export const footerLegalLinks: readonly NavigationItem[] = [];
+export const footerLegalLinks: readonly NavigationItem[] = [{ label: "Privacy Policy", href: routes.privacy }];
