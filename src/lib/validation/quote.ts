@@ -28,7 +28,7 @@ const quoteFields = z.object({
     .max(40, "Please keep this to 40 characters or fewer.")
     .refine((value) => value === "" || value.replace(/\D/g, "").length >= 5, "Please enter a valid phone number.")
     .optional(),
-  service: z.enum(["", ...quoteServiceValues], { errorMap: () => ({ message: "Please select a service." }) }).optional(),
+  service: z.enum(["", ...quoteServiceValues], { error: "Please select a service." }).optional(),
   details: optionalText(2000),
   vesselName: optionalText(120),
   eta: z
